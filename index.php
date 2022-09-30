@@ -31,14 +31,14 @@
         </main>
           
         <table class="table table-hover">
-            <thead>
+            <thead id="tabletop">
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">food</th>
                 <th scope="col">rating</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tableContent">
                 <?php
                     $servername = "localhost";
                     $username = "testUser";
@@ -60,8 +60,8 @@
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>".$row["ID_testFood"]."</td>";
-                        echo "<td>".$row["ID_testFood"]."</td>";
-                        echo "<td>".$row["ID_testFood"]."</td>";
+                        echo "<td>".$row["food"]."</td>";
+                        echo "<td>".$row["rating"]."</td>";
                         echo "</tr>";
                     }
                     } else {
@@ -69,22 +69,6 @@
                     }
                     $conn->close();
                 ?>
-
-
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                </tr>
             </tbody>
         </table>
 
