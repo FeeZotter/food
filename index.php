@@ -58,7 +58,6 @@
                     if ($result->num_rows > 0) {
                     // output data of each row
                     while($row = $result->fetch_assoc()) {
-                        echo "id: " . $row["ID_testFood"]. " - 🍕: " . $row["food"]. " - Rating: " . $row["rating"]. "<br>";
                         echo "<tr>";
                         echo "<td>".$row["ID_testFood"]."</td>";
                         echo "<td>".$row["ID_testFood"]."</td>";
