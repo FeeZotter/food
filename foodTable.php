@@ -22,9 +22,9 @@
         $tableContent = $tableContent. 
         "<tr 
             class='rating" . $row["rating"]      . "'>"
-                  . "<td>" . $row["ID_testFood"] . "</td>"
-                  . "<td>" . $row["food"]        . "</td>"
-                  . "<td>" . $row["rating"]      . "</td>"
+            . "<td>"       . $row["ID_testFood"] . "</td>"
+            . "<td>"       . $row["food"]        . "</td>"
+            . "<td>"       . $row["rating"]      . "</td>"
         ."</tr>";
     }
     } else {
