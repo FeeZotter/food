@@ -1,16 +1,13 @@
 <!Doctype html>
   
 <html>
-    
-
     <head>
         <title>Food</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="./index.js"></script>
+        <script src="./index.js"></script>  
     </head>
       
-    <body>       
-        
+    <body>        
         <?php
             $servername = "localhost";
             $username = "testUser";
@@ -35,7 +32,7 @@
                 $tableContent = $tableContent. 
                 "<tr>"
                     ."<td>".$row["ID_testFood"]."</td>"
-                    ."<td>".$row["food"]."</td>"
+                    ."<td><code>".$row["food"]."</code></td>"
                     ."<td>".$row["rating"]."</td>"
                 ."</tr>";
             }
@@ -45,13 +42,11 @@
             $conn->close();
         ?>
 
-
         <nav> 
-            <input type="text" id="searchbar" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus/>
-            <input type="submit" value="🔍"/>
+            <input type="text" id="searchbar" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="search()"/>
         </nav>
           
-        <table class="table table-hover">
+        <table class="table table-hover" id="foodTable">
             <thead id="tabletop">
                 <tr>
                 <th scope="col">#</th>
