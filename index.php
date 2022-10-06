@@ -20,9 +20,8 @@
         <table class="table table-hover" id="foodTable">
             <thead id="tabletop">
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">food</th>
-                <th scope="col">rating</th>
+                    <th scope="col">food</th>
+                    <th scope="col">rating</th>
                 </tr>
             </thead>
             <tbody id="tableContent">

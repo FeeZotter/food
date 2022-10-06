@@ -2,10 +2,18 @@ input {
     width: 100%;
 }
 
-.rating0 {
-    color: red;
+.rating0, .rating1, .rating2 {
+    color: #d2222d;
 }
 
-.rating10 {
-    color: greenyellow;
+.rating3, .rating4, .rating5 {
+    color: #ffbf00;
+}
+
+.rating6, .rating7, .rating8 {
+    color: #299c29;
+}
+
+.rating9, .rating10 {
+    color: #007000;
 }
