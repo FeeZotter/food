@@ -21,9 +21,9 @@
     while($row = $result->fetch_assoc()) {
         $tableContent = $tableContent. 
         "<tr>"
-            ."<td>".$row["ID_testFood"]."</td>"
-            ."<td><code>".$row["food"]."</code></td>"
-            ."<td>".$row["rating"]."</td>"
+            ."<td>" .       $row["ID_testFood"] . "</td>"
+            ."<td><code>" . $row["food"] .        "</code></td>"
+            ."<td>" .       $row["rating"] .      "</td>"
         ."</tr>";
     }
     } else {
