@@ -20,6 +20,7 @@
             <input type="number" inputmode="numeric" name="rating" id="rating" value="0" min="0" max="10">
             <input type="submit" value="Submit">
         </form>
+        
 
         <nav> 
             <input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>

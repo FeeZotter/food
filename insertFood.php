@@ -12,11 +12,28 @@
     $rating = mysqli_real_escape_string($conn, $_REQUEST['rating']);
 
     //check if entry exists
-    $sql = "SELECT * FROM testfood WHERE food='$food'";
+    $sql = "SELECT food, rating FROM testfood WHERE food='$food'";
 
-    if(mysqli_num_rows($conn->query($sql)) != 0)
+    $result = $conn->query($sql);
+
+    if(mysqli_num_rows($conn->query($result)) != 0)
     {
-       echo "$food already exists";
+        while($row = $result->fetch_assoc()) {
+            if($row["rating"] == $rating)
+            {
+                //add new food
+                $sql = "UPDATE testfood SET rating = '$rating' WHERE food = '$food'";
+
+                // Attempt insert query execution
+                if(mysqli_query($conn, $sql)){
+                //   echo "Food added successfully.";
+                    echo ("'$food' rating changed to '$rating'");
+                } else{
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                }
+            }
+        }
+        echo "$food already exists";
     }
     else
     {
@@ -24,9 +41,9 @@
         $sql = "INSERT INTO testfood (food, rating) VALUES ('$food', '$rating')";
 
         // Attempt insert query execution
-        if(mysqli_query($conn, $sql)){
-         //   echo "Food added successfully.";
-            echo ("alert('$food added successfully')");
+        if(mysqli_query($conn, $sql))
+        {
+            echo ("'$food' added successfully");
         } else{
             echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
         }
@@ -34,3 +51,4 @@
 
     $conn->close();
 ?>
+
