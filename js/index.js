@@ -19,7 +19,7 @@ function searchByName() {
 }
 
 function searchByRating() {
-    filter = document.getElementById("sortValue").value.toUpperCase();
+    filter = document.getElementById("sortRating").value.toUpperCase();
     table = document.getElementById("foodTable");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query

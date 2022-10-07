@@ -1,6 +1,9 @@
 .wideInput {
-    margin-left: 1%;
     width: 85%;
+}
+
+.marginLeft {
+    margin-left: 1%;
 }
 
 .tightInput {
