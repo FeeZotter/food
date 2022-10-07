@@ -1,5 +1,10 @@
 .wideInput {
-    width: 100%;
+    margin-left: 1%;
+    width: 85%;
+}
+
+.tightInput {
+    width: 10%;
 }
 
 .rating0, .rating1, .rating2 {
