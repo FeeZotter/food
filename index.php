@@ -13,8 +13,19 @@
             include("foodTable.php");
         ?>
 
+        <form action="insertFood.php" method="post">
+            
+            <label for="food">Food:</label>
+            <input type="text" name="food" id="food">
+
+            <label for="lastName">Rating:</label>
+            <input type="number" inputmode="numeric" name="rating" id="rating" value="0" min="0" max="10">
+
+            <input type="submit" value="Submit">
+        </form>
+
         <nav> 
-            <input type="text" id="searchbar" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="search()"/>
+            <input class="wideInput" type="text" id="searchbar" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="search()"/>
         </nav>
           
         <table class="table table-hover" id="foodTable">
