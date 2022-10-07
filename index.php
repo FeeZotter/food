@@ -30,7 +30,7 @@
         </table>
 
         <footer>
-            Copyright {jear} by {name} - No rights reserved!
+            No Copyright in jear of boom by nobody - No rights reserved!
         </footer>
     </body>
 </html>

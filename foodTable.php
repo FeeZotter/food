@@ -17,15 +17,15 @@
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        $tableContent = $tableContent. 
-        "<tr 
-            class='rating" . $row["rating"]      . "'>"
-            . "<td><b>"    . $row["food"]        . "</b</td>"
-            . "<td><b>"    . $row["rating"]      . "</b></td>"
-        ."</tr>";
-    }
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $tableContent = $tableContent. 
+            "<tr 
+                class='rating" . $row["rating"]      . "'>"
+                . "<td><b>"    . $row["food"]        . "</b</td>"
+                . "<td><b>"    . $row["rating"]      . "</b></td>"
+            ."</tr>";
+        }
     } else {
         $tableContent = "0 results";
     }
