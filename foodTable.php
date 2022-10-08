@@ -24,9 +24,9 @@
         while($row = $result->fetch_assoc()) {
             $tableContent = $tableContent. 
             "<tr 
-                class='color" . $row["'$conf_tableRating'"]  . "'>"
-                . "<td><b>"   . $row["'$conf_tableContent'"] . "</b</td>"
-                . "<td><b>"   . $row["'$conf_tableRating'"]  . "</b></td>"
+                class='color" . $row[$conf_tableRating]  . "'>"
+                . "<td><b>"   . $row[$conf_tableContent] . "</b</td>"
+                . "<td><b>"   . $row[$conf_tableRating]  . "</b></td>"
             ."</tr>";
         }
     } else {
