@@ -1,7 +1,10 @@
 <?php
     include("databaseConnection.php");
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($conf_servername, 
+                       $conf_username, 
+                       $conf_password, 
+                       $conf_dbname);
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -12,17 +15,22 @@
     $rating = mysqli_real_escape_string($conn, $_REQUEST['rating']);
 
     //check if entry exists
-    $sql = "SELECT $tableContent, $tableRating FROM $tableName WHERE $tableContent='$food'";
+    $sql = "SELECT '$conf_tableContent', 
+                   '$conf_tableRating' 
+            FROM $conf_tableName 
+            WHERE $conf_tableContent='$food'";
 
     $result = $conn->query($sql);
 
-    if(mysqli_num_rows($conn->query($result)) != 0)
+    if(mysqli_num_rows($result) != 0)
     {
         while($row = $result->fetch_assoc()) {
-            if($row["$tableRating "] == $rating)
+            if($row["$conf_tableRating "] == $rating)
             {
                 //add new food
-                $sql = "UPDATE $tableName SET $tableRating  = '$rating' WHERE $tableContent = '$food'";
+                $sql = "UPDATE $conf_tableName 
+                        SET $conf_tableRating  = '$rating' 
+                        WHERE $tableContent = '$food'";
 
                 // Attempt insert query execution
                 if(mysqli_query($conn, $sql)){
@@ -38,7 +46,10 @@
     else
     {
         //add new food
-        $sql = "INSERT INTO $tableName ($tableContent, $tableRating ) VALUES ('$food', '$rating')";
+        $sql = "INSERT INTO $tableName ($tableContent, 
+                                        $tableRating ) 
+                VALUES ('$food', 
+                        '$rating')";
 
         // Attempt insert query execution
         if(mysqli_query($conn, $sql))

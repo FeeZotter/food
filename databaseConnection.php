@@ -1,11 +1,11 @@
 <?php
-    $servername = "localhost";
-    $username = "foodServer";
-    $password = "iWouldLikeToKnowSomeFööd";
-    $dbname = "mysql";
-    $tableName = "food_fee";
+    $conf_servername = "localhost";
+    $conf_username = "foodServer";
+    $conf_password = "iWouldLikeToKnowSomeFööd";
+    $conf_dbname = "mysql";
+    $conf_tableName = "food_fee";
 
-    $tableId = "ID_Food_Fee";
-    $tableContent = 'food';
-    $tableRating = 'rating';
+    $conf_tableId = "ID_Food_Fee";
+    $conf_tableContent = 'food';
+    $conf_tableRating = 'rating';
 ?>

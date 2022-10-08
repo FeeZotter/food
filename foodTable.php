@@ -4,13 +4,19 @@
     $tableContentArray = array();
 
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($conf_servername, 
+                       $conf_username, 
+                       $conf_password, 
+                       $conf_dbname);
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT $tableId, $tableContent, $tableRating FROM $tableName";
+    $sql = "SELECT '$conf_tableId', 
+                   '$conf_tableContent', 
+                   '$conf_tableRating' 
+            FROM $conf_tableName";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -18,9 +24,9 @@
         while($row = $result->fetch_assoc()) {
             $tableContent = $tableContent. 
             "<tr 
-                class='color" . $row["$tableRating"]  . "'>"
-                . "<td><b>"   . $row["$tableContent"] . "</b</td>"
-                . "<td><b>"   . $row["$tableRating"]  . "</b></td>"
+                class='color" . $row["'$conf_tableRating'"]  . "'>"
+                . "<td><b>"   . $row["'$conf_tableContent'"] . "</b</td>"
+                . "<td><b>"   . $row["'$conf_tableRating'"]  . "</b></td>"
             ."</tr>";
         }
     } else {
