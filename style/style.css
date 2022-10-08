@@ -10,18 +10,18 @@
     width: 10%;
 }
 
-.rating0, .rating1, .rating2 {
+.color0, .color1, .color2 {
     color: #d2222d;
 }
 
-.rating3, .rating4, .rating5 {
+.color3, .color4, .color5 {
     color: #ffbf00;
 }
 
-.rating6, .rating7, .rating8 {
+.color6, .color7, .color8 {
     color: #299c29;
 }
 
-.rating9, .rating10 {
+.color9, .color10 {
     color: #007000;
 }
