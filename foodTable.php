@@ -10,7 +10,7 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT ID_testFood, food, rating FROM testfood";
+    $sql = "SELECT $tableId, $tableContent, $tableRating FROM $dbname";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -18,9 +18,9 @@
         while($row = $result->fetch_assoc()) {
             $tableContent = $tableContent. 
             "<tr 
-                class='rating" . $row["rating"]      . "'>"
-                . "<td><b>"    . $row["food"]        . "</b</td>"
-                . "<td><b>"    . $row["rating"]      . "</b></td>"
+                class='color" . $row["$tableRating"]      . "'>"
+                . "<td><b>"    . $row["$tableContent"]        . "</b</td>"
+                . "<td><b>"    . $row["$tableRating"]      . "</b></td>"
             ."</tr>";
         }
     } else {

@@ -12,17 +12,17 @@
     $rating = mysqli_real_escape_string($conn, $_REQUEST['rating']);
 
     //check if entry exists
-    $sql = "SELECT food, rating FROM testfood WHERE food='$food'";
+    $sql = "SELECT $tableContent, $tableRating FROM $dbname WHERE $tableContent='$food'";
 
     $result = $conn->query($sql);
 
     if(mysqli_num_rows($conn->query($result)) != 0)
     {
         while($row = $result->fetch_assoc()) {
-            if($row["rating"] == $rating)
+            if($row["$tableRating "] == $rating)
             {
                 //add new food
-                $sql = "UPDATE testfood SET rating = '$rating' WHERE food = '$food'";
+                $sql = "UPDATE $dbname SET $tableRating  = '$rating' WHERE $tableContent = '$food'";
 
                 // Attempt insert query execution
                 if(mysqli_query($conn, $sql)){
@@ -38,7 +38,7 @@
     else
     {
         //add new food
-        $sql = "INSERT INTO testfood (food, rating) VALUES ('$food', '$rating')";
+        $sql = "INSERT INTO $dbname ($tableContent, $tableRating ) VALUES ('$food', '$rating')";
 
         // Attempt insert query execution
         if(mysqli_query($conn, $sql))
@@ -51,4 +51,3 @@
 
     $conn->close();
 ?>
-
