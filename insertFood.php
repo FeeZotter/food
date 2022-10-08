@@ -15,8 +15,8 @@
     $rating = mysqli_real_escape_string($conn, $_REQUEST['rating']);
 
     //check if entry exists
-    $sql = "SELECT '$conf_tableContent', 
-                   '$conf_tableRating' 
+    $sql = "SELECT $conf_tableContent, 
+                   $conf_tableRating 
             FROM $conf_tableName 
             WHERE $conf_tableContent='$food'";
 
@@ -29,7 +29,7 @@
             {
                 //add new food
                 $sql = "UPDATE $conf_tableName 
-                        SET $conf_tableRating  = '$rating' 
+                        SET $conf_tableRating = '$rating' 
                         WHERE $tableContent = '$food'";
 
                 // Attempt insert query execution
@@ -46,10 +46,9 @@
     else
     {
         //add new food
-        $sql = "INSERT INTO $conf_tableName ($conf_tableContent, 
-                                        $conf_tableRating ) 
-                VALUES ('$food', 
-                        '$rating')";
+        $sql = mysqli_real_escape_string(
+            "INSERT INTO $conf_tableName ("$conf_tableContent", "$conf_tableRating") 
+            VALUES ("$food", "$rating")");
 
         // Attempt insert query execution
         if(mysqli_query($conn, $sql))
