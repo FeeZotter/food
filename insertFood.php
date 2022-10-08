@@ -46,8 +46,8 @@
     else
     {
         //add new food
-        $sql = "INSERT INTO $tableName ($tableContent, 
-                                        $tableRating ) 
+        $sql = "INSERT INTO $conf_tableName ($conf_tableContent, 
+                                        $conf_tableRating ) 
                 VALUES ('$food', 
                         '$rating')";
 

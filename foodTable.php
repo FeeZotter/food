@@ -13,9 +13,9 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT '$conf_tableId', 
-                   '$conf_tableContent', 
-                   '$conf_tableRating' 
+    $sql = "SELECT $conf_tableId, 
+                   $conf_tableContent, 
+                   $conf_tableRating 
             FROM $conf_tableName";
     $result = $conn->query($sql);
 
