@@ -10,7 +10,7 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT $tableId, $tableContent, $tableRating FROM $dbname";
+    $sql = "SELECT $tableId, $tableContent, $tableRating FROM $tableName";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

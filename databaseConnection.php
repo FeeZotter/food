@@ -2,7 +2,8 @@
     $servername = "localhost";
     $username = "foodServer";
     $password = "iWouldLikeToKnowSomeFööd";
-    $dbname = "food_fee";
+    $dbname = "mysql";
+    $tableName = "food_fee";
 
     $tableId = "ID_Food_Fee";
     $tableContent = 'food';
