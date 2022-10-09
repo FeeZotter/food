@@ -2,17 +2,17 @@
 
     class DBConnection
     {
-        private $servername = "localhost";
-        private $username = "foodServer";
-        private $password = "iWouldLikeToKnowSomeFööd";
-        private $dbname = "mysql";
-        private $tableName = "food_fee";
-        private $sql = "";
-        private $conn;
+        private string $servername = "localhost";
+        private string $username = "foodServer";
+        private string $password = "iWouldLikeToKnowSomeFööd";
+        private string $dbname = "mysql";
+        private string $tableName = "food_fee";
+        private string $sql = "";
+        private mysqli $conn;
        
-        private $tableId = "ID_Food_fee";
-        private $contentTable = 'food';
-        private $tableRating = 'rating';
+        private string $tableId = "ID_Food_fee";
+        private string $tableContent = 'food';
+        private string $tableRating = 'rating';
 
         function __construct()
         {
@@ -32,9 +32,10 @@
             $contentTable = "";
         
             $sql = "SELECT $this->tableId, 
-                           $this->contentTable, 
+                           $this->tableContent, 
                            $this->tableRating 
                     FROM   $this->tableName";
+                    
             $result = $this->conn->query($sql);
         
             if ($result->num_rows > 0) {
@@ -43,7 +44,7 @@
                     $contentTable = $contentTable. 
                     "<tr 
                         class='color" . $row[$this->tableRating]  . "'>"
-                        . "<td><b>"   . $row[$this->contentTable] . "</b</td>"
+                        . "<td><b>"   . $row[$this->tableContent] . "</b</td>"
                         . "<td><b>"   . $row[$this->tableRating]  . "</b></td>"
                     ."</tr>";
                 }
@@ -53,26 +54,27 @@
             return $contentTable;
         }
 
-        function addContent($content, $rating)
+        function addContent(string $content, int $rating)
         {
+     //      trim($content, " \n\r\t\v\x00");
             $content = mysqli_real_escape_string($this->conn, $content);
-            $rating = mysqli_real_escape_string($this->conn, $rating);
-            $this->sql = "SELECT $this->contentTable, 
+            $rating  = mysqli_real_escape_string($this->conn, $rating);
+            $this->sql = "SELECT $this->tableContent, 
                                  $this->tableRating 
                           FROM   $this->tableName 
-                          WHERE  $this->contentTable='$content'";
+                          WHERE  $this->tableContent='$content'";
 
             $result = $this->conn->query($this->sql);
 
             if(mysqli_num_rows($result) != 0)
             {
                 while($row = $result->fetch_assoc()) {
-                    if($row["$this->tableRating "] == $rating)
+                    if($row["$this->tableRating"] == $rating)
                     {
                         //add new conten$content
                         $this->sql = "UPDATE $this->tableName 
-                                SET $this->tableRating = '$rating' 
-                                WHERE $this->contentTable = '$content'";
+                                      SET $this->tableRating    = '$rating' 
+                                      WHERE $this->tableContent = '$content'";
 
                         // Attempt insert query execution
                         if(mysqli_query($this->conn, $this->sql)){
@@ -88,12 +90,11 @@
             else
             {
             //add new conten$content
-                $this->sql = mysqli_real_escape_string($this->conn,
-                            "INSERT INTO $this->tableName 
-                                       ('$this->contentTable', 
-                                        '$this->tableRating') 
-                             VALUES ('$content', 
-                                     '$rating')");
+                $this->sql = "INSERT INTO $this->tableName 
+                                        ('$this->tableContent', 
+                                         '$this->tableRating') 
+                              VALUES ('$content', 
+                                      '$rating')";
 
                 // Attempt insert query execution || here is an error
                 if(mysqli_query($this->conn, $this->sql))
