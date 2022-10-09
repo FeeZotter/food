@@ -27,31 +27,28 @@
             }
         }   
 
-        function __construct(string $table)
-        {
-            $this->conn = new mysqli($this->servername, 
-                                     $this->username, 
-                                     $this->password, 
-                                     $this->dbname);
+        function getTableName() { return $this->tableName; }
+        function setTableName(string $table) 
+        { 
+            $this->sql = "SELECT $this->tableId, 
+                            $this->tableContent, 
+                            $this->tableRating 
+                    FROM    $table";
+            if(mysqli_query($this->conn, $this->sql))
+                $this->tableName = mysqli_real_escape_string($this->conn, $table);; 
+        }
 
-            if ($this->conn->connect_error) 
-            {
-                die("Connection failed: " . $this->conn->connect_error);
-            }
-
-            $this->tableName = $table;
-        } 
 
         function getContentTable()
         {
             $contentTable = "";
         
-            $sql = "SELECT $this->tableId, 
+            $this->sql = "SELECT $this->tableId, 
                            $this->tableContent, 
                            $this->tableRating 
                     FROM   $this->tableName";
                     
-            $result = $this->conn->query($sql);
+            $result = $this->conn->query($this->sql);
         
             if ($result->num_rows > 0) 
             {
