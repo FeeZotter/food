@@ -10,7 +10,7 @@
         private string $sql = "";
         private mysqli $conn;
        
-        private string $tableId = "ID_Food_fee";
+        private string $tableId = "ID";
         private string $tableContent = 'food';
         private string $tableRating = 'rating';
 
@@ -26,6 +26,21 @@
                 die("Connection failed: " . $this->conn->connect_error);
             }
         }   
+
+        function __construct(string $table)
+        {
+            $this->conn = new mysqli($this->servername, 
+                                     $this->username, 
+                                     $this->password, 
+                                     $this->dbname);
+
+            if ($this->conn->connect_error) 
+            {
+                die("Connection failed: " . $this->conn->connect_error);
+            }
+
+            $this->tableName = $table;
+        } 
 
         function getContentTable()
         {
