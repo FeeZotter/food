@@ -56,7 +56,8 @@
 
         function addContent(string $content, int $rating)
         {
-     //      trim($content, " \n\r\t\v\x00");
+            $echo = "";
+            trim($content, " \n\r\t\v\x00");
             $content = mysqli_real_escape_string($this->conn, $content);
             $rating  = mysqli_real_escape_string($this->conn, $rating);
             $this->sql = "SELECT $this->tableContent, 
@@ -69,7 +70,7 @@
             if(mysqli_num_rows($result) != 0)
             {
                 while($row = $result->fetch_assoc()) {
-                    if($row["$this->tableRating"] == $rating)
+                    if($row["$this->tableRating"] != $rating)
                     {
                         //add new conten$content
                         $this->sql = "UPDATE $this->tableName 
@@ -78,18 +79,22 @@
 
                         // Attempt insert query execution
                         if(mysqli_query($this->conn, $this->sql)){
-                        //   echo "conten$content added successfully.";
-                            echo ("'$content' rating changed to '$rating'");
+                            $echo = "'$content' rating changed to '$rating'";
                         } else{
-                            echo "ERROR: Could not able to execute $this->sql. " . mysqli_error($link);
+                            $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
                         }
                     }
+                    else
+                    {
+                        $echo = "$content already exists";
+                    }
                 }
-                echo "$content already exists";
+                echo $echo;
             }
             else
             {
-            //add new conten$content
+                //add new content
+                //this does not work
                 $this->sql = "INSERT INTO $this->tableName 
                                         ('$this->tableContent', 
                                          '$this->tableRating') 
@@ -99,11 +104,12 @@
                 // Attempt insert query execution || here is an error
                 if(mysqli_query($this->conn, $this->sql))
                 {
-                    echo ("'$content' added successfully");
+                    $echo = "'$content' added successfully";
                 } else{
-                    echo "ERROR: Could not able to execute $this->sql. " . mysqli_error($link);
+                    $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
                 }
             }
+            echo $echo;
         }
         
         function __destruct() {
