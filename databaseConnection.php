@@ -38,9 +38,11 @@
                     
             $result = $this->conn->query($sql);
         
-            if ($result->num_rows > 0) {
+            if ($result->num_rows > 0) 
+            {
                 // output data of each row
-                while($row = $result->fetch_assoc()) {
+                while($row = $result->fetch_assoc()) 
+                {
                     $contentTable = $contentTable. 
                     "<tr 
                         class='color" . $row[$this->tableRating]  . "'>"
@@ -48,7 +50,9 @@
                         . "<td><b>"   . $row[$this->tableRating]  . "</b></td>"
                     ."</tr>";
                 }
-            } else {
+            } 
+            else 
+            {
                 $contentTable = "0 results";
             }
             return $contentTable;
@@ -72,15 +76,18 @@
                 while($row = $result->fetch_assoc()) {
                     if($row["$this->tableRating"] != $rating)
                     {
-                        //add new conten$content
+                        //change rating of content
                         $this->sql = "UPDATE $this->tableName 
                                       SET $this->tableRating    = '$rating' 
                                       WHERE $this->tableContent = '$content'";
 
                         // Attempt insert query execution
-                        if(mysqli_query($this->conn, $this->sql)){
+                        if(mysqli_query($this->conn, $this->sql))
+                        {
                             $echo = "'$content' rating changed to '$rating'";
-                        } else{
+                        } 
+                        else
+                        {
                             $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
                         }
                     }
@@ -96,8 +103,8 @@
                 //add new content
                 //this does not work
                 $this->sql = "INSERT INTO $this->tableName 
-                                        ('$this->tableContent', 
-                                         '$this->tableRating') 
+                                        ($this->tableContent, 
+                                         $this->tableRating) 
                               VALUES ('$content', 
                                       '$rating')";
 
@@ -105,14 +112,17 @@
                 if(mysqli_query($this->conn, $this->sql))
                 {
                     $echo = "'$content' added successfully";
-                } else{
+                } 
+                else
+                {
                     $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
                 }
             }
             echo $echo;
         }
         
-        function __destruct() {
+        function __destruct() 
+        {
             $this->conn->close();
         }
     }
