@@ -10,7 +10,9 @@
       
     <body>        
         <?php
-            include("foodTable.php");
+            include("databaseConnection.php");
+            $dbConn = new DBConnection;
+            $tableContent = $dbConn->getContentTable();
         ?>
 
         <form action="insertFood.php" method="post">

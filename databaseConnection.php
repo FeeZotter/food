@@ -9,16 +9,17 @@
         private $tableName = "food_fee";
         private $sql = "";
         private $conn;
-        private $tableId = "ID_Food_Fee";
-        private $tableContent = 'food';
+       
+        private $tableId = "ID_Food_fee";
+        private $contentTable = 'food';
         private $tableRating = 'rating';
 
         function __construct()
         {
             $this->conn = new mysqli($this->servername, 
-                               $this->username, 
-                               $this->password, 
-                               $this->dbname);
+                                     $this->username, 
+                                     $this->password, 
+                                     $this->dbname);
 
             if ($this->conn->connect_error) 
             {
@@ -26,19 +27,40 @@
             }
         }   
 
-        function getData()
+        function getContentTable()
         {
-
+            $contentTable = "";
+        
+            $sql = "SELECT $this->tableId, 
+                           $this->contentTable, 
+                           $this->tableRating 
+                    FROM   $this->tableName";
+            $result = $this->conn->query($sql);
+        
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    $contentTable = $contentTable. 
+                    "<tr 
+                        class='color" . $row[$this->tableRating]  . "'>"
+                        . "<td><b>"   . $row[$this->contentTable] . "</b</td>"
+                        . "<td><b>"   . $row[$this->tableRating]  . "</b></td>"
+                    ."</tr>";
+                }
+            } else {
+                $contentTable = "0 results";
+            }
+            return $contentTable;
         }
 
-        function setData()
+        function addContent($content, $rating)
         {
-            $food = mysqli_real_escape_string($this->conn, $_REQUEST['food']);
-            $rating = mysqli_real_escape_string($this->conn, $_REQUEST['rating']);
-            $this->sql = "SELECT $this->tableContent, 
-                           $this->tableRating 
-                    FROM   $this->tableName 
-                    WHERE  $this->tableContent='$food'";
+            $content = mysqli_real_escape_string($this->conn, $content);
+            $rating = mysqli_real_escape_string($this->conn, $rating);
+            $this->sql = "SELECT $this->contentTable, 
+                                 $this->tableRating 
+                          FROM   $this->tableName 
+                          WHERE  $this->contentTable='$content'";
 
             $result = $this->conn->query($this->sql);
 
@@ -47,45 +69,40 @@
                 while($row = $result->fetch_assoc()) {
                     if($row["$this->tableRating "] == $rating)
                     {
-                        //add new food
+                        //add new conten$content
                         $this->sql = "UPDATE $this->tableName 
                                 SET $this->tableRating = '$rating' 
-                                WHERE $this->tableContent = '$food'";
+                                WHERE $this->contentTable = '$content'";
 
                         // Attempt insert query execution
                         if(mysqli_query($this->conn, $this->sql)){
-                        //   echo "Food added successfully.";
-                            echo ("'$food' rating changed to '$rating'");
+                        //   echo "conten$content added successfully.";
+                            echo ("'$content' rating changed to '$rating'");
                         } else{
                             echo "ERROR: Could not able to execute $this->sql. " . mysqli_error($link);
                         }
                     }
                 }
-                echo "$food already exists";
+                echo "$content already exists";
             }
             else
             {
-            //add new food
-                $this->sql = mysqli_real_escape_string(
-                    "INSERT INTO $this->tableName 
-                               ('$this->tableContent', 
-                                '$this->tableRating') 
-                     VALUES ('$food', 
-                             '$rating')");
+            //add new conten$content
+                $this->sql = mysqli_real_escape_string($this->conn,
+                            "INSERT INTO $this->tableName 
+                                       ('$this->contentTable', 
+                                        '$this->tableRating') 
+                             VALUES ('$content', 
+                                     '$rating')");
 
                 // Attempt insert query execution
                 if(mysqli_query($this->conn, $this->sql))
                 {
-                    echo ("'$food' added successfully");
+                    echo ("'$content' added successfully");
                 } else{
                     echo "ERROR: Could not able to execute $this->sql. " . mysqli_error($link);
                 }
             }
-        }
-
-        function changeData()
-        {
-
         }
         
         function __destruct() {
@@ -93,68 +110,3 @@
         }
     }
 ?>
-
-$conn = new mysqli($conf_servername, 
-                       $conf_username, 
-                       $conf_password, 
-                       $conf_dbname);
-
-                       $conn = new mysqli($conf_servername, 
-                       $conf_username, 
-                       $conf_password, 
-                       $conf_dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Escape user inputs for security
-    $food = mysqli_real_escape_string($conn, $_REQUEST['food']);
-    $rating = mysqli_real_escape_string($conn, $_REQUEST['rating']);
-
-    //check if entry exists
-    $sql = "SELECT $conf_tableContent, 
-                   $conf_tableRating 
-            FROM $conf_tableName 
-            WHERE $conf_tableContent='$food'";
-
-    $result = $conn->query($sql);
-
-    if(mysqli_num_rows($result) != 0)
-    {
-        while($row = $result->fetch_assoc()) {
-            if($row["$conf_tableRating "] == $rating)
-            {
-                //add new food
-                $sql = "UPDATE $conf_tableName 
-                        SET $conf_tableRating = '$rating' 
-                        WHERE $tableContent = '$food'";
-
-                // Attempt insert query execution
-                if(mysqli_query($conn, $sql)){
-                //   echo "Food added successfully.";
-                    echo ("'$food' rating changed to '$rating'");
-                } else{
-                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                }
-            }
-        }
-        echo "$food already exists";
-    }
-    else
-    {
-        //add new food
-        $sql = mysqli_real_escape_string(
-            "INSERT INTO $conf_tableName ("$conf_tableContent", "$conf_tableRating") 
-            VALUES ("$food", "$rating")");
-
-        // Attempt insert query execution
-        if(mysqli_query($conn, $sql))
-        {
-            echo ("'$food' added successfully");
-        } else{
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-        }
-    }
-
-    $conn->close();
