@@ -95,7 +95,7 @@
                              VALUES ('$content', 
                                      '$rating')");
 
-                // Attempt insert query execution
+                // Attempt insert query execution || here is an error
                 if(mysqli_query($this->conn, $this->sql))
                 {
                     echo ("'$content' added successfully");
