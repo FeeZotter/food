@@ -11,8 +11,7 @@
     <body>        
         <?php
             include("databaseConnection.php");
-            $dbConn = new DBConnection;
-            $tableContent = $dbConn->getContentTable();
+            $htmlComp = new HTMLComponents;
         ?>
 
         <form action="insertFood.php" method="post">
@@ -37,7 +36,7 @@
                 </tr>
             </thead>
             <tbody id="tableContent">
-                <?=$tableContent?>
+                htmlComp->contentTable();
             </tbody>
         </table>
 
