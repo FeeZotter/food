@@ -137,7 +137,8 @@
                                string $tableRating,
                                string $content) 
         {
-            
+            $this->sql = "DELETE FROM $tableName
+                          WHERE       $tableContent = '$content'";
             if(mysqli_query($this->conn, $this->sql))
             {
                 $echo = "'$content' deleted successfully";
