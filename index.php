@@ -2,6 +2,10 @@
   
 <html>
     <head>
+        <?php
+            include("HTMLModules.php");
+            $htmlComp = new HTMLModules;
+        ?>
         <title>Foood</title>
         <link rel="stylesheet" href="./style/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -9,12 +13,7 @@
     </head>
       
     <body>        
-        <?php
-            include("databaseConnection.php");
-            $htmlComp = new HTMLComponents;
-        ?>
-
-        <form action="insertFood.php" method="post">
+       <form action="insertFood.php" method="post">
             <label class="marginLeft" for="food">Food:</label>
             <input type="text" name="food" id="food">
             <label for="lastName">Rating:</label>

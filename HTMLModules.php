@@ -1,5 +1,5 @@
 <?php
-    class HTMLComponents
+    class HTMLModules
     {
         function contentTable()
         {
