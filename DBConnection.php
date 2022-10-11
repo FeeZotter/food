@@ -53,7 +53,7 @@
         function getContentTable(string $tableName)
         {
             $contentTable = "";
-            $this->sql = "SELECT * FROM $tableName";       
+            $this->sql = "SELECT * FROM " . $tableName;       
             return $this->conn->query($this->sql);
         }
 
@@ -129,7 +129,7 @@
         {
             $this->sql = "DELETE FROM $tableName
                           WHERE       $tableContent = '$content'";
-                          
+
             if(mysqli_query($this->conn, $this->sql))
             {
                 $echo = "'$content' deleted successfully";
