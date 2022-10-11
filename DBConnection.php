@@ -3,9 +3,9 @@
     //functions:
     //getTableName()    |39   |offline
     //setTableName()    |40   |offline
-    //getContentTable() |51   |need to return list
-    //addContent()      |82
-    //deleteContent()   |146  |unfinished
+    //getContentTable() |52   |need to return list
+    //addContent()      |67
+    //deleteContent()   |133  |unfinished
     class DBConnection
     {
         private $servername = "localhost";
@@ -65,7 +65,6 @@
         }
 
         function addContent(string $tableName, 
-                            string $tableId, 
                             string $tableContent, 
                             string $tableRating,
                             string $content, 
@@ -131,10 +130,8 @@
             echo $echo;
         }
 
-        function deleteContent(string $tableName, 
-                               string $tableId, 
+        function deleteContent(string $tableName,  
                                string $tableContent, 
-                               string $tableRating,
                                string $content) 
         {
             $this->sql = "DELETE FROM $tableName
