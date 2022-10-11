@@ -1,11 +1,10 @@
 <?php
     class HTMLModules
     {
-        function contentTable()
+        function contentTable($servername, $username, $password, $dbname)
         {
-            $dbconn = new DBConnection();
-                                         //getContentTable(string $tableName);
-            $contentTableResult = $dbconn->query("SELECT * FROM " . $tableName);;
+            $dbconn = new DBConnection($servername, $username, $password, $dbname);
+            $contentTableResult = $dbconn->query("SELECT * FROM " . $tableName);
             if ($contentTableResult->num_rows > 0) 
             {
                 // output data of each row

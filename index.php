@@ -4,7 +4,7 @@
     <head>
         <?php
             include("HTMLModules.php");
-            $htmlComp = new HTMLModules;
+            $htmlComp = new HTMLModules();
         ?>
         <title>Foood</title>
         <link rel="stylesheet" href="./style/style.css">
@@ -35,7 +35,9 @@
                 </tr>
             </thead>
             <tbody id="tableContent">
-                htmlComp->contentTable();
+                <?php
+                    htmlComp->contentTable($servername, $username, $password, $dbname);
+                ?>
             </tbody>
         </table>
 
