@@ -3,7 +3,6 @@
     //functions:
     //getTableName()    |42   |offline             |
     //setTableName()    |43   |offline             |
-    //getContentTable() |53   |need to return list |$tableName
     //addContent()      |62   |                    |$tableName, $tableContent, $tableRating, $content, $rating
     //deleteContent()   |128  |unfinished          |$tableName, $tableContent, $content
    
@@ -49,13 +48,6 @@
         //    if(mysqli_query($this->conn, $this->sql))
         //        $this->tableName = mysqli_real_escape_string($this->conn, $table);; 
         //}
-
-        function getContentTable(string $tableName)
-        {
-            $contentTable = "";
-            $this->sql = "SELECT * FROM " . $tableName;       
-            return $this->conn->query($this->sql);
-        }
 
         function addContent(string $tableName, 
                             string $tableContent, 

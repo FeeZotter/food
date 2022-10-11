@@ -5,7 +5,7 @@
         {
             $dbconn = new DBConnection();
                                          //getContentTable(string $tableName);
-            $contentTableResult = $dbconn->getContentTable("food_fee");
+            $contentTableResult = $dbconn->query("SELECT * FROM " . $tableName);;
             if ($contentTableResult->num_rows > 0) 
             {
                 // output data of each row
