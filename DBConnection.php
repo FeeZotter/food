@@ -3,9 +3,9 @@
     //functions:
     //getTableName()    |42   |offline             |
     //setTableName()    |43   |offline             |
-    //getContentTable() |54   |need to return list |$tableName
-    //addContent()      |67   |                    |$tableName, $tableContent, $tableRating, $content, $rating
-    //deleteContent()   |133  |unfinished          |$tableName, $tableContent, $content
+    //getContentTable() |53   |need to return list |$tableName
+    //addContent()      |62   |                    |$tableName, $tableContent, $tableRating, $content, $rating
+    //deleteContent()   |128  |unfinished          |$tableName, $tableContent, $content
    
     class DBConnection
     {
@@ -50,13 +50,11 @@
         //        $this->tableName = mysqli_real_escape_string($this->conn, $table);; 
         //}
 
-
         function getContentTable(string $tableName)
         {
             $contentTable = "";
         
-            $this->sql = "SELECT *
-                          FROM   $tableName";
+            $this->sql = "SELECT * FROM $tableName";
                     
             return $this->conn->query($this->sql);
         }
