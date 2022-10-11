@@ -1,11 +1,4 @@
 <?php
-    //manages every DB connection
-    //functions:
-    //getTableName()    |42   |offline             |
-    //setTableName()    |43   |offline             |
-    //addContent()      |62   |                    |$tableName, $tableContent, $tableRating, $content, $rating
-    //deleteContent()   |128  |unfinished          |$tableName, $tableContent, $content
-   
     class DBConnection
     {
         private $servername;
