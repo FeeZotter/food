@@ -8,10 +8,10 @@
    
     class DBConnection
     {
-        private $servername = "localhost";
-        private $username = "foodServer";
-        private $password = "iWouldLikeToKnowSomeFööd";
-        private $dbname = "mysql";
+        private $servername;
+        private $username;
+        private $password;
+        private $dbname;
         private mysqli $conn;
 
         function __construct($servername, $username, $password, $dbname)
