@@ -1,7 +1,7 @@
 <?php
     class HTMLModules
     {
-        function contentTable($dbconn)
+        function contentTable($dbconn, $table)
         {
             $contentTableResult = $dbconn->query("SELECT * FROM " . $tableName);
             if ($contentTableResult->num_rows > 0) 
