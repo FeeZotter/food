@@ -1,11 +1,12 @@
 <?php
     //manages every DB connection
     //functions:
-    //getTableName()    |39   |offline
-    //setTableName()    |40   |offline
-    //getContentTable() |52   |need to return list
-    //addContent()      |67
-    //deleteContent()   |133  |unfinished
+    //getTableName()    |42   |offline             |
+    //setTableName()    |43   |offline             |
+    //getContentTable() |54   |need to return list |$tableName
+    //addContent()      |67   |                    |$tableName, $tableContent, $tableRating, $content, $rating
+    //deleteContent()   |133  |unfinished          |$tableName, $tableContent, $content
+   
     class DBConnection
     {
         private $servername = "localhost";
@@ -32,6 +33,7 @@
                 die("Connection failed: " . $this->conn->connect_error);
             }
         }   
+
         function __destruct() 
         {
             $this->conn->close();
@@ -49,16 +51,11 @@
         //}
 
 
-        function getContentTable(string $tableName, 
-                                 string $tableId, 
-                                 string $tableContent, 
-                                 string $tableRating)
+        function getContentTable(string $tableName)
         {
             $contentTable = "";
         
-            $this->sql = "SELECT $tableId, 
-                                 $tableContent, 
-                                 $tableRating 
+            $this->sql = "SELECT *
                           FROM   $tableName";
                     
             return $this->conn->query($this->sql);
@@ -98,7 +95,7 @@
                         } 
                         else
                         {
-                            $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
+                            $echo = 'ERROR: Could not able to execute ' . $this->sql . '. ' . $this->conn->connect_error;
                         }
                     }
                     else
@@ -124,7 +121,7 @@
                 } 
                 else
                 {
-                    $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
+                    $echo = "ERROR: Could not able to execute " . "$this->sql" . ". " . $this->conn->connect_error;
                 }
             }
             echo $echo;
@@ -142,7 +139,7 @@
             } 
             else
             {
-                $echo = "ERROR: Could not able to execute $this->sql. " . $this->conn->connect_error;
+                $echo = "ERROR: Could not able to execute " . $this->sql . ". " . $this->conn->connect_error;
             }
             echo $echo;
         }

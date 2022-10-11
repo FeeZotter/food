@@ -4,12 +4,8 @@
         function contentTable()
         {
             $dbconn = new DBConnection();
-            //getContentTable(string $tableName, string $tableId, string $tableContent, string $tableRating);
-            //private $tableName = "food_fee";
-            //private $tableId = "ID";
-            //private $tableContent = 'food';
-            //private $tableRating = 'rating';
-            $contentTableResult = $dbconn->getContentTable("food_fee", "food", "rating");
+                                         //getContentTable(string $tableName);
+            $contentTableResult = $dbconn->getContentTable("food_fee");
             if ($contentTableResult->num_rows > 0) 
             {
                 // output data of each row
