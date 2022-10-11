@@ -43,9 +43,9 @@
         //function setTableName(string $table) 
         //{ 
         //    $this->sql = "SELECT $this->tableId, 
-        //                    $this->tableContent, 
-        //                    $this->tableRating 
-        //            FROM    $table";
+        //                         $this->tableContent, 
+        //                         $this->tableRating 
+        //                  FROM   $table";
         //    if(mysqli_query($this->conn, $this->sql))
         //        $this->tableName = mysqli_real_escape_string($this->conn, $table);; 
         //}
