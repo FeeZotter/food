@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
-    $username   = "foodServer";
-    $password   = "iWouldLikeToKnowSomeFööd";
-    $dbname     = "mysql";
-    $table      = "food_fee"
+    $username   = "id19688006_mypreferencesdbadmin";
+    $password   = "Xt$s=+b5p9>!jrMM";
+    $dbname     = "id19688006_mypreferencesdb";
+    $table      = "preference_food_fee"
 ?>
