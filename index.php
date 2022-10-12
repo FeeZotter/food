@@ -6,7 +6,9 @@
             include("HTMLModules.php");
             include("DBConnection.php");
             include("serverconfig.php");
-            
+            $htmlComp = new HTMLModules();
+            $db = new DBConnection($servername, $username, $password, $dbname);
+            $dbConn = $db->getConnection();
         ?>
         <title>Foood</title>
         <link rel="stylesheet" href="./style/style.css">
@@ -38,8 +40,7 @@
             </thead>
             <tbody id="tableContent">
                 <?php
-                    $htmlComp = new HTMLModules();
-                    $dbconn = new DBConnection($servername, $username, $password, $dbname);
+                    
                     $htmlComp->contentTable($dbconn, $table);
                 ?>
             </tbody>
