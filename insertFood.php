@@ -1,6 +1,7 @@
 <?php
     include("databaseConnection.php");
-    include("dmlModules.php");
+    include("DMLModules.php");
     $dbConn = new DBConnection();
-    addContent($dbConn, $table)
+    $dml = new DMLModules();
+    $dml->addContent($dbConn->getConnection(), $table)
 ?>
