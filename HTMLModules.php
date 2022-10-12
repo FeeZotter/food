@@ -3,7 +3,7 @@
     {
         function contentTable($dbconn, $table)
         {
-            $contentTableResult = $dbconn->query("SELECT * FROM " . $tableName);
+            $contentTableResult = $dbconn->query("SELECT * FROM $table");
             if ($contentTableResult->num_rows > 0) 
             {
                 // output data of each row
