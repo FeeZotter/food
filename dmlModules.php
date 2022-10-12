@@ -1,10 +1,10 @@
 <?php
-    function addContent(mysqli $db,
-                        string $tableName, 
-                        string $tableContent, 
-                        string $tableRating,
-                        string $content, 
-                        int    $rating)
+    function addContent($db,
+                        $tableName, 
+                        $tableContent, 
+                        $tableRating,
+                        $content, 
+                        $rating)
     {
         $echo = "";
         trim($content, " \n\r\t\v\x00");

@@ -5,7 +5,7 @@
         private $username;
         private $password;
         private $dbname;
-        private mysqli $conn;
+        private $conn;
 
         function __construct($servername, $username, $password, $dbname)
         {

@@ -39,7 +39,7 @@
             </thead>
             <tbody id="tableContent">
                 <?php
-                    htmlComp->contentTable($dbconn, $table);
+                    $htmlComp->contentTable($dbconn, $table);
                 ?>
             </tbody>
         </table>
