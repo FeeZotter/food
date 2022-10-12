@@ -17,30 +17,30 @@
 
         $result = $db->query($sql);
 
-        if(mysqli_num_rows($result) != 0)
+        if(mysqli_num_rows($result) == 0)
         {
             while($row = $result->fetch_assoc()) 
             {
-                if($row["$this->tableRating"] != $rating)
-                {
-                //change rating of content
-                $this->sql = "UPDATE $this->tableName 
-                              SET    $this->tableRating  = '$rating' 
-                              WHERE  $this->tableContent = '$content'";
-
-                // Attempt insert query execution
-                if(mysqli_query($db, $sql))
-                {
-                    $echo = "'$content' rating changed to '$rating'";
-                } 
-                else
-                {
-                    $echo = 'ERROR: Could not able to execute ' . $sql . '. ' . $db->connect_error;
-                }
-                }
-                else
+                if($row["$this->tableRating"] == $rating)
                 {
                     $echo = "$content already exists";
+                }
+                else
+                {
+                    //change rating of content
+                    $this->sql = "UPDATE $this->tableName 
+                                  SET    $this->tableRating  = '$rating' 
+                                  WHERE  $this->tableContent = '$content'";
+
+                    // Attempt insert query execution
+                    if(mysqli_query($db, $sql))
+                    {
+                        $echo = "'$content' rating changed to '$rating'";
+                    } 
+                    else
+                    {
+                        $echo = 'ERROR: Could not able to execute ' . $sql . '. ' . $db->connect_error;
+                    }
                 }
             }
         }
