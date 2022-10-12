@@ -29,5 +29,7 @@
         {
             $this->conn->close();
         }
+
+        function getConnection(){ return $this->conn; }
     }
 ?>
