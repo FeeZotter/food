@@ -1,7 +1,7 @@
 <?php
     class HTMLModules
     {
-        function contentTable($dbconn, $table)
+        function tableBody($dbconn, $table)
         {
             $returnTable = "";
             $contentTableResult = $dbconn->query("SELECT * FROM " . $table);
@@ -13,8 +13,8 @@
                     $returnTable = $returnTable . 
                     "<tr 
                         class='color" . $row[tableRating]  . "'>"
-                        .   "<td><b>" . $row[$this->tableContent] . "</b</td>"
-                        .   "<td><b>" . $row[$this->tableRating]  . "</b></td>"
+                        .   "<td><b>" . $row[tableContent] . "</b</td>"
+                        .   "<td><b>" . $row[tableRating]  . "</b></td>"
                     ."</tr>";
                 }
             } 
@@ -24,5 +24,28 @@
             }
             return $returnTable;
         }   
+
+        function tableHead()
+        {
+
+        }
+
+        function table()
+        {
+            # tablestart
+            tableHead();
+            tableBody();
+            # tableend
+        }
+
+        function insertFood()
+        {
+
+        }
+
+        function searchbar()
+        {
+           .
+        }
     }
 ?>
