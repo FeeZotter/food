@@ -31,8 +31,8 @@
                     {
                         //change rating of content
                         $this->sql = "UPDATE $this->tableName 
-                                    SET    $this->tableRating  = '$rating' 
-                                    WHERE  $this->tableContent = '$content'";
+                                      SET    $this->tableRating  = '$rating' 
+                                      WHERE  $this->tableContent = '$content'";
 
                         // Attempt insert query execution
                         if(mysqli_query($db, $sql))
@@ -70,9 +70,9 @@
         }
 
         function deleteContent(mysqli $db,
-                            string $tableName,  
-                            string $tableContent, 
-                            string $content) 
+                               string $tableName,  
+                               string $tableContent, 
+                               string $content) 
         {
             $sql = "DELETE FROM $tableName
                     WHERE       $tableContent = '$content'";
@@ -86,6 +86,21 @@
                 $echo = "ERROR: Could not able to execute " . $sql . ". " . $db->connect_error;
             }
             echo $echo;
+        }
+
+        public function getTable($db, $table, $tablerows)
+        {
+            $data = array();
+            $sql = "SELECT " . $tablerows . " FROM " . $table;
+            $result = mysqli_query($db ,$sql));
+            if ($result)
+            {
+                while($row = mysql_fetch_assoc($result))
+                {
+                    $data[] = $row;
+                }
+            }
+            return $data;
         }
     }
 ?>
