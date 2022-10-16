@@ -51,10 +51,10 @@
                 //add new content
                 //this does not work
                 $sql = "INSERT INTO $tableName 
-                                ($tableContent, 
+                                   ($tableContent, 
                                     $tableRating) 
                         VALUES    ('$content', 
-                                '$rating')";
+                                   '$rating')";
 
                 // Attempt insert query execution || here is an error
                 if(mysqli_query($db, $sql))
