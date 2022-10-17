@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,21 +15,21 @@
             {
                 $returnTable = "";
 
-                $sql = "SELECT preferences.preference, preferences.rating
-                        FROM preferences
-                        INNER JOIN cross_person_categories 
-                        ON preferences.cross_person_categories_id=cross_person_categories.cross_person_categories_id";
-                $result = mysqli_query($dbconn ,$sql);
-            
-                    while($row = mysqli_fetch_assoc($result))
-                    {
-                        $returnTable .=
-                        "<tr 
-                            class='color" . $row["rating"]  . "'>"
-                            .   "<td><b>" . $row["preference"] . "</b</td>"
-                            .   "<td><b>" . $row["rating"]  . "</b></td>"
-                        ."</tr>";
-                    }
+                $alias = mysqli_real_escape_string($dbconn, $_REQUEST['alias']);
+                $sql = "SELECT name WHERE alias=Fee FROM persons";
+                $result = mysqli_query($dbconn, $sql);
+                $sql = "SELECT categories_id WHERE persons_id=$result 
+                        FROM cross_person_categories";
+                $result = mysqli_query($dbconn, $sql);
+                
+                while($row = mysqli_fetch_assoc($result))
+                {
+                    $returnTable .=
+                    "<tr>"
+                        .   "<td><b>" . $row["alias"]          . "</b</td>"
+                        .   "<td><b>" . $row["categories_id"]  . "</b></td>"
+                    ."</tr>";
+                }
                 
                 return '<table class="table table-hover" id="foodTable">
                             <thead id="tabletop">
