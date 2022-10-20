@@ -17,7 +17,7 @@
         <script src="./js/index.js"></script>  
     </head>
     <body>
-        <form action="view2Test.php" method="post">
+        <form action="ViewLayer2.php" method="post">
             <label class="marginLeft" for="alias">Alias:</label>
             <input type="text" name="alias" id="alias">
             <input type="submit" value="Submit">

@@ -40,11 +40,6 @@
                             '</tbody>
                         </table>';
             }
-            function FunctionName()
-            {
-                $return = "asdf";
-                return $return;
-            }
         ?>
         <title>title</title>
     </head>

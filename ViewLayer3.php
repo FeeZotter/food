@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,7 +9,6 @@
             $htmlComp = new HTMLModules();
             $db = new DBConnection($servername, $username, $password, $dbname);
             $dbconn = $db->getConnection();
-
 
             function asdftable($dbconn)
             {
@@ -43,11 +40,6 @@
                                 $returnTable .
                             '</tbody>
                         </table>';
-            }
-            function FunctionName()
-            {
-                $return = "asdf";
-                return $return;
             }
         ?>
         <title>title</title>
