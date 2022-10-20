@@ -1,37 +1,28 @@
 <?php
     class HTMLModules
     {
-        function table($dbconn, $table)
+        function table($dbconn, $select, $from)
         {
+            $dml = new DMLModules();
+            $array = $dml->getTable($dbconn, $select, $from);
             $returnTable = "";
-            $contentTableResult = $dbconn->query("SELECT * FROM " . $table);
-            if ($contentTableResult->num_rows > 0) 
+            foreach ($array as $value)
             {
-                // output data of each row
-                while($row = $contentTableResult->fetch_assoc()) 
-                {
-                    $returnTable = $returnTable . 
-                    "<tr 
-                        class='color" . $row["rating"]  . "'>"
-                        .   "<td><b>" . $row["preference"] . "</b</td>"
-                        .   "<td><b>" . $row["rating"]  . "</b></td>"
-                    ."</tr>";
-                }
-            } 
-            else 
-            {
-                $returnTable = "0 results";
+                $returnTable .=
+                "<tr>"
+                .   "<td>{$value}</td>"
+                ."</tr>";
             }
 
-            return '<table class="table table-hover" id="foodTable">
+            return '<table class="table table-hover" id="table">
                         <thead id="tabletop">
                             <tr>
-                                <th scope="col">food</th> <th scope="col">rating</th>
+                                <th scope="col">' . $select . '</th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
                             $returnTable .
-                       '</tbody>
+                        '</tbody>
                     </table>';
         }
 

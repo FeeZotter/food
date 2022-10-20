@@ -88,16 +88,16 @@
             echo $echo;
         }
 
-        public function getTable($db, $table, $tablerows)
+        public function getTable($db, $select, $from)
         {
             $data = array();
-            $sql = "SELECT " . $tablerows . " FROM " . $table;
-            $result = mysqli_query($db ,$sql));
+            $sql = "SELECT $select FROM $from";
+            $result = mysqli_query($db ,$sql);
             if ($result)
             {
-                while($row = mysql_fetch_assoc($result))
+                while($row = $result->fetch_assoc())
                 {
-                    $data[] = $row;
+                    $data[] = $row[$select];
                 }
             }
             return $data;
