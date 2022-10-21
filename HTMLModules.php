@@ -77,6 +77,15 @@
                         '</tbody>
                     </table>';
         }
+        
+        public function nextPage($page, $identifier)
+        {
+            return "<form action='$page' method='post'>
+                        <label class='marginLeft' for='$identifier'>$identifier:</label>
+                        <input type='text' name='$identifier' id='$identifier'>
+                        <input type='submit' value='Submit'>
+                    </form>";
+        }
 
         function insert()
         {
