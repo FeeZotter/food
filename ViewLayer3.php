@@ -6,45 +6,37 @@
             include("DBConnection.php");
             include("preferencesDB.php");
             include("serverconfig.php");
-            $htmlComp = new HTMLModules();
-            $db = new DBConnection($servername, $username, $password, $dbname);
+            include("DMLModules.php");
+            $db = new DBConnection($servername, 
+                                   $username, 
+                                   $password, 
+                                   $dbname);
             $dbconn = $db->getConnection();
-
-
-            function asdftable($dbconn)
+            function layer2Table($dbconn)
             {
-                $returnTable = "";
-
-                $alias = mysqli_real_escape_string($dbconn, $_REQUEST['alias']);
-                $sql = "SELECT name FROM persons WHERE alias='$alias'";
-                $result = mysqli_fetch_assoc(mysqli_query($dbconn, $sql));
-                $sql = "SELECT categories_id FROM cross_person_categories WHERE persons_id='" . $result['name'] . "'";
-                $result = mysqli_query($dbconn, $sql);
-                
-                while($row = mysqli_fetch_assoc($result))
-                {
-                    $returnTable .=
-                    "<tr>"
-                        .   "<td><b>" . $row['categories_id'] . "</b</td>"
-                    ."</tr>";
-                }
-                
-                return '<table class="table table-hover" id="foodTable">
-                            <thead id="tabletop">
-                                <tr>
-                                    <th scope="col">' . $alias . '</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableContent">' .
-                                $returnTable .
-                            '</tbody>
-                        </table>';
+                $dml = new DMLModules();
+                $htmlComp = new HTMLModules();
+                $name = mysqli_real_escape_string($dbconn, $_REQUEST['name']);
+                $preference = mysqli_real_escape_string($dbconn, $_REQUEST['preference']);
+                $result = $dml->getTableWhere($dbconn, 
+                                              'cross_person_categories_id', 
+                                              "cross_person_categories", 
+                                              "='$alias'");
+                $tableContent = $htmlComp->tableWhere($dbconn, 
+                                                      'categories_id', 
+                                                      "cross_person_categories", 
+                                                      "persons_id='$result[0]'");
+                return $tableContent;
             }
         ?>
         <title>title</title>
+        <link rel="stylesheet" href="./style/style.css">
+        <link rel="stylesheet" 
+              href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+              crossorigin="anonymous">
     </head>
     <body>
-        <p>test2.php</p>
-        <?php echo asdftable($dbconn); ?>
+        <?php echo layer2Table($dbconn); ?>
     </body>
 </html>

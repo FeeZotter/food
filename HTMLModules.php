@@ -77,8 +77,36 @@
                         '</tbody>
                     </table>';
         }
+
+        public function table2Where($dbconn, $select, $select2, $from, $where)
+        {
+            $dml = new DMLModules();
+            $array = $dml->getTableWhere($dbconn, "$select, $select2", $from, $where);
+            $returnTable = "";
+            
+            foreach ($array as $value)
+            {
+                $returnTable .=
+                "<tr>"
+                .   "<td>{$value[$select]}</td>"
+                .   "<td>{$value[$select2]}</td>"
+                ."</tr>";
+            }
+
+            return '<table class="table table-hover" id="table">
+                        <thead id="tabletop">
+                            <tr>
+                                <th scope="col">' . $select  . '</th>
+                                <th scope="col">' . $select2 . '</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableContent">' .
+                            $returnTable .
+                        '</tbody>
+                    </table>';
+        }
         
-        public function nextPage($page, $identifier)
+        public function toViewLayer2($page, $identifier)
         {
             return "<form action='$page' method='post'>
                         <label class='marginLeft' for='$identifier'>$identifier:</label>

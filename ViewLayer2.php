@@ -7,11 +7,13 @@
             include("preferencesDB.php");
             include("serverconfig.php");
             include("DMLModules.php");
+            $htmlComp = new HTMLModules();
             $db = new DBConnection($servername, 
                                    $username, 
                                    $password, 
                                    $dbname);
             $dbconn = $db->getConnection();
+
             function layer2Table($dbconn)
             {
                 $dml = new DMLModules();
@@ -21,10 +23,13 @@
                                               'name', 
                                               "persons", 
                                               "alias='$alias'");
-                $tableContent = $htmlComp->tableWhere($dbconn, 
-                                                      'categories_id', 
+
+                $name = $result[0]['name'];
+                $tableContent = $htmlComp->table2Where($dbconn, 
+                                                      'categories_id',
+                                                      'cross_person_categories_id', 
                                                       "cross_person_categories", 
-                                                      "persons_id='$result[0]'");
+                                                      "persons_id='$name'");
                 return $tableContent;
             }
         ?>
@@ -36,7 +41,7 @@
               crossorigin="anonymous">
     </head>
     <body>
-        <?php echo $htmlComp->nextPage('ViewLayer3.php', 'category'); ?> <!-- category may be false -->
+        <?php echo $htmlComp->toViewLayer2('ViewLayer3.php', 'cross_person_categories_id'); ?> <!-- category may be false -->
         <?php echo layer2Table($dbconn); ?>
     </body>
 </html>

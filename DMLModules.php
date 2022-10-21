@@ -90,7 +90,7 @@
 
         public function getTable($db, $select, $from)
         {
-            $data = array();
+            $data;
             $sql = "SELECT $select FROM $from";
             $result = mysqli_query($db ,$sql);
             if ($result)
@@ -112,11 +112,11 @@
             {
                 while($row = $result->fetch_assoc())
                 {
-                    $data[] = $row[$select];
+                    $data[] = $row;
+                  
                 }
             }
             return $data;
         }
-
     }
 ?>
