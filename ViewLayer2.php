@@ -3,6 +3,7 @@
     <head>
         <?php
             include("HTMLModules.php");
+            include("DMLModules.php");
             include("DBConnection.php");
             include("preferencesDB.php");
             include("serverconfig.php");
@@ -10,15 +11,17 @@
             $db = new DBConnection($servername, $username, $password, $dbname);
             $dbconn = $db->getConnection();
 
-
-            function asdftable($dbconn)
+    
+            function layer2Table($dbconn)
             {
+                $dml = new DMLModules();
+//$sql = "SELECT name FROM persons WHERE alias='$alias'";
                 $returnTable = "";
 
                 $alias = mysqli_real_escape_string($dbconn, $_REQUEST['alias']);
-                $sql = "SELECT name FROM persons WHERE alias='$alias'";
-                $result = mysqli_fetch_assoc(mysqli_query($dbconn, $sql));
+                $result = $dml->getTableWhere($dbconn, 'name', "persons", "alias='$alias'");
                 $sql = "SELECT categories_id FROM cross_person_categories WHERE persons_id='" . $result['name'] . "'";
+
                 $result = mysqli_query($dbconn, $sql);
                 
                 while($row = mysqli_fetch_assoc($result))
@@ -44,7 +47,6 @@
         <title>title</title>
     </head>
     <body>
-        <p>test2.php</p>
-        <?php echo asdftable($dbconn); ?>
+        <?php echo layer2Table($dbconn); ?>
     </body>
 </html>

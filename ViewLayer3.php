@@ -10,30 +10,29 @@
             $db = new DBConnection($servername, $username, $password, $dbname);
             $dbconn = $db->getConnection();
 
+
             function asdftable($dbconn)
             {
                 $returnTable = "";
 
-                $sql = "SELECT preferences.preference, preferences.rating
-                        FROM preferences
-                        INNER JOIN cross_person_categories 
-                        ON preferences.cross_person_categories_id=cross_person_categories.cross_person_categories_id";
-                $result = mysqli_query($dbconn ,$sql);
-            
-                    while($row = mysqli_fetch_assoc($result))
-                    {
-                        $returnTable .=
-                        "<tr 
-                            class='color" . $row["rating"]  . "'>"
-                            .   "<td><b>" . $row["preference"] . "</b</td>"
-                            .   "<td><b>" . $row["rating"]  . "</b></td>"
-                        ."</tr>";
-                    }
+                $alias = mysqli_real_escape_string($dbconn, $_REQUEST['alias']);
+                $sql = "SELECT name FROM persons WHERE alias='$alias'";
+                $result = mysqli_fetch_assoc(mysqli_query($dbconn, $sql));
+                $sql = "SELECT categories_id FROM cross_person_categories WHERE persons_id='" . $result['name'] . "'";
+                $result = mysqli_query($dbconn, $sql);
+                
+                while($row = mysqli_fetch_assoc($result))
+                {
+                    $returnTable .=
+                    "<tr>"
+                        .   "<td><b>" . $row['categories_id'] . "</b</td>"
+                    ."</tr>";
+                }
                 
                 return '<table class="table table-hover" id="foodTable">
                             <thead id="tabletop">
                                 <tr>
-                                    <th scope="col">food</th> <th scope="col">rating</th>
+                                    <th scope="col">' . $alias . '</th>
                                 </tr>
                             </thead>
                             <tbody id="tableContent">' .

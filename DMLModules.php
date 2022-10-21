@@ -102,5 +102,20 @@
             }
             return $data;
         }
+
+        public function getTableWhere($db, $select, $from, $where)
+        {
+            $data = array();
+            $sql = "SELECT $select FROM $from WHERE $where";
+            $result = mysqli_query($db ,$sql);
+            if ($result)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    $data[] = $row[$select];
+                }
+            }
+            return $data;
+        }
     }
 ?>
