@@ -16,9 +16,9 @@
 
             function layer2Table($dbconn)
             {
-                $dml = new DMLModules();
                 $htmlComp = new HTMLModules();
                 $alias = mysqli_real_escape_string($dbconn, $_REQUEST['alias']);
+                $dml = new DMLModules();
                 $result = $dml->getTableWhere($dbconn, 
                                               'name', 
                                               "persons", 
@@ -41,7 +41,7 @@
               crossorigin="anonymous">
     </head>
     <body>
-        <?php echo $htmlComp->toViewLayer2('ViewLayer3.php', 'cross_person_categories_id'); ?> <!-- category may be false -->
+        <?php echo $htmlComp->nextPage('ViewLayer3.php', 'cross_person_categories_id'); ?> <!-- category may be false -->
         <?php echo layer2Table($dbconn); ?>
     </body>
 </html>

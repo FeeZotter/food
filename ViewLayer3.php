@@ -14,18 +14,13 @@
             $dbconn = $db->getConnection();
             function layer2Table($dbconn)
             {
-                $dml = new DMLModules();
                 $htmlComp = new HTMLModules();
-                $name = mysqli_real_escape_string($dbconn, $_REQUEST['name']);
-                $preference = mysqli_real_escape_string($dbconn, $_REQUEST['preference']);
-                $result = $dml->getTableWhere($dbconn, 
-                                              'cross_person_categories_id', 
-                                              "cross_person_categories", 
-                                              "='$alias'");
-                $tableContent = $htmlComp->tableWhere($dbconn, 
-                                                      'categories_id', 
-                                                      "cross_person_categories", 
-                                                      "persons_id='$result[0]'");
+                $cross_person_categories_id = mysqli_real_escape_string($dbconn, $_REQUEST['cross_person_categories_id']);
+                $tableContent = $htmlComp->table2Where($dbconn, 
+                                                       'preference',
+                                                       'rating', 
+                                                       "preferences", 
+                                                       "cross_person_categories_id='$cross_person_categories_id'");
                 return $tableContent;
             }
         ?>

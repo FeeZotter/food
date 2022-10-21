@@ -106,7 +106,7 @@
                     </table>';
         }
         
-        public function toViewLayer2($page, $identifier)
+        public function nextPage($page, $identifier)
         {
             return "<form action='$page' method='post'>
                         <label class='marginLeft' for='$identifier'>$identifier:</label>

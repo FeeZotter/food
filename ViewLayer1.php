@@ -19,7 +19,7 @@
               crossorigin="anonymous">
     </head>
     <body>
-        <?php echo $htmlComp->toViewLayer('ViewLayer2.php', 'alias'); ?>
+        <?php echo $htmlComp->nextPage('ViewLayer2.php', 'alias'); ?>
         <?php echo $htmlComp->table($dbconn, 'alias', 'persons'); ?>
     </body>
 </html>
