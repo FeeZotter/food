@@ -4,7 +4,6 @@
         <?php
             include("HTMLModules.php");
             include("DBConnection.php");
-            include("preferencesDB.php");
             include("serverconfig.php");
             include("DMLModules.php");
             $db = new DBConnection($servername, 
