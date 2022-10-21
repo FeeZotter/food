@@ -23,4 +23,4 @@
     </body>
 </html>
 <script src="./js/index.js"></script>  
-<script src="./js/ViewLayer1.js"></script> 
+<script src="./js/viewLayer1.js"></script> 
