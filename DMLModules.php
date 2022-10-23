@@ -2,37 +2,35 @@
     class DMLModules
     {
         function addContent($db,
-                            $tableName, 
-                            $tableContent, 
-                            $tableRating,
-                            $content, 
-                            $rating)
+                            $preference,
+                            $rating, 
+                            $cross_person_categories_id)
         {
-            $echo = "";
-            trim($content, " \n\r\t\v\x00");
-            $content = mysqli_real_escape_string($db, $content);
-            $rating  = mysqli_real_escape_string($db, $rating);
-            $sql = "SELECT $tableContent, 
-                        $tableRating 
-                    FROM   $tableName 
-                    WHERE  $tableContent='$content'";
+            //trim empty spaces from $preference
+            trim($preference, " \n\r\t\v\x00");
+            
+            //anti SQL injection
+            $preference                 = mysqli_real_escape_string($db, $preference);
+            $rating                     = mysqli_real_escape_string($db, $rating);
+            $cross_person_categories_id = mysqli_real_escape_string($db, $cross_person_categories_id);
+            
+            $array = getTableWhere($db, "$preference, $rating", "cross_person_categories='$cross_person_categories_id'");
 
-            $result = $db->query($sql);
-
-            if(mysqli_num_rows($result) == 0)
+            if(sizeof($array) == 0)
             {
-                while($row = $result->fetch_assoc()) 
+                //when entry already exists
+                foreach($array as $row) 
                 {
-                    if($row["$this->tableRating"] == $rating)
+                    if($row["$this->rating"] == $rating)
                     {
-                        $echo = "$content already exists";
+                        $echo = "$preference already exists";
                     }
                     else
                     {
                         //change rating of content
-                        $this->sql = "UPDATE $this->tableName 
-                                      SET    $this->tableRating  = '$rating' 
-                                      WHERE  $this->tableContent = '$content'";
+                        $this->sql = "UPDATE $this->preferences 
+                                      SET    $this->rating      = '$rating' 
+                                      WHERE  $this->preference  = '$preference'";
 
                         // Attempt insert query execution
                         if(mysqli_query($db, $sql))
@@ -48,6 +46,7 @@
             }
             else
             {
+                //when entry not exists
                 //add new content
                 //this does not work
                 $sql = "INSERT INTO $tableName 
@@ -70,16 +69,22 @@
         }
 
         function deleteContent(mysqli $db,
-                               string $tableName,  
-                               string $tableContent, 
-                               string $content) 
+                               string $from,  
+                               string $where, 
+                               string $eqals) 
         {
-            $sql = "DELETE FROM $tableName
-                    WHERE       $tableContent = '$content'";
+            //anti SQL injection
+            $from  = mysqli_real_escape_string($db, $from);
+            $where = mysqli_real_escape_string($db, $where);
+            $eqals = mysqli_real_escape_string($db, $eqals);
+
+            //try sql delete
+            $sql = "DELETE FROM $from
+                    WHERE       $where = '$eqals'";
 
             if(mysqli_query($db, $sql))
             {
-                $echo = "'$content' deleted successfully";
+                $echo = "'$eqals' deleted successfully";
             } 
             else
             {
@@ -90,9 +95,16 @@
 
         public function getTable($db, $select, $from)
         {
-            $data;
+            //anti SQL injection
+            $select = mysqli_real_escape_string($db, $select);
+            $from = mysqli_real_escape_string($db, $from);
+            
+            //try sql selection
             $sql = "SELECT $select FROM $from";
             $result = mysqli_query($db ,$sql);
+
+            //compose array from data
+            $data;
             if ($result)
             {
                 while($row = $result->fetch_assoc())
@@ -105,9 +117,17 @@
 
         public function getTableWhere($db, $select, $from, $where)
         {
-            $data = array();
+            //anti SQL injection
+            $select = mysqli_real_escape_string($db, $select);
+            $from = mysqli_real_escape_string($db, $from);
+            $where = mysqli_real_escape_string($db, $where);
+ 
+            //try sql selection
             $sql = "SELECT $select FROM $from WHERE $where";
             $result = mysqli_query($db ,$sql);
+            
+            //compose array from data
+            $data = array();
             if ($result)
             {
                 while($row = $result->fetch_assoc())

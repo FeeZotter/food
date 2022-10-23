@@ -1,11 +1,10 @@
 var table = document.getElementById('table');
 table.onclick = () => {
     //console.log(event.target);
-    console.log(event.target.tagName);
     if(event.target.tagName == "TD")
     {
-        console.log("clicked on table row")
-        window.location.href = "/food/ViewLayer2.php";
+        console.log("clicked on table row with outerText: " + event.target.outerText);
+       // window.location.href = "/food/ViewLayer2.php";
     }
 }
 
