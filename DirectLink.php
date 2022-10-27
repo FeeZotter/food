@@ -38,7 +38,7 @@ class DirectLink
 
         echo $html->getHTML();
     }
-    public function Preference(int $crosspersoncategoriesID)
+    public function Preference(int $cross_person_categories_id)
     {
         $htmlComp = new HTMLModules();  
         include("serverconfig.php");
@@ -49,7 +49,7 @@ class DirectLink
                                 $dbname);
         $dbconn = $db->getConnection();
 
-        $html = new HTML($htmlComp->getFirstMatchValue($dbconn, 'categories_id', 'cross_person_categories', "cross_person_categories_id='$crosspersoncategoriesID'"));
+        $html = new HTML($htmlComp->getFirstMatchValue($dbconn, 'categories_id', 'cross_person_categories', "cross_person_categories_id='$cross_person_categories_id'"));
 
         //html scripts
         $html->addScript('<script src="./js/index.js"></script>');
