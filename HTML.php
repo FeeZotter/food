@@ -10,7 +10,7 @@ class HTML
     private $bodyend     = "</body>";
     private $htmlend     = "</head>";
     private $sripts      = "";
-    function __construct($title)
+    function __construct(string $title)
     {
         $this->headcontent .= "<title>$title</title>";
     }

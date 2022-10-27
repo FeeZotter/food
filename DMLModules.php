@@ -1,6 +1,7 @@
 <?php
     class DMLModules
     {
+        /*
         function addContent($db,
                             $preference,
                             $rating, 
@@ -13,7 +14,7 @@
             mysqli_real_escape_string($db, $preference);
             mysqli_real_escape_string($db, $rating);
             mysqli_real_escape_string($db, $cross_person_categories_id);
-        }
+        }*/
 
         function deleteContent(mysqli $db,
                                string $from,  
@@ -84,6 +85,30 @@
                 }
             }
             return $data;
+        }
+
+        public function getFirstMatchValue($db, $select, $from, $where)
+        {
+             //anti SQL injection
+             mysqli_real_escape_string($db, $select);
+             mysqli_real_escape_string($db, $from);
+             mysqli_real_escape_string($db, $where);
+             //try sql selection
+             $sql = "SELECT $select FROM $from WHERE $where";
+ 
+             $result = mysqli_query($db ,$sql);
+             
+             //compose array from data
+             $data = array();
+             if ($result)
+             {
+                 while($row = $result->fetch_assoc())
+                 {
+                     $data[] = $row;
+                   
+                 }
+             }
+             return $data[0];
         }
     }
 ?>

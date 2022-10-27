@@ -127,5 +127,23 @@
 
             return $result[0][$select];
         }
+
+        public function personTable($db, $select, $from, $where, $person)
+        {
+            mysqli_real_escape_string($db, $person);
+            $dml = new DMLModules();
+            $result = $dml->getTableWhere($db, 
+                                          $select, 
+                                          $from, 
+                                          "$where='$person'");
+
+            return $result[0][$select];
+        }
+
+        public function getFirstMatchValue($db, $select, $from, $where)
+        {
+            $dml = new DMLModules();
+            return implode($dml->getFirstMatchValue($db, $select, $from, $where));
+        }
     }
 ?>
