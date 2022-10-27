@@ -24,7 +24,8 @@ class HTML
                $this->bodystart.
                $this->bodycontent.
                $this->bodyend.
-               $this->htmlend;
+               $this->htmlend.
+               $this->sripts;
     }
 
     public function resetHead()   { $this->headcontent = ""; }
