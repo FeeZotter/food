@@ -11,6 +11,5 @@
     <body>
         <h1>Likeings</h1>
         <p>Drücke auf <a href="ViewLayer1.php"> START </a> um dir anzusehen was andere mögen</p>
-
     </body>
 </html>

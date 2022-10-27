@@ -1,4 +1,5 @@
 <?php
+    include('DMLModules.php');
     class HTMLModules
     {
         function table($dbconn, $select, $from)
@@ -115,14 +116,16 @@
                     </form>";
         }
 
-        function insert()
+        function getByRequest($db, $select, $from, $where)
         {
+            mysqli_real_escape_string($db, $_REQUEST[$where]);
+            $dml = new DMLModules();
+            $result = $dml->getTableWhere($db, 
+                                          $select, 
+                                          $from, 
+                                          "$where='$_REQUEST[$where]'");
 
-        }
-
-        function searchbar()
-        {
-           
+            return $result[0][$select];
         }
     }
 ?>
