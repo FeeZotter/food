@@ -5,18 +5,18 @@ function test(url) {
     // and remember the jqxhr object for this request
     var jqxhr = $.get(url, function() {
         //nothing
-        })
-        .done(function(data) {
+    })
+    .done(function(data) {
         $( "table.table" ).replaceWith( data );
-        
-        })
-        .then(function() {
-            createTableEvent();
-        })
-        .fail(function() {
+    })
+    .then(function() {
+        table = document.getElementById('table');
+        createTableEvent();
+    })
+    .fail(function() {
         alert( 'request failed' );
-        })
-        .always(function() {
+    })
+    .always(function() {
         //nothing
     });
     
@@ -34,7 +34,7 @@ function createTableEvent()
         if(event.target.tagName == "TD")
         {
             console.log("clicked on table row with outerText: " + event.target.outerText);
-            console.log("localhost/get/" + event.target.outerText)
+            console.log("http://localhost/get/" + event.target.outerText)
             test("http://localhost/get/" + event.target.outerText);
         }
     }

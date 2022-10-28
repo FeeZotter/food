@@ -89,22 +89,22 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td>{$value[$select]}</td>"
-                .   "<td>{$value[$select2]}</td>"
+                .   "<td id='$value[$select]' >{$value[$select]}</td>"
+                .   "<td id='$value[$select2]'>{$value[$select2]}</td>"
                 ."</tr>";
             }
 
-            return '<table class="table table-hover" id="table">
-                        <thead id="tabletop">
+            return "<table class='table table-hover' id='table'>
+                        <thead id='tabletop'>
                             <tr>
-                                <th scope="col">' . $select  . '</th>
-                                <th scope="col">' . $select2 . '</th>
+                                <th scope='col' id='$select'>"  . $select   . "</th>
+                                <th scope='col' id='$select2'>" . $select2  . "</th>
                             </tr>
                         </thead>
-                        <tbody id="tableContent">' .
+                        <tbody id='tableContent'>" .
                             $returnTable .
-                        '</tbody>
-                    </table>';
+                        "</tbody>
+                    </table>";
         }
         
         public function nextPage($page, $identifier)
