@@ -7,9 +7,11 @@ function test(url) {
         //nothing
         })
         .done(function(data) {
-        alert( data );
         $( "table.table" ).replaceWith( data );
-        createTableEvent();
+        
+        })
+        .then(function() {
+            createTableEvent();
         })
         .fail(function() {
         alert( 'request failed' );
@@ -26,7 +28,7 @@ function test(url) {
     });
 }
 
-createTableEvent()
+function createTableEvent()
 {
     table.onclick = () => {
         if(event.target.tagName == "TD")
