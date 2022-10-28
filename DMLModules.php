@@ -71,7 +71,6 @@
             mysqli_real_escape_string($db, $where);
             //try sql selection
             $sql = "SELECT $select FROM $from WHERE $where";
-
             $result = mysqli_query($db ,$sql);
             
             //compose array from data
@@ -81,7 +80,6 @@
                 while($row = $result->fetch_assoc())
                 {
                     $data[] = $row;
-                  
                 }
             }
             return $data;
