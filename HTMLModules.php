@@ -11,14 +11,14 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td>{$value}</td>"
+                .   "<td class='$value'>{$value}</td>"
                 ."</tr>";
             }
 
-            return '<table class="table table-hover" id="table">
-                        <thead id="tabletop">
+            return "<table class='table table-hover' id='table'>
+                        <thead id='tabletop'>
                             <tr>
-                                <th scope="col">' . $select . '</th>
+                                <th scope='col'>" . $select . '</th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -89,16 +89,16 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td id='$value[$select]' >{$value[$select]}</td>"
-                .   "<td id='$value[$select2]'>{$value[$select2]}</td>"
+                .   "<td class='$value[$select2]'>{$value[$select]}</td>"
+                .   "<td class='$value[$select2]'>{$value[$select2]}</td>"
                 ."</tr>";
             }
 
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col' id='$select'>"  . $select   . "</th>
-                                <th scope='col' id='$select2'>" . $select2  . "</th>
+                                <th scope='col'>" . $select  . "</th>
+                                <th scope='col'>" . $select2 . "</th>
                             </tr>
                         </thead>
                         <tbody id='tableContent'>" .
@@ -144,6 +144,22 @@
         {
             $dml = new DMLModules();
             return implode($dml->getFirstMatchValue($db, $select, $from, $where));
+        }
+
+        public function searchbarName()
+        {
+            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
+        }
+
+        public function searchbarNameRating()
+        {
+            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
+                    <input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
+        }
+
+        public function navigationBar($navigationPoint)
+        {
+            return "<h1 class='navigation' id='navigation'><a class=''>$navigationPoint</a></h1>";
         }
     }
 ?>
