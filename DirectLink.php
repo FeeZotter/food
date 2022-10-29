@@ -94,6 +94,8 @@ class DirectLink
                         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
                         crossorigin="anonymous">');
 
+        $html->addToHead($htmlComp->navigationBar('Main'));
+        $html->addToHead($htmlComp->searchbarNameRating());
         $html->addToBody($htmlComp->table($dbconn, 'alias', 'persons'));
 
         echo $html->getHTML();
