@@ -2,6 +2,22 @@
     include('DMLModules.php');
     class HTMLModules
     {
+        public function searchbarName()
+        {
+            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
+        }
+
+        public function searchbarNameRating()
+        {
+            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
+                    <input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
+        }
+
+        public function searchbarRating()
+        {
+            return '<input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
+        }
+
         function table($dbconn, $select, $from)
         {
             $dml = new DMLModules();
@@ -18,7 +34,7 @@
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col'>" . $select . '</th>
+                                <th scope='col'>" . $select . '<a>' . $this->searchbarName() . '</a>' . '</th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -42,6 +58,9 @@
 
             return '<table class="table table-hover" id="table">
                         <thead id="tabletop">
+                            <tr>
+                                <th scope="col">' . $this->searchbarName() . '</th>
+                            </tr>
                             <tr>
                                 <th scope="col">' . $select . '</th>
                             </tr>
@@ -68,6 +87,10 @@
 
             return '<table class="table table-hover" id="table">
                         <thead id="tabletop">
+                            <tr>
+                                <th scope="col">' . $this->searchbarName()  . '</th>
+                                <th scope="col">' . $this->searchbarRating() . '</th>
+                            </tr>
                             <tr>
                                 <th scope="col">' . $select  . '</th>
                                 <th scope="col">' . $select2 . '</th>
@@ -96,6 +119,10 @@
 
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
+                            <tr>
+                                <th scope='col'>" . $this->searchbarName()  . "</th>
+                                <th scope='col'>" . $this->searchbarRating() . "</th>
+                            </tr>
                             <tr>
                                 <th scope='col'>" . $select  . "</th>
                                 <th scope='col'>" . $select2 . "</th>
@@ -146,20 +173,15 @@
             return implode($dml->getFirstMatchValue($db, $select, $from, $where));
         }
 
-        public function searchbarName()
-        {
-            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
-        }
 
-        public function searchbarNameRating()
-        {
-            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
-                    <input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
-        }
 
         public function navigationBar($navigationPoint)
         {
-            return "<h1 class='navigation' id='navigation'><a class=''>$navigationPoint</a></h1>";
+            return "<h1 class='navigation' id='navigation'>
+                        <a class='Start' id='navigation1'>$navigationPoint</a>
+                        <a class=''      id='navigation2'></a>                
+                        <a class=''      id='navigation3'></a>
+                    </h1>";
         }
     }
 ?>
