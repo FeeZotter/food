@@ -186,12 +186,12 @@
 
 
 
-        public function navigationBar($navigationPoint)
+        public function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
         {
             return "<h1 class='navigation' id='navigation'>
-                        <a class='Start' id='navigation1'>$navigationPoint</a>
-                        <a class=''      id='navigation2'></a>                
-                        <a class=''      id='navigation3'></a>
+                        <a class='Start' id='navigation1'>$navigationPoint1</a>
+                        <a class=''      id='navigation2'>$navigationPoint2</a>                
+                        <a class=''      id='navigation3'>$navigationPoint3</a>
                     </h1>";
         }
     }
