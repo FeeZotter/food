@@ -6,7 +6,7 @@ setInterval(function()
 {
     if(timeLeft <= 1)
     {
-        window.location.replace("http://www.w3schools.com");
+        window.location.replace("http://localhost");
     }
     timeLeft-=1;
     timer.innerHTML = timeLeft;
