@@ -18,10 +18,10 @@
             return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
         }
 
-        function table($dbconn, $select, $from)
+        function table($select, $from)
         {
             $dml = new DMLModules();
-            $array = $dml->getTable($dbconn, $select, $from);
+            $array = $dml->getTable($select, $from);
             $returnTable = "";
             foreach ($array as $value)
             {
@@ -43,10 +43,10 @@
                     </table>';
         }
 
-        function tableWhere($dbconn, $select, $from, $where)
+        function tableWhere($select, $from, $where)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere($dbconn, $select, $from, $where);
+            $array = $dml->getTableWhere($select, $from, $where);
             $returnTable = "";
             foreach ($array as $value)
             {
@@ -68,10 +68,10 @@
                     </table>';
         }
 
-        public function table2($dbconn, $select, $select2, $from)
+        public function table2($select, $select2, $from)
         {
             $dml = new DMLModules();
-            $array = $dml->getTable($dbconn, "$select, $select2", $from);
+            $array = $dml->getTable("$select, $select2", $from);
             $returnTable = "";
             foreach ($array as $value)
             {
@@ -95,10 +95,10 @@
                     </table>';
         }
 
-        public function preferenceTable($dbconn, $select, $select2, $from, $where)
+        public function preferenceTable($select, $select2, $from, $where)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere($dbconn, "$select, $select2", $from, $where);
+            $array = $dml->getTableWhere("$select, $select2", $from, $where);
             $returnTable = "";
             
             foreach ($array as $value)
@@ -123,10 +123,10 @@
                     </table>";
         }
 
-        public function categoriesTable($dbconn, $select, $select2, $from, $where)
+        public function categoriesTable($select, $select2, $from, $where)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere($dbconn, "$select, $select2", $from, $where);
+            $array = $dml->getTableWhere("$select, $select2", $from, $where);
             $returnTable = "";
             
             foreach ($array as $value)
@@ -158,34 +158,30 @@
                     </form>";
         }
 
-        function getByRequest($db, $select, $from, $where)
+        function getByRequest($select, $from, $where)
         {
-            mysqli_real_escape_string($db, $_REQUEST[$where]);
             $dml = new DMLModules();
-            $result = $dml->getTableWhere($db, 
-                                          $select, 
+            $result = $dml->getTableWhere($select, 
                                           $from, 
                                           "$where='$_REQUEST[$where]'");
 
             return $result[0][$select];
         }
 
-        public function personTable($db, $select, $from, $where, $person)
+        public function personTable($select, $from, $where, $person)
         {
-            mysqli_real_escape_string($db, $person);
             $dml = new DMLModules();
-            $result = $dml->getTableWhere($db, 
-                                          $select, 
+            $result = $dml->getTableWhere($select, 
                                           $from, 
                                           "$where='$person'");
 
             return $result[0][$select];
         }
 
-        public function getFirstMatchValue($db, $select, $from, $where)
+        public function getFirstMatchValue($select, $from, $where)
         {
             $dml = new DMLModules();
-            return implode($dml->getFirstMatchValue($db, $select, $from, $where));
+            return implode($dml->getFirstMatchValue($select, $from, $where));
         }
 
 

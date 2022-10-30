@@ -2,7 +2,6 @@
 //include
 include("HTML.php");
 include("HTMLModules.php");
-include("DBConnection.php");
 class DirectLink 
 {
     public function Person(string $person)
@@ -10,11 +9,6 @@ class DirectLink
         //innitialize classes
         $html = new HTML($person);
         $htmlComp = new HTMLModules();  
-        include("serverconfig.php");
-        $db = new DBConnection($servername, $username, $password, $dbname);
-
-        //innitialize database connections
-        $dbconn = $db->getConnection();
 
         //html scripts
         $html->addScript('<script src="./js/index.js"></script>');
@@ -28,10 +22,9 @@ class DirectLink
 
         $html->addToBody($htmlComp->nextPage('ViewLayer3.php', 'cross_person_categories_id'));
         
-        $name = $htmlComp->personTable($dbconn, 'name', 'persons', 'alias', $person);
+        $name = $htmlComp->personTable('name', 'persons', 'alias', $person);
 
-        $html->addToBody($htmlComp->categoriesTable($dbconn, 
-                                                    'categories_id',
+        $html->addToBody($htmlComp->categoriesTable('categories_id',
                                                     'cross_person_categories_id', 
                                                     'cross_person_categories', 
                                                     "persons_id='$name'"));
@@ -42,15 +35,8 @@ class DirectLink
     public function Preference(int $cross_person_categories_id)
     {
         $htmlComp = new HTMLModules();  
-        include("serverconfig.php");
 
-        $db = new DBConnection($servername, 
-                                $username, 
-                                $password, 
-                                $dbname);
-        $dbconn = $db->getConnection();
-
-        $html = new HTML($htmlComp->getFirstMatchValue($dbconn, 'categories_id', 'cross_person_categories', "cross_person_categories_id='$cross_person_categories_id'"));
+        $html = new HTML($htmlComp->getFirstMatchValue('categories_id', 'cross_person_categories', "cross_person_categories_id='$cross_person_categories_id'"));
 
         //html scripts
         $html->addScript('<script src="./js/index.js"></script>');
@@ -62,8 +48,7 @@ class DirectLink
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
                           crossorigin="anonymous">');
 
-        $html->addToBody($htmlComp->preferenceTable($dbconn, 
-                                                    'preference',
+        $html->addToBody($htmlComp->preferenceTable('preference',
                                                     'rating', 
                                                     "preferences", 
                                                     "cross_person_categories_id='$cross_person_categories_id'"));
@@ -73,16 +58,9 @@ class DirectLink
 
     public function main()
     {
-        //include
-        include("serverconfig.php");
-
         //innitialize classes
         $html = new HTML('Persons');
         $htmlComp = new HTMLModules();  
-        $db = new DBConnection($servername, $username, $password, $dbname);
-
-        //innitialize database connections
-        $dbconn = $db->getConnection();
 
         //html scripts
         $html->addScript('<script src="./food/js/index.js"></script>');
@@ -94,8 +72,8 @@ class DirectLink
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
                           crossorigin="anonymous">');
 
-        $html->addToHead($htmlComp->navigationBar('Start'));
-        $html->addToBody($htmlComp->table($dbconn, 'alias', 'persons'));
+        $html->addToHead($htmlComp->navigationBar('Start', null, null));
+        $html->addToBody($htmlComp->table('alias', 'persons'));
 
         echo $html->getHTML();
     }
