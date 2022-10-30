@@ -120,7 +120,7 @@
                    
                  }
              }
-             return $data[0];
+             return $data;
         }
     }
 ?>
