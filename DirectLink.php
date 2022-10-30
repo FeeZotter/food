@@ -4,15 +4,14 @@ include("HTML.php");
 include("HTMLModules.php");
 class DirectLink 
 {
-    public function Person(string $person)
+    public function Person(string $alias)
     {
-        //need rewriting, should be like main only that it moves directly to the person
-
+        //check if there is an error
         $personNavigation = null;
         $htmlComp = new HTMLModules();  
-
+        $name = '';
         try {
-            $result = $htmlComp->getFirstMatchValue('alias', 'persons', "alias='$person'");
+            $result = $htmlComp->getFirstMatchValue('alias', 'persons', "alias='$alias'");
             $personNavigation = $result;
         } catch (\Throwable $throwedError) {
             $html = new HTML('error 404');
@@ -21,7 +20,6 @@ class DirectLink
             return $html->getHTML();
         }
 
-        //////////////////////main() code
         //innitialize classes
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
@@ -36,7 +34,8 @@ class DirectLink
                           crossorigin="anonymous">');
 
         $html->addToHead($htmlComp->navigationBar('Start', $personNavigation, null));
-        $html->addToBody($htmlComp->table('alias', 'persons')); //this needs to be the preference table, not the person table 
+
+        $html->addToBody($htmlComp->categoriesTable($name));
 
         echo $html->getHTML();
     }

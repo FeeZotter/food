@@ -39,10 +39,7 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 
     $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
 
-    return $htmlComp->categoriesTable('categories_id',
-                                      'cross_person_categories_id', 
-                                      'cross_person_categories', 
-                                      "persons_id='$name'");
+    return $htmlComp->categoriesTable($name);
 });
 
 // Post route example

@@ -123,17 +123,17 @@
                     </table>";
         }
 
-        public function categoriesTable($select, $select2, $from, $where)
+        public function categoriesTable($personID)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere("$select, $select2", $from, $where);
+            $array = $dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
             $returnTable = "";
             
             foreach ($array as $value)
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='$value[$select2]' id='$value[$select]'>{$value[$select]}</td>"
+                .   "<td class='" . $value["cross_person_categories_id"] . "id='" . $value['categories_id'] . "'>{$value['categories_id']}</td>"
                 ."</tr>";
             }
 
