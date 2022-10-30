@@ -110,17 +110,6 @@ function createNavigationEvents()
     navigation1 = document.getElementById('navigation1');
     navigation2 = document.getElementById('navigation2');
     navigation3 = document.getElementById('navigation3');
-
-    navigation.onclick = () => {
-        if(event.target.tagName == "A")
-        {
-            if(event.target.outerText == "Start")
-            {
-                //replaceByID("http://localhost/get/", 'table');
-            }
-            
-        }
-    }
     
     navigation1.onclick = () => {
         replaceByID("http://localhost/get", 'table');
