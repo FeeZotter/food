@@ -44,12 +44,12 @@ function createTableEvent()
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
-            if(navigation3.innerHTML != '')
+            if      (navigation3.innerHTML != '')
                 return;
-            if(navigation2.innerHTML == '')
+            if      (navigation2.innerHTML == '')
                 navigation2.innerHTML = $(event.target).attr('class');
-            else
-                navigation3.innerHTML = $(event.target).attr('class');
+            else if (navigation3.innerHTML == '')
+                navigation3.innerHTML = $(event.target).attr('id');
             replaceByID("http://localhost/get/" + $(event.target).attr('class'), 'table');
         }
     }

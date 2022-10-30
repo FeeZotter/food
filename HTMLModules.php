@@ -4,18 +4,18 @@
     {
         public function searchbarName()
         {
-            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
+            return '<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
         }
 
         public function searchbarNameRating()
         {
-            return '<input class="wideInput marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
-                    <input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
+            return '<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
+                    <input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
         }
 
         public function searchbarRating()
         {
-            return '<input class="tightInput" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
+            return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
         }
 
         function table($dbconn, $select, $from)
@@ -34,7 +34,7 @@
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col'>" . $select . '<a>' . $this->searchbarName() . '</a>' . '</th>
+                                <th scope='col'><a>" . $select . '</a><a>' . $this->searchbarName() . '</a>' . '</th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -59,10 +59,7 @@
             return '<table class="table table-hover" id="table">
                         <thead id="tabletop">
                             <tr>
-                                <th scope="col">' . $this->searchbarName() . '</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">' . $select . '</th>
+                                <th scope="col"><a>' . $select . '</a><a>'. $this->searchbarName() . '</a></th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -88,12 +85,8 @@
             return '<table class="table table-hover" id="table">
                         <thead id="tabletop">
                             <tr>
-                                <th scope="col">' . $this->searchbarName()  . '</th>
-                                <th scope="col">' . $this->searchbarRating() . '</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">' . $select  . '</th>
-                                <th scope="col">' . $select2 . '</th>
+                                <th scope="col">' . $select  . '</a><a>'. $this->searchbarName() . '</a></th>
+                                <th scope="col">' . $select2 . '</a><a>'. $this->searchbarNameRating() . '</a></th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -102,7 +95,7 @@
                     </table>';
         }
 
-        public function table2Where($dbconn, $select, $select2, $from, $where)
+        public function preferenceTable($dbconn, $select, $select2, $from, $where)
         {
             $dml = new DMLModules();
             $array = $dml->getTableWhere($dbconn, "$select, $select2", $from, $where);
@@ -112,20 +105,42 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='$value[$select2]'>{$value[$select]}</td>"
-                .   "<td class='$value[$select2]'>{$value[$select2]}</td>"
+                .   "<td class='color$value[$select2]'>{$value[$select]}</td>"
+                .   "<td class='color$value[$select2]'>{$value[$select2]}</td>"
                 ."</tr>";
             }
 
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col'>" . $this->searchbarName()  . "</th>
-                                <th scope='col'>" . $this->searchbarRating() . "</th>
+                                <th scope='col'>" . $select  . '</a><a>'. $this->searchbarName() . "</a></th>
+                                <th scope='col'>" . 'rating' . '</a><a>'. $this->searchbarRating() . "</a></th>
                             </tr>
+                        </thead>
+                        <tbody id='tableContent'>" .
+                            $returnTable .
+                        "</tbody>
+                    </table>";
+        }
+
+        public function categoriesTable($dbconn, $select, $select2, $from, $where)
+        {
+            $dml = new DMLModules();
+            $array = $dml->getTableWhere($dbconn, "$select, $select2", $from, $where);
+            $returnTable = "";
+            
+            foreach ($array as $value)
+            {
+                $returnTable .=
+                "<tr>"
+                .   "<td class='$value[$select2]' id='$value[$select]'>{$value[$select]}</td>"
+                ."</tr>";
+            }
+
+            return "<table class='table table-hover' id='table'>
+                        <thead id='tabletop'>
                             <tr>
-                                <th scope='col'>" . $select  . "</th>
-                                <th scope='col'>" . $select2 . "</th>
+                                <th scope='col'>" . 'preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
                             </tr>
                         </thead>
                         <tbody id='tableContent'>" .

@@ -41,11 +41,11 @@ Route::add('/get/([0-9]*)',function($var1)
                             $dbname);                          
     $dbconn = $db->getConnection();
 
-    echo $htmlComp->table2Where($dbconn, 
-                                'preference',
-                                'rating', 
-                                "preferences", 
-                                "cross_person_categories_id='$var1'");
+    echo $htmlComp->preferenceTable($dbconn, 
+                                    'preference',
+                                    'rating', 
+                                    "preferences", 
+                                    "cross_person_categories_id='$var1'");
 });
 
 //only person table
@@ -64,12 +64,11 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 
     $name = $htmlComp->getFirstMatchValue($dbconn, 'name', 'persons', "alias='$alias'");
 
-    return $htmlComp->table2Where($dbconn, 
-                                  'categories_id',
-                                  'cross_person_categories_id', 
-                                  'cross_person_categories', 
-                                  "persons_id='$name'");
-
+    return $htmlComp->categoriesTable($dbconn, 
+                                      'categories_id',
+                                      'cross_person_categories_id', 
+                                      'cross_person_categories', 
+                                      "persons_id='$name'");
 });
 
 // Post route example

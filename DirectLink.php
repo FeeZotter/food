@@ -30,11 +30,11 @@ class DirectLink
         
         $name = $htmlComp->personTable($dbconn, 'name', 'persons', 'alias', $person);
 
-        $html->addToBody($htmlComp->table2Where($dbconn, 
-                                                'categories_id',
-                                                'cross_person_categories_id', 
-                                                'cross_person_categories', 
-                                                "persons_id='$name'"));
+        $html->addToBody($htmlComp->categoriesTable($dbconn, 
+                                                    'categories_id',
+                                                    'cross_person_categories_id', 
+                                                    'cross_person_categories', 
+                                                    "persons_id='$name'"));
 
         echo $html->getHTML();
     }
@@ -58,15 +58,15 @@ class DirectLink
 
         $html->addToHead('<link rel="stylesheet" href="./style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
-                        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                        crossorigin="anonymous">');
+                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
+                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+                          crossorigin="anonymous">');
 
-        $html->addToBody($htmlComp->table2Where($dbconn, 
-                                                'preference',
-                                                'rating', 
-                                                "preferences", 
-                                                "cross_person_categories_id='$cross_person_categories_id'"));
+        $html->addToBody($htmlComp->preferenceTable($dbconn, 
+                                                    'preference',
+                                                    'rating', 
+                                                    "preferences", 
+                                                    "cross_person_categories_id='$cross_person_categories_id'"));
 
         echo $html->getHTML();
     }
@@ -88,14 +88,13 @@ class DirectLink
         $html->addScript('<script src="./food/js/index.js"></script>');
         $html->addScript('<script src="./food/js/viewLayer1.js"></script>');
 
-        $html->addToHead('<link rel="stylesheet" href="./style/style.css">');
+        $html->addToHead('<link rel="stylesheet" href="./food/style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
-                        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                        crossorigin="anonymous">');
+                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
+                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+                          crossorigin="anonymous">');
 
         $html->addToHead($htmlComp->navigationBar('Start'));
-        //$html->addToHead($htmlComp->searchbarNameRating());
         $html->addToBody($htmlComp->table($dbconn, 'alias', 'persons'));
 
         echo $html->getHTML();

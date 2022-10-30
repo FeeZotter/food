@@ -10,6 +10,10 @@
     width: 10%;
 }
 
+.input {
+    width: 90%;
+}
+
 .color0, .color1, .color2 {
     color: #d2222d;
 }
