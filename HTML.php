@@ -44,6 +44,11 @@ class HTML
 
     public function addScript($script)
     {
+        $this->sripts .= "<script src='$script'></script>";
+    }
+
+    public function addScriptWithSource($script)
+    {
         $this->sripts .= $script;
     }
 }

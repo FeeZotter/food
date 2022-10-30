@@ -114,7 +114,7 @@
                         <thead id='tabletop'>
                             <tr>
                                 <th scope='col'>" . $select  . '</a><a>'. $this->searchbarName() . "</a></th>
-                                <th scope='col'>" . 'rating' . '</a><a>'. $this->searchbarRating() . "</a></th>
+                                <th scope='col'>" . 'rating&nbsp&nbsp' . '</a><a>'. $this->searchbarRating() . "</a></th>
                             </tr>
                         </thead>
                         <tbody id='tableContent'>" .
