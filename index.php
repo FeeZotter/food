@@ -13,36 +13,19 @@ Route::add('/',function()
 //only main table
 Route::add('/get',function()
 {
-    include("./DBConnection.php");
-    include("./serverconfig.php");
     include("./HTMLModules.php");
     $htmlComp = new HTMLModules();  
 
-    $db = new DBConnection($servername, 
-                            $username, 
-                            $password, 
-                            $dbname);                          
-    $dbconn = $db->getConnection();
-
-    echo $htmlComp->table($dbconn, 'alias', 'persons');
+    echo $htmlComp->table('alias', 'persons');
 });
 
 //only preference table
 Route::add('/get/([0-9]*)',function($var1)
 {
     include("./HTMLModules.php");
-    include("./DBConnection.php");
     $htmlComp = new HTMLModules();  
-    include("./serverconfig.php");
 
-    $db = new DBConnection($servername, 
-                            $username, 
-                            $password, 
-                            $dbname);                          
-    $dbconn = $db->getConnection();
-
-    echo $htmlComp->preferenceTable($dbconn, 
-                                    'preference',
+    echo $htmlComp->preferenceTable('preference',
                                     'rating', 
                                     "preferences", 
                                     "cross_person_categories_id='$var1'");
@@ -52,20 +35,11 @@ Route::add('/get/([0-9]*)',function($var1)
 Route::add('/get/([a-z,0-9]*)',function($alias)
 {
     include("./HTMLModules.php");
-    include("./DBConnection.php");
     $htmlComp = new HTMLModules();  
-    include("./serverconfig.php");
 
-    $db = new DBConnection($servername, 
-                            $username, 
-                            $password, 
-                            $dbname);                          
-    $dbconn = $db->getConnection();
+    $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
 
-    $name = $htmlComp->getFirstMatchValue($dbconn, 'name', 'persons', "alias='$alias'");
-
-    return $htmlComp->categoriesTable($dbconn, 
-                                      'categories_id',
+    return $htmlComp->categoriesTable('categories_id',
                                       'cross_person_categories_id', 
                                       'cross_person_categories', 
                                       "persons_id='$name'");
