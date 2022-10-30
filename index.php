@@ -25,10 +25,7 @@ Route::add('/get/([0-9]*)',function($var1)
     include("./HTMLModules.php");
     $htmlComp = new HTMLModules();  
 
-    echo $htmlComp->preferenceTable('preference',
-                                    'rating', 
-                                    "preferences", 
-                                    "cross_person_categories_id='$var1'");
+    echo $htmlComp->preferenceTable($var1);
 });
 
 //only person table

@@ -95,25 +95,25 @@
                     </table>';
         }
 
-        public function preferenceTable($select, $select2, $from, $where)
+        public function preferenceTable($categoryID)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere("$select, $select2", $from, $where);
+            $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
             $returnTable = "";
             
             foreach ($array as $value)
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='color$value[$select2]'>{$value[$select]}</td>"
-                .   "<td class='color$value[$select2]'>{$value[$select2]}</td>"
+                .   "<td class='color" . $value['rating'] . "'>{$value['preference']}</td>"
+                .   "<td class='color" . $value['rating'] . "'>{$value['rating']}</td>"
                 ."</tr>";
             }
 
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col'>" . $select  . '</a><a>'. $this->searchbarName() . "</a></th>
+                                <th scope='col'>" . 'Preference'       . '</a><a>'. $this->searchbarName() . "</a></th>
                                 <th scope='col'>" . 'rating&nbsp&nbsp' . '</a><a>'. $this->searchbarRating() . "</a></th>
                             </tr>
                         </thead>
