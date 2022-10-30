@@ -1,6 +1,6 @@
 <?php
 // Include router class
-include('./Route.php');
+include('./food/Route.php');
 
 // Add base route (startpage)
 Route::add('/',function()
@@ -13,7 +13,7 @@ Route::add('/',function()
 //only main table
 Route::add('/get',function()
 {
-    include("./HTMLModules.php");
+    include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
 
     echo $htmlComp->table('alias', 'persons');
@@ -22,7 +22,7 @@ Route::add('/get',function()
 //only preference table
 Route::add('/get/([0-9]*)',function($var1)
 {
-    include("./HTMLModules.php");
+    include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
 
     echo $htmlComp->preferenceTable($var1);
@@ -31,7 +31,7 @@ Route::add('/get/([0-9]*)',function($var1)
 //only person table
 Route::add('/get/([a-z,0-9]*)',function($alias)
 {
-    include("./HTMLModules.php");
+    include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
 
     $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
@@ -66,7 +66,7 @@ Route::add('/phpmyadmin',function($var1)
 //shortcut to preference ID
 Route::add('/([0-9]*)',function($var1)
 {
-    include('./DirectLink.php');
+    include('./food/DirectLink.php');
     $preference = new DirectLink();
     echo $preference->Preference($var1);
 });
@@ -74,7 +74,7 @@ Route::add('/([0-9]*)',function($var1)
 //shortcut to person
 Route::add('/([a-z,0-9]*)',function($var1)
 {
-    include('./DirectLink.php');
+    include('./food/DirectLink.php');
     $person = new DirectLink();
     echo $person->Person($var1);
 });
