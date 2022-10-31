@@ -66,26 +66,16 @@ function replaceByID(url, ID) {
     })
     .fail(function() {
         alert( 'request failed' );
-    })
-    .always(function() {
-        //nothing
-    });
-    
-    // Perform other work here ...
-    
-    // Set another completion function for the request above
-    jqxhr.always(function() {
-        //nothing
     });
 }
 
 function createEvents()
 {
-    createTableEvent();
-    createNavigationEvents();
+    tableEvent();
+    navigationEvents();
 }
 
-function createTableEvent()
+function tableEvent()
 {
     table = document.getElementById('tableContent');
     table.onclick = () => {
@@ -104,7 +94,7 @@ function createTableEvent()
 
 
 
-function createNavigationEvents()
+function navigationEvents()
 {
     navigation  = document.getElementById('navigation');
     navigation1 = document.getElementById('navigation1');
@@ -113,7 +103,6 @@ function createNavigationEvents()
     
     navigation1.onclick = () => {
         replaceByID("http://localhost/get", 'table');
-        navigation.innerHTML = "<a class='Start' id='Start'>Start</a>";
         navigation2.innerHTML = "";
         navigation3.innerHTML = "";
     }
