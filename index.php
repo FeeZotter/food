@@ -59,12 +59,20 @@ Route::add('/phpmyadmin',function($var1)
     
 });
 
-//shortcut to preference ID
+//shortcut to preference ID by id
 Route::add('/([0-9]*)',function($var1)
 {
     include('./food/DirectLink.php');
     $preference = new DirectLink();
-    echo $preference->Preference($var1);
+    echo $preference->PreferenceByID($var1);
+});
+
+//shortcut to preference ID by alias and category
+Route::add('/([a-z,0-9]*/[a-z,0-9]*',function($alias, $category)
+{
+    include('./food/DirectLink.php');
+    $preference = new DirectLink();
+    echo $preference->Preference($alias, $category);
 });
 
 //shortcut to person
