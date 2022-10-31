@@ -57,14 +57,14 @@ class DirectLink
         //body
             //start beauty navigation bar
         $cross_person_categories_id = $htmlComp->getFirstMatchValue('cross_person_categories_id', 
-                          'preferences', 
-                          "preferences_id='$preferenceID'");
+                                                                    'preferences', 
+                                                                    "preferences_id='$preferenceID'");
         $categories_id = $htmlComp->getFirstMatchValue('categories_id', 
                                                        'cross_person_categories', 
-                                                       "cross_person_categories_id='$cross_person_categories_id");
+                                                       "cross_person_categories_id=$cross_person_categories_id");
         $persons_id = $htmlComp->getFirstMatchValue('persons_id', 
                                                     'cross_person_categories', 
-                                                    "cross_person_categories_id='$cross_person_categories_id");
+                                                    "cross_person_categories_id=$cross_person_categories_id");
         $html->addToHead($htmlComp->navigationBar('Start', $persons_id, $categories_id));
             //end
         $html->addToBody($htmlComp->preferenceTable($preferenceID));
