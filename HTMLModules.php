@@ -133,7 +133,7 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='" . $value["cross_person_categories_id"] . "id='" . $value['categories_id'] . "'>{$value['categories_id']}</td>"
+                .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>{$value['categories_id']}</td>"
                 ."</tr>";
             }
 
