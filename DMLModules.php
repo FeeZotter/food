@@ -101,26 +101,27 @@
 
         public function getFirstMatchValue($select, $from, $where)
         {
-             //anti SQL injection
-             mysqli_real_escape_string($this->dbconn, $select);
-             mysqli_real_escape_string($this->dbconn, $from);
-             mysqli_real_escape_string($this->dbconn, $where);
-             //try sql selection
-             $sql = "SELECT $select FROM $from WHERE $where";
- 
-             $result = mysqli_query($this->dbconn ,$sql);
-             
-             //compose array from data
-             $data = array();
-             if ($result)
-             {
-                 while($row = $result->fetch_assoc())
-                 {
-                     $data[] = $row;
-                   
-                 }
-             }
-             return $data[0];
+            //anti SQL injection
+            mysqli_real_escape_string($this->dbconn, $select);
+            mysqli_real_escape_string($this->dbconn, $from);
+            mysqli_real_escape_string($this->dbconn, $where);
+            //try sql selection
+            $sql = "SELECT $select FROM $from WHERE $where";
+            
+            //echo $sql; //when debug in row 112 is needed this helps
+            $result = mysqli_query($this->dbconn ,$sql);
+            
+            //compose array from data
+            $data = array();
+            if ($result)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    $data[] = $row;
+                
+                }
+            }
+            return $data[0];
         }
     }
 ?>
