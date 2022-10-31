@@ -40,7 +40,6 @@ Route::add('/contact-form',function()
 {
     echo '<form method="post"><input type="text" name="test" /><input type="submit" value="send" /></form>';
 },'get');
-
 // Post route example
 Route::add('/contact-form',function()
 {
@@ -48,15 +47,11 @@ Route::add('/contact-form',function()
     print_r($_POST);
 },'post');
 
-// Accept only numbers as parameter. Other characters will result in a 404 error
-Route::add('/foo/([0-9]*)/bar',function($var1)
+Route::add('/newKey/([0-9]*)',function($max_users)
 {
-    echo $var1.' is a great number!';
-});
-
-Route::add('/phpmyadmin',function($var1)
-{
-    
+    include('./food/HTMLModules.php');
+    $htmlMod = new HTMLModules();
+    echo $htmlMod->newKey($max_users);
 });
 
 //shortcut to preference ID by id
@@ -67,20 +62,20 @@ Route::add('/([0-9]*)',function($var1)
     echo $preference->PreferenceByID($var1);
 });
 
-//shortcut to preference ID by alias and category
-Route::add('/([a-z,0-9]*/[a-z,0-9]*',function($alias, $category)
-{
-    include('./food/DirectLink.php');
-    $preference = new DirectLink();
-    echo $preference->Preference($alias, $category);
-});
-
 //shortcut to person
 Route::add('/([a-z,0-9]*)',function($var1)
 {
     include('./food/DirectLink.php');
     $person = new DirectLink();
     echo $person->Person($var1);
+});
+
+//shortcut to preference ID by alias and category
+Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
+{
+    include('./food/DirectLink.php');
+    $preference = new DirectLink();
+    echo $preference->Preference($alias, $category);
 });
 
 Route::run('/');
