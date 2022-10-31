@@ -68,6 +68,12 @@
                     </table>';
         }
 
+        function dataTableWhere($select, $from, $where)
+        {
+            $dml = new DMLModules();
+            return $dml->getTableWhere($select, $from, $where);
+        }
+
         public function table2($select, $select2, $from)
         {
             $dml = new DMLModules();
@@ -183,8 +189,6 @@
             $dml = new DMLModules();
             return implode($dml->getFirstMatchValue($select, $from, $where));
         }
-
-
 
         public function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
         {
