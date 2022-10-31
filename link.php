@@ -1,3 +1,3 @@
 <?php
-    $link = 'localhost'
+    $link = 'localhost';
 ?>
