@@ -63,9 +63,10 @@ class DirectLink
                                             'cross_person_categories', 
                                             "cross_person_categories_id=$cross_person_categories_id");
         $result = $result[0];
-        $persons_id    = $result['persons_id'];
         $categories_id = $result['categories_id'];
-        $html->addToHead($htmlComp->navigationBar('Start', $persons_id, $categories_id));
+        $persons_id    = $result['persons_id'];
+        $name = $htmlComp->getFirstMatchValue('alias', 'persons', "name='$persons_id'");
+        $html->addToHead($htmlComp->navigationBar('Start', $name, $categories_id));
             //end navigation bar
         $html->addToBody($htmlComp->preferenceTable($preferenceID));
 
