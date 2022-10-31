@@ -9,10 +9,11 @@ class HTML
     private $bodycontent = "";
     private $bodyend     = "</body>";
     private $htmlend     = "</head>";
-    private $sripts      = "";
+    private $script      = "";
     function __construct(string $title)
     {
         $this->headcontent .= "<title>$title</title>";
+        $this->addScript('/food/js/index.js');
     }
 
     public function getHTML()
@@ -25,12 +26,12 @@ class HTML
                $this->bodycontent.
                $this->bodyend.
                $this->htmlend.
-               $this->sripts;
+               $this->script;
     }
 
     public function resetHead()   { $this->headcontent = ""; }
     public function resetBody()   { $this->bodycontent = ""; }
-    public function resetScript() { $this->sripts = ""; }
+    public function resetScript() { $this->script = ""; }
 
     public function addToBody($addToBody)
     {
@@ -44,12 +45,12 @@ class HTML
 
     public function addScript($script)
     {
-        $this->sripts .= "<script src='$script'></script>";
+        $this->script .= "<script src='$script'></script>";
     }
 
     public function addScriptWithSource($script)
     {
-        $this->sripts .= $script;
+        $this->script .= $script;
     }
 }
 ?>

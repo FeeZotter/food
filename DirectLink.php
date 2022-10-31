@@ -13,7 +13,8 @@ class DirectLink
             $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
         } catch (\Throwable $throwedError) {
             $html = new HTML('error 404');
-            $html->addScript('./food/js/error404.js');
+            $html->resetScript();
+            $html->addScript('/food/js/error404.js');
             $html->addToBody('Person not found | redirecting you shortly in <a id="timer"></a> seconds');
             return $html->getHTML();
         }
@@ -22,10 +23,7 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        //html scripts
-        $html->addScript("./food/js/index.js");
-
-        $html->addToHead('<link rel="stylesheet" href="./food/style/style.css">');
+        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
                           href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
@@ -44,11 +42,8 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        //scripts
-        $html->addScript("./food/js/index.js");
-
         //style
-        $html->addToHead('<link rel="stylesheet" href="./food/style/style.css">');
+        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
                           href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
@@ -74,11 +69,8 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        //scripts
-        $html->addScript("./food/js/index.js");
-
         //style
-        $html->addToHead('<link rel="stylesheet" href="./food/style/style.css">');
+        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
                           href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
@@ -109,10 +101,7 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        //html scripts
-        $html->addScript("./food/js/index.js");
-
-        $html->addToHead('<link rel="stylesheet" href="./food/style/style.css">');
+        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
         $html->addToHead('<link rel="stylesheet" 
                           href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
