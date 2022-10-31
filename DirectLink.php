@@ -107,9 +107,15 @@ class DirectLink
                           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
                           crossorigin="anonymous">');
 
-        $html->addToHead($htmlComp->navigationBar('Start', null, null));
+        $html->addToBody($htmlComp->navigationBar('Start', null, null));
         $html->addToBody($htmlComp->table('alias', 'persons'));
 
+        echo $html->getHTML();
+    }
+
+    public function adminPage()
+    {
+        $html = new HTML('Admin');
         echo $html->getHTML();
     }
 }
