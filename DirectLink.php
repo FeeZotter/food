@@ -55,18 +55,17 @@ class DirectLink
                           crossorigin="anonymous">');
 
         //body
-            //start beauty navigation bar
+            //start navigation bar
         $cross_person_categories_id = $htmlComp->getFirstMatchValue('cross_person_categories_id', 
                                                                     'preferences', 
                                                                     "preferences_id='$preferenceID'");
-        $categories_id = $htmlComp->getFirstMatchValue('categories_id', 
-                                                       'cross_person_categories', 
-                                                       "cross_person_categories_id=$cross_person_categories_id");
-        $persons_id = $htmlComp->getFirstMatchValue('persons_id', 
-                                                    'cross_person_categories', 
-                                                    "cross_person_categories_id=$cross_person_categories_id");
+        $result = $htmlComp->dataTableWhere('categories_id, persons_id', 
+                                            'cross_person_categories', 
+                                            "cross_person_categories_id=$cross_person_categories_id");
+        $persons_id    = $result['persons_id'];
+        $categories_id = $result['categories_id'];
         $html->addToHead($htmlComp->navigationBar('Start', $persons_id, $categories_id));
-            //end
+            //end navigation bar
         $html->addToBody($htmlComp->preferenceTable($preferenceID));
 
         echo $html->getHTML();
