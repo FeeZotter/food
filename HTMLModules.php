@@ -199,5 +199,11 @@
             $dml = new DMLModules();
             return implode($dml->getFirstMatchValue($select, $from, $where));
         }
+
+        public function newKey($max_users)
+        {
+            $dml = new DMLModules();
+            return $dml->addNewKey($max_users);
+        }
     }
 ?>
