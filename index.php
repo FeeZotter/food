@@ -15,20 +15,18 @@ Route::add('/get',function()
 {
     include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
-
     echo $htmlComp->table('alias', 'persons');
 });
 
-//only preference table
-Route::add('/get/([0-9]*)',function($var1)
+//get preference table
+Route::add('/get/([0-9]*)',function($preferenceID)
 {
     include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
+    echo $htmlComp->preferenceTable($preferenceID);
+}, 'get');
 
-    echo $htmlComp->preferenceTable($var1);
-});
-
-//only person table
+//get person table
 Route::add('/get/([a-z,0-9]*)',function($alias)
 {
     include("./food/HTMLModules.php");
