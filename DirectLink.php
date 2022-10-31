@@ -62,6 +62,7 @@ class DirectLink
         $result = $htmlComp->dataTableWhere('categories_id, persons_id', 
                                             'cross_person_categories', 
                                             "cross_person_categories_id=$cross_person_categories_id");
+        $result = $result[0];
         $persons_id    = $result['persons_id'];
         $categories_id = $result['categories_id'];
         $html->addToHead($htmlComp->navigationBar('Start', $persons_id, $categories_id));

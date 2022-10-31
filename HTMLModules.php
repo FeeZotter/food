@@ -71,7 +71,7 @@
         function dataTableWhere($select, $from, $where)
         {
             $dml = new DMLModules();
-            return $dml->getTableWhere($select, $from, $where);
+            return $dml->getTableWhere($select, $from, $where); //Structure (nested array) = array(array['value1', 'value2'], array['value1', 'value2'], array['value1', 'value2'])
         }
 
         public function table2($select, $select2, $from)
