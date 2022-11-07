@@ -61,7 +61,7 @@
             mysqli_real_escape_string($this->dbconn, $from);
             
             //try sql selection
-            $sql = "SELECT $select FROM $from";
+            $sql = "SELECT $select FROM $from ORDER BY $select ASC";
             $result = mysqli_query($this->dbconn ,$sql);
 
             //compose array from data
@@ -83,7 +83,7 @@
             mysqli_real_escape_string($this->dbconn, $from);
             mysqli_real_escape_string($this->dbconn, $where);
             //try sql selection
-            $sql = "SELECT $select FROM $from WHERE $where";
+            $sql = "SELECT $select FROM $from WHERE $where ORDER BY $select ASC";
             $result = mysqli_query($this->dbconn ,$sql);
             
             //compose array from data
