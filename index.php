@@ -35,7 +35,10 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
     return $htmlComp->categoriesTable($name);
 });
 
-// Post route example
+
+
+/////////////////////////////////////
+////////Post route example///////////
 Route::add('/contact-form',function()
 {
     echo '<form method="post"><input type="text" name="test" /><input type="submit" value="send" /></form>';
@@ -47,6 +50,10 @@ Route::add('/contact-form',function()
     print_r($_POST);
 },'post');
 
+
+
+//////////////////////////////////////////////////
+//////////////////Generate Keys///////////////////
 Route::add('/newKey/([0-9]*)',function($max_users)
 {
     include('./food/HTMLModules.php');
@@ -54,6 +61,16 @@ Route::add('/newKey/([0-9]*)',function($max_users)
     echo $htmlMod->newKey($max_users);
 });
 
+Route::add('/newKey/([0-9]*)',function($max_users)
+{
+    include('./food/HTMLModules.php');
+    $htmlMod = new HTMLModules();
+    echo $htmlMod->newKey($max_users);
+});
+
+
+//////////////////////////////////////
+//////////////Shortcuts///////////////
 //shortcut to preference ID by id
 Route::add('/([0-9]*)',function($var1)
 {
@@ -78,5 +95,11 @@ Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
     echo $preference->Preference($alias, $category);
 });
 
+
+
+
+
+////////////////
+//start router//
 Route::run('/');
 ?>
