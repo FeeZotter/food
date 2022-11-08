@@ -26,9 +26,9 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr><b>"
+                "<tr>"
                 .   "<td class='$value'>{$value}</td>"
-                ."</b></tr>";
+                ."</tr>";
             }
 
             return "<table class='table table-hover' id='table'>
