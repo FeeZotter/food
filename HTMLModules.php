@@ -26,15 +26,15 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr>"
+                "<tr><b>"
                 .   "<td class='$value'>{$value}</td>"
-                ."</tr>";
+                ."</b></tr>";
             }
 
             return "<table class='table table-hover' id='table'>
                         <thead id='tabletop'>
                             <tr>
-                                <th scope='col'><a>" . ucfirst($select) . '</a><a>' . $this->searchbarName() . '</a>' . '</th>
+                                <th scope='col'><a><b>" . ucfirst($select) . '</b></a><a>' . $this->searchbarName() . '</a>' . '</th>
                             </tr>
                         </thead>
                         <tbody id="tableContent">' .
@@ -51,9 +51,9 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr>"
+                "<tr><b>"
                 .   "<td>{$value}</td>"
-                ."</tr>";
+                ."</b></tr>";
             }
 
             return '<table class="table table-hover" id="table">
@@ -83,10 +83,10 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr>"
+                "<tr><b>"
                 .   "<td>{$value[0]}</td>"
                 .   "<td>{$value[1]}</td>"
-                ."</tr>";
+                ."</b></tr>";
             }
 
             return '<table class="table table-hover" id="table">
@@ -111,10 +111,10 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr>"
+                "<tr><b>"
                 .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['preference']) . "</td>"
                 .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['rating'])    . "</td>"
-                ."</tr>";
+                ."</b></tr>";
             }
 
             return "<table class='table table-hover' id='table'>
@@ -139,20 +139,20 @@
             foreach ($array as $value)
             {
                 $returnTable .=
-                "<tr>"
+                "<tr><b>"
                 .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
-                ."</tr>";
+                ."</tr></b>";
             }
 
             return "<table class='table table-hover' id='table'>
-            <thead id='tabletop'>
-            <tr>
+                        <thead id='tabletop'>
+                            <tr><b>
                                 <th scope='col'>" . 'Preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
-                                </tr>
-                                </thead>
-                                <tbody id='tableContent'>" .
+                            </b></tr>
+                        </thead>
+                            <tbody id='tableContent'>" .
                                 $returnTable .
-                        "</tbody>
+                           "</tbody>
                         </table>";
         }
         
@@ -167,11 +167,11 @@
 
         public function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
         {
-            return "<h1 class='navigation' id='navigation'>
+            return "<h1 class='navigation' id='navigation'></b>
                         <a class='Start' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
                         <a class=''      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
                         <a class=''      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
-                    </h1>";
+                    </b></h1>";
         }
         
         function getByRequest($select, $from, $where)
