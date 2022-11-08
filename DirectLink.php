@@ -23,12 +23,6 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
-
         $html->addToHead($htmlComp->navigationBar('Start', $alias, null));
 
         $html->addToBody($htmlComp->categoriesTable($name));
@@ -42,22 +36,15 @@ class DirectLink
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        //style
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
-
         //body
-            //start navigation bar
+        ////start navigation bar
         $persons_id = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
         $cross_person_categories_id = $htmlComp->getFirstMatchValue('cross_person_categories_id', 
                                                                     'cross_person_categories', 
                                                                     "persons_id='$persons_id'&&categories_id='$category'");
 
         $html->addToHead($htmlComp->navigationBar('Start', $alias, $category));
-            //end navigation bar
+        ////end navigation bar
         $html->addToBody($htmlComp->preferenceTable($cross_person_categories_id));
 
         echo $html->getHTML();
@@ -68,13 +55,6 @@ class DirectLink
         //innitialize classes
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
-
-        //style
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
 
         //body
             //start navigation bar
@@ -100,12 +80,6 @@ class DirectLink
         //innitialize classes
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
-
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
 
         $html->addToBody($htmlComp->navigationBar('Start', null, null));
         $html->addToBody($htmlComp->table('alias', 'persons'));
