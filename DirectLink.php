@@ -82,8 +82,9 @@ class DirectLink
         $htmlComp = new HTMLModules();  
 
         $html->addToBody($htmlComp->navigationBar('Start', null, null));
+        $html->addToBody(2);
         $html->addToBody($htmlComp->table('alias', 'persons'));
-
+        $html->addToBody(3);
         echo $html->getHTML();
     }
 

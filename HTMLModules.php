@@ -167,11 +167,11 @@
 
         public function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
         {
-            return "<h1 class='navigation' id='navigation'></b>
-                        <a class='Start' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                        <a class=''      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
-                        <a class=''      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
-                    </b></h1>";
+            return "<h1 class='navigation' id='navigation'>
+                        <a class='Start' id='navigation1'><b>" . ucfirst($navigationPoint1) . "</b></a>
+                        <a class=''      id='navigation2'><b>" . ucfirst($navigationPoint2) . "</b></a>                
+                        <a class=''      id='navigation3'><b>" . ucfirst($navigationPoint3) . "</b></a>
+                    </h1>";
         }
         
         function getByRequest($select, $from, $where)
