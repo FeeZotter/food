@@ -27,7 +27,7 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='$value'><b>{$value}</b></td>"
+                .   "<td class='$value'>{$value}</td>"
                 ."</tr>";
             }
 
