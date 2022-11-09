@@ -27,7 +27,7 @@
             {
                 $returnTable .=
                 "<tr>"
-                .   "<td class='$value'>{$value}</td>"
+                .   "<td class='$value'><b>{$value}</b></td>"
                 ."</tr>";
             }
 
@@ -37,9 +37,9 @@
                                 <th scope='col'><a><b>" . ucfirst($select) . '</b></a><a>' . $this->searchbarName() . '</a>' . '</th>
                             </tr>
                         </thead>
-                        <tbody id="tableContent"><b>' .
+                        <tbody id="tableContent">' .
                             $returnTable .
-                        '</b></tbody>
+                        '</tbody>
                     </table>';
         }
 
