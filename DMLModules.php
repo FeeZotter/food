@@ -13,47 +13,8 @@
             $this->dbconn = $this->db->getConnection();;
         } 
 
-        function addContent($user,
-                            $password,
-                            $preference,
-                            $rating, 
-                            $cross_person_categories_id)
-        {
-            //trim empty spaces from $preference
-            trim($preference, " \n\r\t\v\x00");
-            
-            //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $user);
-            mysqli_real_escape_string($this->dbconn, $password);
-            mysqli_real_escape_string($this->dbconn, $preference);
-            mysqli_real_escape_string($this->dbconn, $rating);
-            mysqli_real_escape_string($this->dbconn, $cross_person_categories_id);
-        }
-
-        function deleteContent(string $from,  
-                               string $where, 
-                               string $eqals) 
-        {
-            //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $from);
-            mysqli_real_escape_string($this->dbconn, $where);
-            mysqli_real_escape_string($this->dbconn, $eqals);
-
-            //try sql delete
-            $sql = "DELETE FROM $from
-                    WHERE       $where = '$eqals'";
-
-            if(mysqli_query($this->dbconn, $sql))
-            {
-                $echo = "'$eqals' deleted successfully";
-            } 
-            else
-            {
-                $echo = "ERROR: Could not able to execute " . $sql . ". " . $this->dbconn->connect_error;
-            }
-            echo $echo;
-        }
-
+        ///////////////////////////////////////////
+        ////////////////punlic tables//////////////
         public function getTable($select, $from)
         {
             //anti SQL injection
@@ -113,33 +74,6 @@
             return mysqli_fetch_row($result)[0];
         }
 
-        public function addNewKey(int $max_users)
-        {
-            function RandomLetter()
-            {
-                $letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                $randomletter = substr($letters, (rand(0, strlen($letters))), 1);
-                return $randomletter;
-            }
-            
-            $newKey = '';
-            for ($i=0; $i < 32; $i++) { 
-                $newKey .= RandomLetter();
-            }
-
-            if($max_users <= 1)
-            {
-                $sql = "INSERT INTO product_keys (product_key) VALUE ('$newKey')";
-                $max_users = 1;
-            } 
-            else
-            {
-                $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
-            }
-            mysqli_query($this->dbconn ,$sql);
-            echo "New Key: " . $newKey . " | Amount of users: " . $max_users;
-        }
-
         public function getPreferenceTable($crossPersonCategoryID)
         {
             //anti SQL injection
@@ -179,6 +113,9 @@
             return $data;
         }
 
+
+        //////////////////////////////////
+        /////////////Accounts/////////////
         public function addAccount($accountname, $alias, $password, $key)
         {
             /**
@@ -192,12 +129,8 @@
              * @throws Some_Exception_Class If something interesting cannot happen
              * @return Status
              */ 
-            //////////////////Error handeling
-            mysqli_real_escape_string($this->dbconn, $accountname);
-            mysqli_real_escape_string($this->dbconn, $password);
-            mysqli_real_escape_string($this->dbconn, $alias);
-            mysqli_real_escape_string($this->dbconn, $key);
 
+             //////////////////Error handeling
             $echo = "";
             //check accountname
             //if the accountname contains no letters throw an error
@@ -245,6 +178,11 @@
             //to save ressources only check something with the database if there is no error
             if($echo == "")
             {
+                mysqli_real_escape_string($this->dbconn, $accountname);
+                mysqli_real_escape_string($this->dbconn, $password);
+                mysqli_real_escape_string($this->dbconn, $alias);
+                mysqli_real_escape_string($this->dbconn, $key);
+
                 //check if account name exists
                 $sql = "SELECT FROM persons WHERE name='$accountname'";
                 $result = mysqli_query($this->dbconn ,$sql);
@@ -275,7 +213,95 @@
 
             //try adding a new user
             $sql = "INSERT INTO persons name, password, alias, key VALUES ($accountname, $password, $alias, $key)";
-
         }
+
+        public function deleteAccount($accountname, $password)
+        {
+            mysqli_real_escape_string($this->dbconn, $accountname);
+            mysqli_real_escape_string($this->dbconn, $password);
+
+            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND password='$password'";
+            $result = mysqli_query($this->dbconn ,$sql);
+            if(!mysqli_fetch_row($result)[0])
+            {
+                echo "Account does not exist or password is wrong.";
+                return;
+            }
+            $sql = "DELETE FROM persons WHERE name='$accountname' AND password='$password'";
+            echo mysqli_query($this->dbconn ,$sql);
+        }
+
+        ///////////////////////////////////////////
+        ////////////administration/////////////////
+        public function addNewKey(int $max_users, string $adminname, string $adminpassword)
+        {
+            function RandomLetter()
+            {
+                $letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                $randomletter = substr($letters, (rand(0, strlen($letters))), 1);
+                return $randomletter;
+            }
+            
+            $newKey = '';
+            for ($i=0; $i < 32; $i++) { 
+                $newKey .= RandomLetter();
+            }
+
+            if($max_users <= 1)
+            {
+                $sql = "INSERT INTO product_keys (product_key) VALUE ('$newKey')";
+                $max_users = 1;
+            } 
+            else
+            {
+                $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
+            }
+            mysqli_query($this->dbconn ,$sql);
+            echo "New Key: " . $newKey . " | Amount of users: " . $max_users;
+        }
+
+        //////////////////////////////////////
+        ///////////outdated///////////////////
+        function addContent($user,
+                            $password,
+                            $preference,
+                            $rating, 
+                            $cross_person_categories_id)
+        {
+            //trim empty spaces from $preference
+            trim($preference, " \n\r\t\v\x00");
+            
+            //anti SQL injection
+            mysqli_real_escape_string($this->dbconn, $user);
+            mysqli_real_escape_string($this->dbconn, $password);
+            mysqli_real_escape_string($this->dbconn, $preference);
+            mysqli_real_escape_string($this->dbconn, $rating);
+            mysqli_real_escape_string($this->dbconn, $cross_person_categories_id);
+        }
+
+        function deleteContent(string $from,  
+                               string $where, 
+                               string $eqals) 
+        {
+            //anti SQL injection
+            mysqli_real_escape_string($this->dbconn, $from);
+            mysqli_real_escape_string($this->dbconn, $where);
+            mysqli_real_escape_string($this->dbconn, $eqals);
+
+            //try sql delete
+            $sql = "DELETE FROM $from
+                    WHERE       $where = '$eqals'";
+
+            if(mysqli_query($this->dbconn, $sql))
+            {
+                $echo = "'$eqals' deleted successfully";
+            } 
+            else
+            {
+                $echo = "ERROR: Could not able to execute " . $sql . ". " . $this->dbconn->connect_error;
+            }
+            echo $echo;
+        }
+
     }
 ?>
