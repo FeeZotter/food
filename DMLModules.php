@@ -161,10 +161,11 @@
                 $limit = "";
             }
 
-            $sql = "SELECT preference,rating 
+            $sql = "SELECT preference, rating 
                     FROM preferences 
                     WHERE cross_person_categories_id='$crossPersonCategoryID'
-                    ORDER BY preference ASC, rating DESC";
+                    $limit";
+                #    ORDER BY preference ASC, rating DESC";
             $result = mysqli_query($this->dbconn ,$sql);
             
             //compose array from data
