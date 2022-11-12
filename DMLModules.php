@@ -110,17 +110,7 @@
             //echo $sql; //when debug in row 112 is needed this helps
             $result = mysqli_query($this->dbconn ,$sql);
             
-            //compose array from data
-            $data = array();
-            if ($result)
-            {
-                while($row = $result->fetch_assoc())
-                {
-                    $data[] = $row;
-                
-                }
-            }
-            return $data[0];
+            return mysqli_fetch_row($result)[0];
         }
 
         public function addNewKey(int $max_users)
@@ -148,6 +138,48 @@
             }
             mysqli_query($this->dbconn ,$sql);
             echo "New Key: " . $newKey . " | Amount of users: " . $max_users;
+        }
+
+        public function getPreferenceTable($crossPersonCategoryID)
+        {
+            #$dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
+            # code...
+            //anti SQL injection
+            mysqli_real_escape_string($this->dbconn, $crossPersonCategoryID);
+            
+            //try sql selection
+            $limit = "LIMIT 20";
+            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
+            $result = mysqli_query($this->dbconn ,$sql);
+            $person_id = mysqli_fetch_row($result)[0];
+
+            $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
+            $result = mysqli_query($this->dbconn ,$sql);
+            $key = mysqli_fetch_row($result)[0];
+            echo "Key: ";
+            echo $key;
+            echo "|";
+            if($key)
+            {
+                $limit = "";
+            }
+
+            $sql = "SELECT preference,rating 
+                    FROM preferences 
+                    WHERE cross_person_categories_id='$crossPersonCategoryID'
+                    ORDER BY preference ASC, rating DESC";
+            $result = mysqli_query($this->dbconn ,$sql);
+            
+            //compose array from data
+            $data = array();
+            if ($result)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    $data[] = $row;
+                }
+            }
+            return $data;
         }
     }
 ?>

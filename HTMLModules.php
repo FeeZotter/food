@@ -105,7 +105,8 @@
         public function preferenceTable($categoryID)
         {
             $dml = new DMLModules();
-            $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
+           # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
+            $array = $dml->getPreferenceTable($categoryID);
             $returnTable = "";
             
             foreach ($array as $value)
@@ -197,7 +198,7 @@
         public function getFirstMatchValue($select, $from, $where)
         {
             $dml = new DMLModules();
-            return implode($dml->getFirstMatchValue($select, $from, $where));
+            return $dml->getFirstMatchValue($select, $from, $where);
         }
 
         public function newKey($max_users)
