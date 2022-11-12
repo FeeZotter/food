@@ -118,5 +118,19 @@ class DirectLink
         $html = new HTML('Admin');
         echo $html->getHTML();
     }
+
+    public function regristration()
+    {
+        $html = new HTML('Regrister');
+        $html->addScript("/js/regrister.js");
+        echo $html;
+    }
+
+    public function loin()
+    {
+        $html = new HTML('Login');
+        $html->addScript("/js/login.js");
+        echo $html;
+    }
 }
 ?>
