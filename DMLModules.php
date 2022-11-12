@@ -179,8 +179,20 @@
             return $data;
         }
 
-        public function addAccount($accountname, $password, $alias, $key)
+        public function addAccount($accountname, $alias, $password, $key)
         {
+            /**
+             * trys to add an account to the database
+             *
+             * @param accountname min 5, max 32 letters
+             * @param alias min 5, max 32 letters
+             * @param password 
+             * @param key 32 letters, a-z, A-Z, 0-9 
+             * 
+             * @throws Some_Exception_Class If something interesting cannot happen
+             * @return Status
+             */ 
+            //////////////////Error handeling
             mysqli_real_escape_string($this->dbconn, $accountname);
             mysqli_real_escape_string($this->dbconn, $password);
             mysqli_real_escape_string($this->dbconn, $alias);
@@ -218,8 +230,6 @@
                 $echo .= "You need at least 5 Letters for the public alias. ";
             }
 
-            //check password
-
             //check Key
             if($key != "")
             {
@@ -227,14 +237,45 @@
                 if (strlen($key) != 32) {
                     $echo .= "The key needs a lenght of 32. ";
                 }
+                if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) {
+                    $echo .= 'The key has illegal Letters. ';
+                } 
             }
 
-            //if there where an error send error and return
+            //to save ressources only check something with the database if there is no error
+            if($echo == "")
+            {
+                //check if account name exists
+                $sql = "SELECT FROM persons WHERE name='$accountname'";
+                $result = mysqli_query($this->dbconn ,$sql);
+                if(mysqli_fetch_row($result)[0])
+                {
+                    $echo .= "There is already a person with this name, please choose another or you fail again.";
+                }
+
+                //check if alias exists
+                $sql = "SELECT FROM persons WHERE alias='$alias'";
+                $result = mysqli_query($this->dbconn ,$sql);
+                if(mysqli_fetch_row($result)[0])
+                {
+                    $echo .= "There is already a person with this alias, you are not the first.";
+                }
+            } 
+
+
+            //if there is at least one error send error and return
             if($echo != "")
             {
                 echo $echo;
                 return;
             }
+
+            //////////////////Error handeling ends
+            //////////////////Add new user
+
+            //try adding a new user
+            $sql = "INSERT INTO persons name, password, alias, key VALUES ($accountname, $password, $alias, $key)";
+
         }
     }
 ?>
