@@ -2,7 +2,7 @@
 //include
 include("HTML.php");
 include("HTMLModules.php");
-class DirectLink 
+class Pages 
 {
     public function Person(string $alias)
     {

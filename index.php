@@ -6,7 +6,7 @@ include('./food/Route.php');
 Route::add('/',function()
 {
     include('./food/DirectLink.php');
-    $dl = new DirectLink();
+    $dl = new Pages();
     echo $dl->main();
 });
 
@@ -75,7 +75,7 @@ Route::add('/newKey/([0-9]*)',function($max_users)
 Route::add('/([0-9]*)',function($var1)
 {
     include('./food/DirectLink.php');
-    $preference = new DirectLink();
+    $preference = new Pages();
     echo $preference->PreferenceByID($var1);
 });
 
@@ -83,7 +83,7 @@ Route::add('/([0-9]*)',function($var1)
 Route::add('/([a-z,0-9]*)',function($var1)
 {
     include('./food/DirectLink.php');
-    $person = new DirectLink();
+    $person = new Pages();
     echo $person->Person($var1);
 });
 
@@ -91,7 +91,7 @@ Route::add('/([a-z,0-9]*)',function($var1)
 Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     include('./food/DirectLink.php');
-    $preference = new DirectLink();
+    $preference = new Pages();
     echo $preference->Preference($alias, $category);
 });
 
