@@ -156,9 +156,6 @@
             $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
             $result = mysqli_query($this->dbconn ,$sql);
             $key = mysqli_fetch_row($result)[0];
-            echo "Key: ";
-            echo $key;
-            echo "|";
             if($key)
             {
                 $limit = "";
