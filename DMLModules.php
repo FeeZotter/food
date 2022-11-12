@@ -142,8 +142,6 @@
 
         public function getPreferenceTable($crossPersonCategoryID)
         {
-            #$dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-            # code...
             //anti SQL injection
             mysqli_real_escape_string($this->dbconn, $crossPersonCategoryID);
             
@@ -178,6 +176,64 @@
                 }
             }
             return $data;
+        }
+
+        public function addAccount($accountname, $password, $alias, $key)
+        {
+            mysqli_real_escape_string($this->dbconn, $accountname);
+            mysqli_real_escape_string($this->dbconn, $password);
+            mysqli_real_escape_string($this->dbconn, $alias);
+            mysqli_real_escape_string($this->dbconn, $key);
+
+            $echo = "";
+            //check accountname
+            //if the accountname contains no letters throw an error
+            if(!preg_match("/[a-z]/i", $accountname)){
+                $echo .= "You need at least 1 alphabet letter in your Account name. ";
+            }
+
+            if(strlen($accountname) > 32)
+            {
+                $echo .= "A maximum of 32 Letters are allowed for the Account name. ";
+            }
+
+            if(strlen($accountname) < 5)
+            {
+                $echo .= "You need at least 5 Letters for the Account name. ";
+            }
+
+            //check alias
+            if(!preg_match("/[a-z]/i", $alias)){
+                $echo = "You need at least 1 alphabet letter in your public alias. ";
+            }
+
+            if(strlen($alias) > 32)
+            {
+                $echo .= "A maximum of 32 Letters are allowed for the public alias. ";
+            }
+
+            if(strlen($alias) < 5)
+            {
+                $echo .= "You need at least 5 Letters for the public alias. ";
+            }
+
+            //check password
+
+            //check Key
+            if($key != "")
+            {
+                trim($key, " \n\r\t\v\x00");
+                if (strlen($key) != 32) {
+                    $echo .= "The key needs a lenght of 32. ";
+                }
+            }
+
+            //if there where an error send error and return
+            if($echo != "")
+            {
+                echo $echo;
+                return;
+            }
         }
     }
 ?>
