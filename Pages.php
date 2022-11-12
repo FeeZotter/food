@@ -10,7 +10,7 @@ class Pages
         $htmlComp = new HTMLModules();  
         $name = '';
         try {
-            $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
+            $name = $htmlComp->getName($alias);
         } catch (\Throwable $throwedError) {
             $html = new HTML('error 404');
             $html->resetScript();
@@ -51,10 +51,8 @@ class Pages
 
         //body
             //start navigation bar
-        $persons_id = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
-        $cross_person_categories_id = $htmlComp->getFirstMatchValue('cross_person_categories_id', 
-                                                                    'cross_person_categories', 
-                                                                    "persons_id='$persons_id'&&categories_id='$category'");
+        $persons_id = $htmlComp->getName($alias);
+        $cross_person_categories_id = $htmlComp->getPersonCategoryIdByPersCate($persons_id, $category);
 
         $html->addToHead($htmlComp->navigationBar('Start', $alias, $category));
             //end navigation bar
@@ -63,7 +61,7 @@ class Pages
         echo $html->getHTML();
     }
 
-    public function PreferenceByID(int $preferenceID)
+    public function PreferenceByID(int $preferenceId)
     {
         //innitialize classes
         $html = new HTML('LiKings');
@@ -78,19 +76,17 @@ class Pages
 
         //body
             //start navigation bar
-        $cross_person_categories_id = $htmlComp->getFirstMatchValue('cross_person_categories_id', 
-                                                                    'preferences', 
-                                                                    "preferences_id='$preferenceID'");
+        $cross_person_categories_id = $htmlComp->getPersonCategoryIdByPreference($preferenceId);
         $result = $htmlComp->dataTableWhere('categories_id, persons_id', 
                                             'cross_person_categories', 
                                             "cross_person_categories_id=$cross_person_categories_id");
         $result = $result[0];
         $categories_id = $result['categories_id'];
         $persons_id    = $result['persons_id'];
-        $name = $htmlComp->getFirstMatchValue('alias', 'persons', "name='$persons_id'");
+        $name = $htmlComp->getAlias($persons_id);
         $html->addToHead($htmlComp->navigationBar('Start', $name, $categories_id));
             //end navigation bar
-        $html->addToBody($htmlComp->preferenceTable($preferenceID));
+        $html->addToBody($htmlComp->preferenceTable($preferenceId));
 
         echo $html->getHTML();
     }

@@ -31,7 +31,7 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 {
     include("./food/HTMLModules.php");
     $htmlComp = new HTMLModules();  
-    $name = $htmlComp->getFirstMatchValue('name', 'persons', "alias='$alias'");
+    $name = $htmlComp->getName($alias);
     return $htmlComp->categoriesTable($name);
 });
 

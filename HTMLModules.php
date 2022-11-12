@@ -179,7 +179,7 @@
         {
             $dml = new DMLModules();
             $result = $dml->getTableWhere($select, 
-            $from, 
+                                          $from, 
                                           "$where='$_REQUEST[$where]'");
 
             return $result[0][$select];
@@ -195,16 +195,34 @@
             return $result[0][$select];
         }
 
-        public function getFirstMatchValue($select, $from, $where)
+        public function getAlias($name)
         {
             $dml = new DMLModules();
-            return $dml->getFirstMatchValue($select, $from, $where);
+            return $dml->getAlias($name);
+        }
+
+        public function getName($alias)
+        {
+            $dml = new DMLModules();
+            return $dml->getAlias($alias);
+        }
+
+        public function getPersonCategoryIdByPersCate($persons_id, $category)
+        {
+            $dml = new DMLModules();
+            return $dml->getPersonCategoryIdByPersCate($persons_id, $category);
+        }
+
+        public function getPersonCategoryIdByPreference($preferenceId)
+        {
+            $dml = new DMLModules();
+            return $dml->getPersonCategoryIdByPreference($preferenceId);
         }
 
         public function newKey($max_users)
         {
             $dml = new DMLModules();
-            return $dml->addNewKey($max_users);
+            return $dml->addNewKey($max_users, "", "");
         }
     }
 ?>
