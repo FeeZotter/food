@@ -204,7 +204,7 @@
         public function getName($alias)
         {
             $dml = new DMLModules();
-            return $dml->getAlias($alias);
+            return $dml->getName($alias);
         }
 
         public function getPersonCategoryIdByPersCate($persons_id, $category)

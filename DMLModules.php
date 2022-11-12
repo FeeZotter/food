@@ -68,7 +68,7 @@
             //try sql selection
             $sql = "SELECT $select FROM $from WHERE $where";
             
-            //echo $sql; //when debug in row 112 is needed this helps
+            //echo $sql; //when debug in next row is needed this helps
             $result = mysqli_query($this->dbconn ,$sql);
             
             return mysqli_fetch_row($result)[0];
