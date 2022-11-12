@@ -146,7 +146,7 @@
             mysqli_real_escape_string($this->dbconn, $crossPersonCategoryID);
             
             //try sql selection
-            $limit = "LIMIT 20";
+            $limit = "";
             $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
             $result = mysqli_query($this->dbconn ,$sql);
             $person_id = mysqli_fetch_row($result)[0];
@@ -154,9 +154,10 @@
             $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
             $result = mysqli_query($this->dbconn ,$sql);
             $key = mysqli_fetch_row($result)[0];
-            if($key)
+            if(!$key)
             {
-                $limit = "";
+                $limit = "LIMIT 20";
+                echo "<p class='deleteme'>The Owner of this list has no key so the visible entrys are limited to 20. </p> ";
             }
 
             $sql = "SELECT preference, rating 
