@@ -5,7 +5,7 @@ include('./food/Route.php');
 // Add base route (startpage)
 Route::add('/',function()
 {
-    include('./food/DirectLink.php');
+    include('./food/Pages.php');
     $dl = new Pages();
     echo $dl->main();
 });
@@ -74,7 +74,7 @@ Route::add('/newKey/([0-9]*)',function($max_users)
 //shortcut to preference ID by id
 Route::add('/([0-9]*)',function($var1)
 {
-    include('./food/DirectLink.php');
+    include('./food/Pages.php');
     $preference = new Pages();
     echo $preference->PreferenceByID($var1);
 });
@@ -82,7 +82,7 @@ Route::add('/([0-9]*)',function($var1)
 //shortcut to person
 Route::add('/([a-z,0-9]*)',function($var1)
 {
-    include('./food/DirectLink.php');
+    include('./food/Pages.php');
     $person = new Pages();
     echo $person->Person($var1);
 });
@@ -90,7 +90,7 @@ Route::add('/([a-z,0-9]*)',function($var1)
 //shortcut to preference ID by alias and category
 Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
-    include('./food/DirectLink.php');
+    include('./food/Pages.php');
     $preference = new Pages();
     echo $preference->Preference($alias, $category);
 });
