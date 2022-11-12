@@ -126,7 +126,7 @@ class DirectLink
         echo $html;
     }
 
-    public function loin()
+    public function login()
     {
         $html = new HTML('Login');
         $html->addScript("/js/login.js");
