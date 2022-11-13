@@ -230,5 +230,10 @@
             $dml = new DMLModules();
             return $dml->addAccount($accountname, $alias, $password, $key);
         }
+
+        public function keyModule()
+        {
+            return "<input><input>";
+        }
     }
 ?>
