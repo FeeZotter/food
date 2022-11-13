@@ -95,6 +95,21 @@ Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
     echo $preference->Preference($alias, $category);
 });
 
+//////////////////////////////////////
+///////////user functions/////////////
+
+Route::add('./login',function()
+{
+
+}, 'get');
+
+Route::add('./addAcc',function()
+{
+    print_r($_POST);
+    include('./food/HTMLModules.php');
+    $htmlComp = new HTMLModules();
+    $htmlComp->addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
+}, 'post');
 
 
 
