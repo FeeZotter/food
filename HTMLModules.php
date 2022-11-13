@@ -224,5 +224,11 @@
             $dml = new DMLModules();
             return $dml->addNewKey($max_users, "", "");
         }
+
+        public function addAccount($accountname, $alias, $password, $key)
+        {
+            $dml = new DMLModules();
+            return $dml->addAccount($accountname, $alias, $password, $key);
+        }
     }
 ?>
