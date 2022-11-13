@@ -57,42 +57,7 @@
                 }
             }
             return $data;
-        }
-
-        private function getFirstMatchValue($select, $from, $where)
-        {
-            //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $select);
-            mysqli_real_escape_string($this->dbconn, $from);
-            mysqli_real_escape_string($this->dbconn, $where);
-            //try sql selection
-            $sql = "SELECT $select FROM $from WHERE $where";
-            
-            //echo $sql; //when debug in next row is needed this helps
-            $result = mysqli_query($this->dbconn ,$sql);
-            
-            return mysqli_fetch_row($result)[0];
-        }
-
-        public function getAlias($name)
-        {
-            return $this->getFirstMatchValue('alias', 'persons', "name='$name'");
-        }
-
-        public function getName($alias)
-        {
-            return $this->getFirstMatchValue('name', 'persons', "alias='$alias'");
-        }
-
-        public function getPersonCategoryIdByPersCate($persons_id, $category)
-        {
-            return $this->getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
-        }     
-        
-        public function getPersonCategoryIdByPreference($preferenceId)
-        {
-            return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
-        }    
+        }  
 
         public function getPreferenceTable($crossPersonCategoryID)
         {
@@ -133,6 +98,43 @@
             return $data;
         }
 
+
+        /////////////////////////////////////
+        /////////single value////////////////
+        private function getFirstMatchValue($select, $from, $where)
+        {
+            //anti SQL injection
+            mysqli_real_escape_string($this->dbconn, $select);
+            mysqli_real_escape_string($this->dbconn, $from);
+            mysqli_real_escape_string($this->dbconn, $where);
+            //try sql selection
+            $sql = "SELECT $select FROM $from WHERE $where";
+            
+            //echo $sql; //when debug in next row is needed this helps
+            $result = mysqli_query($this->dbconn ,$sql);
+            
+            return mysqli_fetch_row($result)[0];
+        }
+
+        public function getAlias($name)
+        {
+            return $this->getFirstMatchValue('alias', 'persons', "name='$name'");
+        }
+
+        public function getName($alias)
+        {
+            return $this->getFirstMatchValue('name', 'persons', "alias='$alias'");
+        }
+
+        public function getPersonCategoryIdByPersCate($persons_id, $category)
+        {
+            return $this->getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
+        }     
+        
+        public function getPersonCategoryIdByPreference($preferenceId)
+        {
+            return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
+        }  
 
         //////////////////////////////////
         /////////////Accounts/////////////
