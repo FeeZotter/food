@@ -62,14 +62,6 @@ Route::add('/newKey/([0-9]*)',function($max_users)
     echo "depreciated";
 });
 
-Route::add('/newKey/([0-9]*)',function($max_users)
-{
-    include('./food/HTMLModules.php');
-    $htmlMod = new HTMLModules();
-    // echo $htmlMod->newKey($max_users);
-    echo "depreciated";
-});
-
 Route::add('/newKey)',function()
 {
     include('./food/HTMLModules.php');
@@ -81,7 +73,7 @@ Route::add('/newKey)',function()
 //////////////////////////////////////
 //////////////Shortcuts///////////////
 //shortcut to preference ID by id
-Route::add('/([0-9]*)',function($var1)
+Route::add('/s/([0-9]*)',function($var1)
 {
     include('./food/Pages.php');
     $preference = new Pages();
@@ -89,7 +81,7 @@ Route::add('/([0-9]*)',function($var1)
 });
 
 //shortcut to person
-Route::add('/([a-z,0-9]*)',function($var1)
+Route::add('/s/([a-z,0-9]*)',function($var1)
 {
     include('./food/Pages.php');
     $person = new Pages();
@@ -97,7 +89,7 @@ Route::add('/([a-z,0-9]*)',function($var1)
 });
 
 //shortcut to preference ID by alias and category
-Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
+Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     include('./food/Pages.php');
     $preference = new Pages();
@@ -107,12 +99,12 @@ Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 //////////////////////////////////////
 ///////////user functions/////////////
 
-Route::add('./login',function()
+Route::add('/login',function()
 {
 
 }, 'get');
 
-Route::add('./addAcc',function()
+Route::add('/addAcc',function()
 {
     print_r($_POST);
     include('./food/HTMLModules.php');
@@ -120,8 +112,12 @@ Route::add('./addAcc',function()
     $htmlComp->addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
 }, 'post');
 
-
-
+Route::add('/admin',function()
+{
+    include('./food/pages.php');
+    $admin = new Pages();
+    echo $admin->adminPage();
+});
 
 ////////////////
 //start router//
