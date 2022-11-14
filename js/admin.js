@@ -2,7 +2,7 @@
 //        generateKeys      //
 //////////////////////////////
 
-function getKeys()
+async function getKey()
 {
     var jqxhr = $.get(url, function() {
         //nothing
