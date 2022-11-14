@@ -90,9 +90,6 @@ function tableEvent()
             replaceByID("http://localhost/get/" + $(event.target).attr('class'), 'table');
         }
     }
-    table.addEventListener('click', () => {
-        console.log(this.innerHTML);
-    })
 }
 
 function navigationEvents()
