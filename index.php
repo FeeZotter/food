@@ -58,15 +58,24 @@ Route::add('/newKey/([0-9]*)',function($max_users)
 {
     include('./food/HTMLModules.php');
     $htmlMod = new HTMLModules();
-    echo $htmlMod->newKey($max_users);
+    //echo $htmlMod->newKey($max_users);
+    echo "depreciated";
 });
 
 Route::add('/newKey/([0-9]*)',function($max_users)
 {
     include('./food/HTMLModules.php');
     $htmlMod = new HTMLModules();
-    echo $htmlMod->newKey($max_users);
+    // echo $htmlMod->newKey($max_users);
+    echo "depreciated";
 });
+
+Route::add('/newKey)',function()
+{
+    include('./food/HTMLModules.php');
+    $htmlMod = new HTMLModules();
+    echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+}, 'post');
 
 
 //////////////////////////////////////
