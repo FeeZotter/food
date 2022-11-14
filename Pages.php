@@ -88,6 +88,9 @@ class Pages
         $html = new HTML('Admin');
         $htmlComp = new HTMLModules();
 
+        $html->resetScript();
+        $html->addScript('food/js/admin.js');
+
         $html->addToBody($htmlComp->keyModule());
 
         echo $html->getHTML();
@@ -96,14 +99,14 @@ class Pages
     public function regristration()
     {
         $html = new HTML('Regrister');
-        $html->addScript("/js/regrister.js");
+        $html->addScript("food/js/regrister.js");
         echo $html;
     }
 
     public function login()
     {
         $html = new HTML('Login');
-        $html->addScript("/js/login.js");
+        $html->addScript("food/js/login.js");
         echo $html;
     }
 }
