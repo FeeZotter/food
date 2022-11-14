@@ -23,12 +23,6 @@ class Pages
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
-
         $html->addToHead($htmlComp->navigationBar('Start', $alias, null));
 
         $html->addToBody($htmlComp->categoriesTable($name));
@@ -41,13 +35,6 @@ class Pages
         //innitialize classes
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
-
-        //style
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
 
         //body
             //start navigation bar
@@ -66,13 +53,6 @@ class Pages
         //innitialize classes
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
-
-        //style
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
 
         //body
             //start navigation bar
