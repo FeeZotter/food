@@ -97,12 +97,6 @@ class Pages
         $html = new HTML('LiKings');
         $htmlComp = new HTMLModules();  
 
-        $html->addToHead('<link rel="stylesheet" href="/food/style/style.css">');
-        $html->addToHead('<link rel="stylesheet" 
-                          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                          crossorigin="anonymous">');
-
         $html->addToBody($htmlComp->navigationBar('Start', null, null));
         $html->addToBody($htmlComp->table('alias', 'persons'));
 
@@ -112,6 +106,10 @@ class Pages
     public function adminPage()
     {
         $html = new HTML('Admin');
+        $htmlComp = new HTMLModules();
+
+        $html->addToBody($htmlComp->keyModule());
+
         echo $html->getHTML();
     }
 
