@@ -279,7 +279,7 @@
                 $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
             }
             mysqli_query($this->dbconn ,$sql);
-            echo "New Key: " . $newKey . " | Amount of users: " . $max_users;
+            echo $newKey . "|" . $max_users;
         }
 
         //////////////////////////////////////
