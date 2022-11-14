@@ -9,7 +9,7 @@ class HTML
     private $bodystart   = "<body>";
     private $bodycontent = "";
     private $bodyend     = "</body>";
-    private $htmlend     = "</head>";
+    private $htmlend     = "</html>";
     private $script      = "";
     function __construct(string $title)
     {
