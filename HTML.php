@@ -48,7 +48,7 @@ class HTML
 
     public function addStyle($styleLink)
     {
-        $this->style .="<link rel='stylesheet' href='$styleLink'";
+        $this->style .="<link rel='stylesheet' href='$styleLink'>";
     }
 
     public function addStyleAdvanced($style)
