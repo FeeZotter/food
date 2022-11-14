@@ -255,7 +255,7 @@
                                     <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control'></input>
                                 </div>
                             </div>
-                            <button type='button' class='btn btn-primary'>Submit</button>
+                            <button type='button' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
                         </form>
                     </span>";
         }
