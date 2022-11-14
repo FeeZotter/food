@@ -219,10 +219,10 @@
             return $dml->getPersonCategoryIdByPreference($preferenceId);
         }
 
-        public function newKey($max_users)
+        public function newKey($max_users, $adminname, $adminpass)
         {
             $dml = new DMLModules();
-            return $dml->addNewKey($max_users, "", "");
+            return $dml->addNewKey($max_users, $adminname, $adminpass);
         }
 
         public function addAccount($accountname, $alias, $password, $key)
@@ -238,11 +238,11 @@
                             <div class='form-row'>
                                 <div class='form-group col-md-6'>
                                     <label for='inputName'>Name</label>
-                                    <input type='text' class='form-control' id='inputName' placeholder='AdminName'>
+                                    <input type='text' name='inputName' class='form-control' id='inputName' placeholder='AdminName'>
                                 </div>
                                 <div class='form-group col-md-6'>
                                     <label for='inputPassword'>Password</label>
-                                    <input type='password' class='form-control' id='inputPassword' placeholder='Password'>
+                                    <input type='password' name='inputPassword' class='form-control' id='inputPassword' placeholder='Password'>
                                 </div>
                                 </div>
                                 <div class='form-row'>
@@ -252,7 +252,7 @@
                                 </div>
                                 <div class='form-group col-md-4'>
                                     <label for='inputKeyUses'>Key Uses</label>
-                                    <input type='number' id='inputKeyUses' class='form-control'></input>
+                                    <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control'></input>
                                 </div>
                             </div>
                             <button type='button' class='btn btn-primary'>Submit</button>
