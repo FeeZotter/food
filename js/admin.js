@@ -8,7 +8,9 @@ async function getKey()
         //nothing
     })
     .done(function(data) {
+        console.log(data);
         keys = data.split('|');
+        console.log(keys);
         document.getElementById('Keys').innerHTML += ' {Key: ' + '' + ' , uses: ' + '' + ' } ';
     })
     .then(function() {
@@ -32,3 +34,22 @@ function copyToClipboard(class_)
     navigator.clipboard.writeText(copyText.value);
     console.log("Copied the text: " + copyText.value);
 } 
+
+//////////////////////////////
+//        events            //
+//////////////////////////////
+
+function generateKeyEvent()
+{
+    button = document.getElementById('getNewKeysBtn');
+    button.onclick = () => {
+        //inputKeyUses
+        for (i = 0; i < document.getElementById('inputKeyCount'); i++) {
+            getKey();
+        }
+        //inputKeyCount
+        //inputPassword
+        //inputName
+    }
+}
+generateKeyEvent();
