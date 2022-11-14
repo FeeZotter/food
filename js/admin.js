@@ -4,10 +4,11 @@
 
 async function getKey()
 {
-    var jqxhr = $.get(url, function() {
+    var jqxhr = $.post('http://localhost/newKeys', function() {
         //nothing
     })
     .done(function(data) {
+        keys = data.split('|');
         document.getElementById('Keys').innerHTML += ' {Key: ' + '' + ' , uses: ' + '' + ' } ';
     })
     .then(function() {
