@@ -233,7 +233,31 @@
 
         public function keyModule()
         {
-            return "<input><input>";
+            return "<span class='border border-light'>
+                        <form>
+                            <div class='form-row'>
+                                <div class='form-group col-md-6'>
+                                    <label for='inputName'>Name</label>
+                                    <input type='text' class='form-control' id='inputName' placeholder='AdminName'>
+                                </div>
+                                <div class='form-group col-md-6'>
+                                    <label for='inputPassword'>Password</label>
+                                    <input type='password' class='form-control' id='inputPassword' placeholder='Password'>
+                                </div>
+                                </div>
+                                <div class='form-row'>
+                                <div class='form-group col-md-4'>
+                                    <label for='inputKeyCount'>Key Count</label>
+                                    <input type='number' class='form-control' id='inputKeyCount'>
+                                </div>
+                                <div class='form-group col-md-4'>
+                                    <label for='inputKeyUses'>Key Uses</label>
+                                    <input type='number' id='inputKeyUses' class='form-control'></input>
+                                </div>
+                            </div>
+                            <button type='button' class='btn btn-primary'>Submit</button>
+                        </form>
+                    </span>";
         }
     }
 ?>
