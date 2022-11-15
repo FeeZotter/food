@@ -6,18 +6,24 @@
 //////////////////////////////
 //        generateKeys      //
 //////////////////////////////
-$('#keyForm')
-    .ajaxForm({
-        url : 'https://localhost/newKeys', // or whatever
-        dataType : 'json',
-        success : function (response) {
-            alert("The server says: " + response);
-        }
-    })
-;
+// this is the id of the form
+$("#keyForm").submit(function(e) {
 
-$('#keyForm').ajaxForm(function() {
-    alert("Thank you for your comment!");
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+
+    var form = $(this);
+    var actionUrl = form.attr('action');
+    
+    $.ajax({
+        type: "POST",
+        url: actionUrl,
+        data: form.serialize(), // serializes the form's elements.
+        success: function(data)
+        {
+          alert(data); // show response from the php script.
+        }
+    });
+    
 });
 
 

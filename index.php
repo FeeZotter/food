@@ -61,15 +61,13 @@ Route::add('/newKey/([0-9]*)',function($max_users)
 Route::add('/newKey',function()
 {
     $htmlMod = new HTML();
-    echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+   # echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
     echo $_REQUEST;
 },'post');
 
 Route::add('/newKeys',function()
 {
-    echo $_POST;
-    echo '----------';
-    echo $_REQUEST;
+    echo 'asfewjiang3432jk5nlk|34';
 },'post');
 
 
