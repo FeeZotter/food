@@ -223,30 +223,6 @@ class HTML
                 </table>';
     }
 
-    private function tableWhere($select, $from, $where)
-    {
-        $array = $this->dml->getTableWhere($select, $from, $where);
-        $returnTable = "";
-        foreach ($array as $value)
-        {
-            $returnTable .=
-            "<tr>"
-            .   "<td>{$value}</td>"
-            ."</tr>";
-        }
-
-        $this->addToBody(   '<table class="table table-hover" id="table">
-                                <thead id="tabletop">
-                                    <tr>
-                                        <th scope="col"><a>' . ucfirst($select) . '</a><a>'. $this->searchbarName() . '</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableContent">' .
-                                    $returnTable .
-                                '</tbody>
-                            </table>');
-    }
-
     function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
@@ -362,9 +338,9 @@ class HTML
     private function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
         $this->addToBody("  <h1 class='navigation' id='navigation'>
-                                <a class='Start' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class=''      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
-                                <a class=''      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
+                                <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
+                                <a class='text-decoration-none'      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
+                                <a class='text-decoration-none'      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
                             </h1>");
     }
     
