@@ -11,18 +11,36 @@ $("#keyForm").submit(function(e)
 
     var form = $(this);
     var actionUrl = form.attr('action');
-    
-    $.ajax(
-    {
-        type: "POST",
-        url: actionUrl,
-        data: form.serialize(), // serializes the form's elements.
-        success: function(data)
-        {
-          alert(data); // show response from the php script.
-        }
-    }); 
+    console.log(document.getElementById('inputKeyCount').value)
+    getKeys(form, actionUrl)
 });
+
+async function getKeys(form, actionUrl)
+{
+    $.ajax(
+        {
+            type: "POST",
+            url: actionUrl,
+            data: form.serialize(), // serializes the form's elements.
+            success: function(data)
+            {
+                data = data.split('|');
+                // Find a <table> element with id="myTable":
+                var keyTable = document.getElementById("keyTable");
+    
+                // Create an empty <tr> element and add it to the 1st position of the table:
+                var row = keyTable.insertRow();
+    
+                // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                var keys = row.insertCell(0);
+                var uses = row.insertCell(1);
+    
+                // Add some text to the new cells:
+                keys.innerHTML = data[0];
+                uses.innerHTML = data[1]; 
+            }
+        }); 
+}
 
 
 //////////////////////////////
