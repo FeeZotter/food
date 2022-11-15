@@ -6,20 +6,15 @@
 //////////////////////////////
 //        generateKeys      //
 //////////////////////////////
-$('#keyForm')
-    .ajaxForm({
-        url : 'https://localhost/newKeys', // or whatever
-        dataType : 'json',
-        success : function (response) {
-            alert("The server says: " + response);
-        }
-    })
-;
-
-$('#keyForm').ajaxForm(function() {
-    alert("Thank you for your comment!");
+$('#keyForm').ajaxForm({
+    url : 'http://localhost/newKeys', // or whatever
+    dataType : 'json',
+    success : function (response) {
+        alert("The server says: " + response);
+    }
+},() => {
+    alert('asddf');
 });
-
 
 //////////////////////////////
 //        copyOnClick       //
