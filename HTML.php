@@ -417,7 +417,7 @@ class HTML
     private function keyModule()
     {
         $this->addToBody("  <span class='border border-light'>
-                                <form action='/newKeys' method='post' id='keyForm'>
+                                <form action='/newKey' method='post' id='keyForm'>
                                     <div class='form-row'>
                                         <div class='form-group col-md-6'>
                                             <label for='inputName'>Name</label>
