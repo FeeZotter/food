@@ -431,15 +431,24 @@ class HTML
                                         <div class='form-row'>
                                         <div class='form-group col-md-4'>
                                             <label for='inputKeyCount'>Key Count</label>
-                                            <input type='number' class='form-control' id='inputKeyCount'>
+                                            <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
                                         </div>
                                         <div class='form-group col-md-4'>
                                             <label for='inputKeyUses'>Key Uses</label>
-                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control'></input>
+                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
                                         </div>
                                     </div>
                                     <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
                                 </form>
+                                <table class='table table-hover' id='table'>
+                                <thead id='tabletop'>
+                                    <tr>
+                                        <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='keyTable'>
+                                </tbody>
+                                </table>
                             </span>");
     }
 }
