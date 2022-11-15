@@ -2,6 +2,9 @@
 include('DMLModules.php');
 class HTML
 {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   basic                                                                                                            //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private $htmlstart   = "<!DOCTYPE html><html>";
     private $headstart   = "<head><title>$title</title>";
     private $style       = "";
@@ -38,8 +41,8 @@ class HTML
 
     public function resetHead()   { $this->headcontent = ""; }
     public function resetBody()   { $this->bodycontent = ""; }
-    public function resetScript() { $this->script      = ""; }
     public function resetStyle()  { $this->style       = ""; }
+    public function resetScript() { $this->script      = ""; }
 
     private function addToBody($addToBody)
     {
@@ -87,92 +90,67 @@ class HTML
             $html->addToBody('Person not found | redirecting you shortly in <a id="timer"></a> seconds');
             return $html->getHTML();
         }
-
         $this->navigationBar('Start', $alias, null);
-
         $this->categoriesTable($name);
-
         echo $this->getHTML();
     }
 
     public function Preference(string $alias, string $category)
     {
-        //innitialize classes
-        $html = new HTML('LiKings');
-        $htmlComp = new HTMLModules();  
-
-        //body
             //start navigation bar
-        $persons_id = $htmlComp->getName($alias);
-        $cross_person_categories_id = $htmlComp->getPersonCategoryIdByPersCate($persons_id, $category);
-
-        $html->addToHead($htmlComp->navigationBar('Start', $alias, $category));
+        $persons_id = $this->getName($alias);
+        $cross_person_categories_id = $this->getPersonCategoryIdByPersCate($persons_id, $category);
+        $this->navigationBar('Start', $alias, $category);
             //end navigation bar
-        $html->addToBody($htmlComp->preferenceTable($cross_person_categories_id));
-
-        echo $html->getHTML();
+        $this->preferenceTable($cross_person_categories_id);
+        echo $this->getHTML();
     }
 
     public function PreferenceByID(int $preferenceId)
     {
-        //innitialize classes
-        $html = new HTML('LiKings');
-        $htmlComp = new HTMLModules();  
-
-        //body
             //start navigation bar
-        $cross_person_categories_id = $htmlComp->getPersonCategoryIdByPreference($preferenceId);
-        $result = $htmlComp->dataTableWhere('categories_id, persons_id', 
-                                            'cross_person_categories', 
-                                            "cross_person_categories_id=$cross_person_categories_id");
+        $cross_person_categories_id = $this->getPersonCategoryIdByPreference($preferenceId);
+        $result = $this->dataTableWhere('categories_id, persons_id', 
+                                        'cross_person_categories', 
+                                        "cross_person_categories_id=$cross_person_categories_id");
         $result = $result[0];
         $categories_id = $result['categories_id'];
         $persons_id    = $result['persons_id'];
-        $name = $htmlComp->getAlias($persons_id);
-        $html->addToHead($htmlComp->navigationBar('Start', $name, $categories_id));
+        $name = $this->getAlias($persons_id);
+        $this->navigationBar('Start', $name, $categories_id);
             //end navigation bar
-        $html->addToBody($htmlComp->preferenceTable($preferenceId));
+        $this->preferenceTable($preferenceId);
 
-        echo $html->getHTML();
+        echo $this->getHTML();
     }
 
     public function main()
     {
-        //innitialize classes
-        $html = new HTML('LiKings');
-        $htmlComp = new HTMLModules();  
-
-        $html->addToBody($htmlComp->navigationBar('Start', null, null));
-        $html->addToBody($htmlComp->table('alias', 'persons'));
-
-        echo $html->getHTML();
+        $this->navigationBar('Start', null, null);
+        $this->table('alias', 'persons');
+        echo $this->getHTML();
     }
 
     public function adminPage()
     {
-        $html = new HTML('Admin');
-        $htmlComp = new HTMLModules();
+        $this->resetScript();
+        $this->addScript('food/js/admin.js');
 
-        $html->resetScript();
-        $html->addScript('food/js/admin.js');
+        $this->keyModule();
 
-        $html->addToBody($htmlComp->keyModule());
-
-        echo $html->getHTML();
+        echo $this->getHTML();
     }
 
     public function regristration()
     {
-        $html = new HTML('Regrister');
-        $html->addScript("food/js/regrister.js");
-        echo $html;
+        $this->addScript("food/js/regrister.js");
+        echo $this;
     }
 
     public function login()
     {
-        $html = new HTML('Login');
-        $html->addScript("food/js/login.js");
-        echo $html;
+        $this->addScript("food/js/login.js");
+        echo $this;
     }
 
 
@@ -181,8 +159,6 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Modules                                                                                                          //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     private function searchbarName()
     {
         $this->addToBody('<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>');
@@ -406,7 +382,7 @@ class HTML
         return $dml->addNewKey($max_users, $adminname, $adminpass);
     }
 
-    function addAccount($accountname, $alias, $password, $key)
+    public function addAccount($accountname, $alias, $password, $key)
     {
         $dml = new DMLModules();
         return $dml->addAccount($accountname, $alias, $password, $key);
