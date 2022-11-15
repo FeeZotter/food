@@ -58,11 +58,32 @@ Route::add('/newKey/([0-9]*)',function($max_users)
     echo "depreciated";
 });
 
-Route::add('/newKey)',function()
+Route::add('/newKey',function()
 {
     $htmlMod = new HTML();
     echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+},'post');
+
+
+//////////////////////////////////////
+///////////user functions/////////////
+Route::add('/login',function()
+{
+    echo 'not implemented';
+}, 'get');
+
+Route::add('/addAcc',function()
+{
+    print_r($_POST);
+    $htmlComp = new HTML();
+    $htmlComp->addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
 }, 'post');
+
+Route::add('/admin',function()
+{
+    $admin = new HTML();
+    echo $admin->adminPage();
+});
 
 
 //////////////////////////////////////
@@ -86,27 +107,6 @@ Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     $preference = new HTML();
     echo $preference->Preference($alias, $category);
-});
-
-//////////////////////////////////////
-///////////user functions/////////////
-
-Route::add('/login',function()
-{
-
-}, 'get');
-
-Route::add('/addAcc',function()
-{
-    print_r($_POST);
-    $htmlComp = new HTML();
-    $htmlComp->addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
-}, 'post');
-
-Route::add('/admin',function()
-{
-    $admin = new HTML();
-    echo $admin->adminPage();
 });
 
 ////////////////
