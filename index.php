@@ -62,6 +62,14 @@ Route::add('/newKey',function()
 {
     $htmlMod = new HTML();
     echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+    echo $_REQUEST;
+},'post');
+
+Route::add('/newKeys',function()
+{
+    echo $_POST;
+    echo '----------';
+    echo $_REQUEST;
 },'post');
 
 
@@ -89,21 +97,21 @@ Route::add('/admin',function()
 //////////////////////////////////////
 //////////////Shortcuts///////////////
 //shortcut to preference ID by id
-Route::add('/([0-9]*)',function($var1)
+Route::add('/s/([0-9]*)',function($var1)
 {
     $preference = new HTML();
     echo $preference->PreferenceByID($var1);
 });
 
 //shortcut to person
-Route::add('/([a-z,0-9]*)',function($var1)
+Route::add('/s/([a-z,0-9]*)',function($var1)
 {
     $person = new HTML();
     echo $person->Person($var1);
 });
 
 //shortcut to preference ID by alias and category
-Route::add('/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
+Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     $preference = new HTML();
     echo $preference->Preference($alias, $category);
