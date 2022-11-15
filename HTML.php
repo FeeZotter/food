@@ -313,6 +313,35 @@ class HTML
                             </table>");
     }
 
+    public function returnPreferenceTable($categoryID)
+    {
+        $dml = new DMLModules();
+       # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
+        $array = $dml->getPreferenceTable($categoryID);
+        $returnTable = "";
+        
+        foreach ($array as $value)
+        {
+            $returnTable .=
+            "<tr>"
+            .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['preference']) . "</td>"
+            .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['rating'])    . "</td>"
+            ."</tr>";
+        }
+
+        return "<table class='table table-hover' id='table'>
+                    <thead id='tabletop'>
+                        <tr>
+                            <th scope='col'>" . 'Preference'       . '</a><a>'. $this->searchbarName() . "</a></th>
+                            <th scope='col'>" . 'Rating' . '</a><a>'. $this->searchbarRating() . "</a></th>
+                        </tr>
+                    </thead>
+                    <tbody id='tableContent'>" .
+                        $returnTable .
+                    "</tbody>
+                </table>";
+    }
+
     private function categoriesTable($personID)
     {
         $dml = new DMLModules();
@@ -337,6 +366,32 @@ class HTML
                                     $returnTable .
                                 "</tbody>
                             </table>");
+    }
+
+    public function returnCategoriesTable($personID)
+    {
+        $dml = new DMLModules();
+        $array = $dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $returnTable = "";
+        
+        foreach ($array as $value)
+        {
+            $returnTable .=
+            "<tr>"
+            .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
+            ."</tr>";
+        }
+
+        return "<table class='table table-hover' id='table'>
+                    <thead id='tabletop'>
+                        <tr>
+                            <th scope='col'>" . 'Preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
+                        </tr>
+                    </thead>
+                    <tbody id='tableContent'>" .
+                        $returnTable .
+                    "</tbody>
+                </table>";
     }
     
     private function nextPage($page, $identifier)

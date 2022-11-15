@@ -21,7 +21,7 @@ Route::add('/get',function()
 Route::add('/get/([0-9]*)',function($preferenceID)
 {
     $htmlComp = new HTML();  
-    echo $htmlComp->preferenceTable($preferenceID);
+    echo $htmlComp->returnPreferenceTable($preferenceID);
 }, 'get');
 
 //get person table
@@ -29,7 +29,7 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 {
     $htmlComp = new HTML();  
     $name = $htmlComp->getName($alias);
-    return $htmlComp->categoriesTable($name);
+    return $htmlComp->returnCategoriesTable($name);
 });
 
 
