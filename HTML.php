@@ -200,6 +200,31 @@ class HTML
                             </table>');
     }
 
+    public function returnTable($select, $from)
+    {
+        $dml = new DMLModules();
+        $array = $dml->getTable($select, $from);
+        $returnTable = "";
+        foreach ($array as $value)
+        {
+            $returnTable .=
+            "<tr>"
+            .   "<td class='$value'>{$value}</td>"
+            ."</tr>";
+        }
+
+        return "<table class='table table-hover' id='table'>
+                    <thead id='tabletop'>
+                        <tr>
+                            <th scope='col'><a>" . ucfirst($select) . '</a><a>' . $this->searchbarName() . '</a>' . '</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableContent">' .
+                        $returnTable .
+                    '</tbody>
+                </table>';
+    }
+
     private function tableWhere($select, $from, $where)
     {
         $dml = new DMLModules();
