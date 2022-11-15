@@ -6,7 +6,7 @@ class HTML
 //   basic                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private $htmlstart   = "<!DOCTYPE html><html>";
-    private $headstart   = "<head><title>$title</title>";
+    private $headstart   = "<head><title>LiKings</title>";
     private $style       = "";
     private $headcontent = "";
     private $headend     = "</head>";
