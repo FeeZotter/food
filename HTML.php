@@ -15,13 +15,13 @@ class HTML
     private $bodyend     = "</body>";
     private $htmlend     = "</html>";
     private $script      = "";
+
+    private $dml;
     function __construct()
     {
+        $dml = new DMLModules();
         $this->addStyle("/food/style/style.css");
-        $this->addStyleAdvanced('<link rel="stylesheet" 
-                                  href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-                                  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-                                  crossorigin="anonymous">');
+        $this->addStyle("/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css");
         $this->addScript('/food/js/index.js');
     }
 
@@ -177,8 +177,7 @@ class HTML
 
     private function table($select, $from)
     {
-        $dml = new DMLModules();
-        $array = $dml->getTable($select, $from);
+        $array = $this->dml->getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -202,8 +201,7 @@ class HTML
 
     public function returnTable($select, $from)
     {
-        $dml = new DMLModules();
-        $array = $dml->getTable($select, $from);
+        $array = $this->dml->getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -227,8 +225,7 @@ class HTML
 
     private function tableWhere($select, $from, $where)
     {
-        $dml = new DMLModules();
-        $array = $dml->getTableWhere($select, $from, $where);
+        $array = $this->dml->getTableWhere($select, $from, $where);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -252,43 +249,14 @@ class HTML
 
     function dataTableWhere($select, $from, $where)
     {
-        $dml = new DMLModules();
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
-        return $dml->getTableWhere($select, $from, $where); 
-    }
-
-    private function table2($select, $select2, $from)
-    {
-        $dml = new DMLModules();
-        $array = $dml->getTable("$select, $select2", $from);
-        $returnTable = "";
-        foreach ($array as $value)
-        {
-            $returnTable .=
-            "<tr>"
-            .   "<td>{$value[0]}</td>"
-            .   "<td>{$value[1]}</td>"
-            ."</tr>";
-        }
-
-        $this->addToBody('  <table class="table table-hover" id="table">
-                                <thead id="tabletop">
-                                    <tr>
-                                        <th scope="col">' . ucfirst($select)  . '</a><a>'. $this->searchbarName() . '</a></th>
-                                        <th scope="col">' . ucfirst($select2) . '</a><a>'. $this->searchbarNameRating() . '</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableContent">' .
-                                    $returnTable .
-                                '</tbody>
-                            </table>');
+        return $this->dml->getTableWhere($select, $from, $where); 
     }
 
     private function preferenceTable($categoryID)
     {
-        $dml = new DMLModules();
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $dml->getPreferenceTable($categoryID);
+        $array = $this->dml->getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -315,9 +283,8 @@ class HTML
 
     public function returnPreferenceTable($categoryID)
     {
-        $dml = new DMLModules();
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $dml->getPreferenceTable($categoryID);
+        $array = $this->dml->getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -344,8 +311,7 @@ class HTML
 
     private function categoriesTable($personID)
     {
-        $dml = new DMLModules();
-        $array = $dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -370,8 +336,7 @@ class HTML
 
     public function returnCategoriesTable($personID)
     {
-        $dml = new DMLModules();
-        $array = $dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -393,15 +358,6 @@ class HTML
                     "</tbody>
                 </table>";
     }
-    
-    private function nextPage($page, $identifier)
-    {
-        $this->addToBody("  <form action='$page' method='post'>
-                                <label class='marginLeft' for='$identifier'>$identifier:</label>
-                                <input type='text' name='$identifier' id='$identifier'>
-                                <input type='submit' value='Submit'>
-                            </form>");
-    }
 
     private function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
@@ -414,58 +370,48 @@ class HTML
     
     function getByRequest($select, $from, $where)
     {
-        $dml = new DMLModules();
-        $result = $dml->getTableWhere($select, 
-                                      $from, 
-                                      "$where='$_REQUEST[$where]'");
-
+        $result = $this->dml->getTableWhere($select, 
+                                            $from, 
+                                            "$where='$_REQUEST[$where]'");
         return $result[0][$select];
     }
 
     public function personTable($select, $from, $where, $person)
     {
-        $dml = new DMLModules();
-        $result = $dml->getTableWhere($select, 
-                                      $from, 
-                                      "$where='$person'");
-
+        $result = $this->dml->getTableWhere($select, 
+                                            $from, 
+                                            "$where='$person'");
         return $result[0][$select];
     }
 
     public function getAlias($name)
     {
-        $dml = new DMLModules();
-        return $dml->getAlias($name);
+        return $this->dml->getAlias($name);
     }
 
     public function getName($alias)
     {
-        $dml = new DMLModules();
-        return $dml->getName($alias);
+        return $this->dml->getName($alias);
     }
 
     public function getPersonCategoryIdByPersCate($persons_id, $category)
     {
-        $dml = new DMLModules();
-        return $dml->getPersonCategoryIdByPersCate($persons_id, $category);
+        return $this->dml->getPersonCategoryIdByPersCate($persons_id, $category);
     }
 
     public function getPersonCategoryIdByPreference($preferenceId)
     {
-        $dml = new DMLModules();
-        return $dml->getPersonCategoryIdByPreference($preferenceId);
+        return $this->dml->getPersonCategoryIdByPreference($preferenceId);
     }
 
     public function newKey($max_users, $adminname, $adminpass)
     {
-        $dml = new DMLModules();
-        return $dml->addNewKey($max_users, $adminname, $adminpass);
+        return $this->dml->addNewKey($max_users, $adminname, $adminpass);
     }
 
     public function addAccount($accountname, $alias, $password, $key)
     {
-        $dml = new DMLModules();
-        return $dml->addAccount($accountname, $alias, $password, $key);
+        return $this->dml->addAccount($accountname, $alias, $password, $key);
     }
 
     private function keyModule()
