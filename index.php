@@ -72,6 +72,12 @@ Route::add('/login',function()
     echo 'not implemented';
 }, 'get');
 
+Route::add('/register',function()
+{
+    $htmlComp = new HTML();
+    echo $htmlComp->regristration();
+}, 'get');
+
 Route::add('/addAcc',function()
 {
     print_r($_POST);
