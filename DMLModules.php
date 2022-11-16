@@ -136,12 +136,24 @@
             return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
         } 
         
-        private function keyExists($key)
+        private function keyUsable($key)
         {
             $sql = "SELECT EXISTS(SELECT product_key from product_keys WHERE product_key='$key')";
             $result = mysqli_query($this->dbconn ,$sql);
-            #if(mysqli_fetch_row($result)[0])
-            echo mysqli_fetch_row($result)[0];
+            if(!mysqli_fetch_row($result)[0])
+                return false;
+
+            $keyUses = intval($this->getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
+
+            $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
+            $alreadyUsed = mysqli_fetch_row($result)[0];
+
+            if($keyUses >= $alreadyUsed)
+            {
+                return false;
+            }
+
+            return true;
         } 
 
         //////////////////////////////////
@@ -205,7 +217,7 @@
                 } 
             }
 
-            $this->keyExists($key);
+            $this->keyUsable($key);
 
             //to save ressources only check something with the database if there is no error
             if($echo == "")
@@ -216,7 +228,7 @@
                 mysqli_real_escape_string($this->dbconn, $key);
 
                 //check if account name exists
-                $sql = "SELECT FROM persons WHERE name='$accountname'";
+                $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE name='$accountname')";
                 $result = mysqli_query($this->dbconn ,$sql);
                 if(mysqli_fetch_row($result)[0])
                 {
@@ -224,7 +236,7 @@
                 }
 
                 //check if alias exists
-                $sql = "SELECT FROM persons WHERE alias='$alias'";
+                $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE alias='$alias')";
                 $result = mysqli_query($this->dbconn ,$sql);
                 if(mysqli_fetch_row($result)[0])
                 {
