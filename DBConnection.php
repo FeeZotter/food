@@ -3,12 +3,12 @@
     {
         private $conn;
 
-        function __construct($servername, $username, $password, $dbname)
+        function __construct()
         {
-            $this->conn = new mysqli($servername, 
-                                     $username, 
-                                     $password, 
-                                     $dbname);
+            $this->conn = new mysqli("localhost", 
+                                     "mypref", 
+                                     "wH5dKtdFaUe3wbX", 
+                                     "mypreferences");
 
             if ($this->conn->connect_error) 
             {
