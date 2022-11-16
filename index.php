@@ -78,7 +78,7 @@ Route::add('/register',function()
     echo $htmlComp->regristration();
 }, 'get');
 
-Route::add('/addAcc',function()
+Route::add('/register',function()
 {
     print_r($_POST);
     $htmlComp = new HTML();
