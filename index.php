@@ -82,7 +82,7 @@ Route::add('/register',function()
 {
     print_r($_POST);
     $htmlComp = new HTML();
-    $htmlComp->addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
+    $htmlComp->addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPasswort'], $_REQUEST['inputKey']);
 }, 'post');
 
 Route::add('/admin',function()
