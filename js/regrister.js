@@ -1,11 +1,10 @@
 $("#keyForm").submit(function(e) 
 {
-
     var form = $(this);
     var actionUrl = form.attr('action');
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
-
+    console.log(form.serialize());
 });
 async function getKeys(form, actionUrl)
 {
