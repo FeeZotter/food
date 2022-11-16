@@ -134,7 +134,15 @@
         public function getPersonCategoryIdByPreference($preferenceId)
         {
             return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
-        }  
+        } 
+        
+        private function keyExists($key)
+        {
+            $sql = "SELECT EXISTS(SELECT product_key from product_keys WHERE product_key='$key')";
+            $result = mysqli_query($this->dbconn ,$sql);
+            #if(mysqli_fetch_row($result)[0])
+            echo mysqli_fetch_row($result)[0];
+        } 
 
         //////////////////////////////////
         /////////////Accounts/////////////
@@ -197,6 +205,8 @@
                 } 
             }
 
+            $this->keyExists($key);
+
             //to save ressources only check something with the database if there is no error
             if($echo == "")
             {
@@ -233,7 +243,7 @@
             //////////////////Error handeling ends
             //////////////////Add new user
 
-            //try adding a new user
+            //try adding a new user || not really for testing purposes
             $sql = "INSERT INTO persons name, password, alias, key VALUES ($accountname, $password, $alias, $key)";
         }
 
