@@ -54,5 +54,4 @@ function copyToClipboard(class_)
     navigator.clipboard.writeText(copyText.value);
     console.log("Copied the text: " + copyText.value);
 } 
-console.log('a');
 
