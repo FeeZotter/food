@@ -172,7 +172,7 @@
 
             //check alias
             if(!preg_match("/[a-z]/i", $alias)){
-                $echo = "You need at least 1 alphabet letter in your public alias. ";
+                $echo .= "You need at least 1 alphabet letter in your public alias. ";
             }
 
             if(strlen($alias) > 32)
