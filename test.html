@@ -8,28 +8,34 @@
               crossorigin="anonymous">'
     </head>
     <body>
+      <p>Regristration</p>
         <form>
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-5">
                 <label for="inputName">Name</label>
-                <input type="text" class="form-control" id="inputName" placeholder="AdminName">
+                <input type="text" class="form-control" id="inputName" placeholder="Private name for login">
               </div>
-              <div class="form-group col-md-6">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-5">
                 <label for="inputPassword">Password</label>
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
             </div>
             <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputKeyCount">Key Count</label>
-                <input type="number" class="form-control" id="inputKeyCount">
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputKeyUses">Key Uses</label>
-                <input type="number" id="inputKeyUses" class="form-control"></input>
+              <div class="form-group col-md-5">
+                <label for="inputAlias">Name</label>
+                <input type="text" class="form-control" id="inputAlias" placeholder="Public name">
               </div>
             </div>
-            <button type="button" class="btn btn-primary">Submit</button>
+            <div class="form-row">
+              <div class="form-group col-md-5">
+                <label for="inputKey">Key</label>
+                <input type="text" class="form-control" id="inputKey" maxlength="32" placeholder="unlocks unlimited preferences">
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary">Submit Regristration</button>
+            <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
           </form>
     </body>
 </html>

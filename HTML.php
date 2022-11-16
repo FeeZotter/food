@@ -223,30 +223,6 @@ class HTML
                 </table>';
     }
 
-    private function tableWhere($select, $from, $where)
-    {
-        $array = $this->dml->getTableWhere($select, $from, $where);
-        $returnTable = "";
-        foreach ($array as $value)
-        {
-            $returnTable .=
-            "<tr>"
-            .   "<td>{$value}</td>"
-            ."</tr>";
-        }
-
-        $this->addToBody(   '<table class="table table-hover" id="table">
-                                <thead id="tabletop">
-                                    <tr>
-                                        <th scope="col"><a>' . ucfirst($select) . '</a><a>'. $this->searchbarName() . '</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableContent">' .
-                                    $returnTable .
-                                '</tbody>
-                            </table>');
-    }
-
     function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
@@ -362,9 +338,9 @@ class HTML
     private function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
         $this->addToBody("  <h1 class='navigation' id='navigation'>
-                                <a class='Start' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class=''      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
-                                <a class=''      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
+                                <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
+                                <a class='text-decoration-none'      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
+                                <a class='text-decoration-none'      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
                             </h1>");
     }
     
@@ -417,7 +393,7 @@ class HTML
     private function keyModule()
     {
         $this->addToBody("  <span class='border border-light'>
-                                <form action='/newKeys' method='post' id='keyForm'>
+                                <form action='/newKey' method='post' id='keyForm'>
                                     <div class='form-row'>
                                         <div class='form-group col-md-6'>
                                             <label for='inputName'>Name</label>
@@ -431,15 +407,24 @@ class HTML
                                         <div class='form-row'>
                                         <div class='form-group col-md-4'>
                                             <label for='inputKeyCount'>Key Count</label>
-                                            <input type='number' class='form-control' id='inputKeyCount'>
+                                            <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
                                         </div>
                                         <div class='form-group col-md-4'>
                                             <label for='inputKeyUses'>Key Uses</label>
-                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control'></input>
+                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
                                         </div>
                                     </div>
                                     <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
                                 </form>
+                                <table class='table table-hover' id='table'>
+                                <thead id='tabletop'>
+                                    <tr>
+                                        <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='keyTable'>
+                                </tbody>
+                                </table>
                             </span>");
     }
 }

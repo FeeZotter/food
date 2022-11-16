@@ -257,10 +257,14 @@
         ////////////administration/////////////////
         public function addNewKey(int $max_users, string $adminname, string $adminpassword)
         {
+            include('admin.php');
+            if (!admin($adminname, $adminpassword))
+                return 'nokey|foryou';
+
             function RandomLetter()
             {
                 $letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                $randomletter = substr($letters, (rand(0, strlen($letters))), 1);
+                $randomletter = substr($letters, (rand(0, strlen($letters)-1)), 1);
                 return $randomletter;
             }
             
@@ -276,6 +280,7 @@
             } 
             else
             {
+                $max_users = $max_users < 100 ? $max_users : 100; //100 maximal per key
                 $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
             }
             mysqli_query($this->dbconn ,$sql);

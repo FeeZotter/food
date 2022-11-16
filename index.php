@@ -62,14 +62,6 @@ Route::add('/newKey',function()
 {
     $htmlMod = new HTML();
     echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
-    echo $_REQUEST;
-},'post');
-
-Route::add('/newKeys',function()
-{
-    echo $_POST;
-    echo '----------';
-    echo $_REQUEST;
 },'post');
 
 
