@@ -143,15 +143,14 @@ class HTML
 
     public function regristration()
     {
-        $this->addScript("food/js/regrister.js");
         $this->accountCreateModule();
-        echo $this;
+        echo $this->getHTML();
     }
 
     public function login()
     {
         $this->addScript("food/js/login.js");
-        echo $this;
+        echo $this->getHTML();
     }
 
 
@@ -385,34 +384,35 @@ class HTML
 
     private function accountCreateModule()
     {
-        $this->addToBody('  <form>
-                                <div class="form-row">
-                                    <div class="form-group col-md-5">
-                                        <label for="inputName">Name</label>
-                                        <input type="text" class="form-control" id="inputName" placeholder="Private name for login">
+        $this->addScript("food/js/regrister.js");
+        $this->addToBody("  <form>
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputName'>Name</label>
+                                        <input type='text' class='form-control' id='inputName' placeholder='Private name for login'>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-5">
-                                        <label for="inputPassword">Password</label>
-                                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputPassword'>Password</label>
+                                        <input type='password' class='form-control' id='inputPassword' placeholder='Password'>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-5">
-                                        <label for="inputAlias">Name</label>
-                                        <input type="text" class="form-control" id="inputAlias" placeholder="Public name">
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputAlias'>Name</label>
+                                        <input type='text' class='form-control' id='inputAlias' placeholder='Public name'>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-5">
-                                        <label for="inputKey">Key</label>
-                                        <input type="text" class="form-control" id="inputKey" maxlength="32" placeholder="unlocks unlimited preferences">
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputKey'>Key</label>
+                                        <input type='text' class='form-control' id='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-primary">Submit Regristration</button>
+                                <button type='button' class='btn btn-primary'>Submit Regristration</button>
                                 <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
-                            </form>');
+                            </form>");
     }
 
 
