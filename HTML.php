@@ -144,6 +144,7 @@ class HTML
     public function regristration()
     {
         $this->addScript("food/js/regrister.js");
+        $this->accountCreateModule();
         echo $this;
     }
 
@@ -343,7 +344,81 @@ class HTML
                                 <a class='text-decoration-none'      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
                             </h1>");
     }
-    
+
+    private function keyModule()
+    {
+        $this->addToBody("  <span class='border border-light'>
+                                <form action='/newKey' method='post' id='keyForm'>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <label for='inputName'>Name</label>
+                                            <input type='text' name='inputName' class='form-control' id='inputName' placeholder='AdminName'>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <label for='inputPassword'>Password</label>
+                                            <input type='password' name='inputPassword' class='form-control' id='inputPassword' placeholder='Password'>
+                                        </div>
+                                        </div>
+                                        <div class='form-row'>
+                                        <div class='form-group col-md-4'>
+                                            <label for='inputKeyCount'>Key Count</label>
+                                            <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <label for='inputKeyUses'>Key Uses</label>
+                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
+                                        </div>
+                                    </div>
+                                    <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
+                                </form>
+                                <table class='table table-hover' id='table'>
+                                <thead id='tabletop'>
+                                    <tr>
+                                        <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='keyTable'>
+                                </tbody>
+                                </table>
+                            </span>");
+    }
+
+    private function accountCreateModule()
+    {
+        $this->addToBody('  <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label for="inputName">Name</label>
+                                        <input type="text" class="form-control" id="inputName" placeholder="Private name for login">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label for="inputPassword">Password</label>
+                                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label for="inputAlias">Name</label>
+                                        <input type="text" class="form-control" id="inputAlias" placeholder="Public name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label for="inputKey">Key</label>
+                                        <input type="text" class="form-control" id="inputKey" maxlength="32" placeholder="unlocks unlimited preferences">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary">Submit Regristration</button>
+                                <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
+                            </form>');
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Forwarings                                                                                                       //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function getByRequest($select, $from, $where)
     {
         $result = $this->dml->getTableWhere($select, 
@@ -388,44 +463,6 @@ class HTML
     public function addAccount($accountname, $alias, $password, $key)
     {
         return $this->dml->addAccount($accountname, $alias, $password, $key);
-    }
-
-    private function keyModule()
-    {
-        $this->addToBody("  <span class='border border-light'>
-                                <form action='/newKey' method='post' id='keyForm'>
-                                    <div class='form-row'>
-                                        <div class='form-group col-md-6'>
-                                            <label for='inputName'>Name</label>
-                                            <input type='text' name='inputName' class='form-control' id='inputName' placeholder='AdminName'>
-                                        </div>
-                                        <div class='form-group col-md-6'>
-                                            <label for='inputPassword'>Password</label>
-                                            <input type='password' name='inputPassword' class='form-control' id='inputPassword' placeholder='Password'>
-                                        </div>
-                                        </div>
-                                        <div class='form-row'>
-                                        <div class='form-group col-md-4'>
-                                            <label for='inputKeyCount'>Key Count</label>
-                                            <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
-                                        </div>
-                                        <div class='form-group col-md-4'>
-                                            <label for='inputKeyUses'>Key Uses</label>
-                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
-                                        </div>
-                                    </div>
-                                    <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
-                                </form>
-                                <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id='keyTable'>
-                                </tbody>
-                                </table>
-                            </span>");
-    }
+    } 
 }
 ?>
