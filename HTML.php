@@ -390,25 +390,25 @@ class HTML
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputName'>Name</label>
-                                        <input type='text' class='form-control' id='inputName' placeholder='Private name for login'>
+                                        <input type='text' class='form-control' name='inputName' id='inputName' placeholder='Private name for login'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputPassword'>Password</label>
-                                        <input type='password' class='form-control' id='inputPassword' placeholder='Password'>
+                                        <input type='password' class='form-control' id='inputPassword' name='inputPassword' placeholder='Password'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputAlias'>Name</label>
-                                        <input type='text' class='form-control' id='inputAlias' placeholder='Public name'>
+                                        <input type='text' class='form-control' id='inputAlias' name='inputAlias' placeholder='Public name'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputKey'>Key</label>
-                                        <input type='text' class='form-control' id='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
+                                        <input type='text' class='form-control' id='inputKey' name='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
                                     </div>
                                 </div>
                                 <button type='submit' class='btn btn-primary'>Submit Regristration</button>
