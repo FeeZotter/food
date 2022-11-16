@@ -2,7 +2,6 @@
 
 $("#regristerForm").submit(function(e) 
 {
-    console.log('A');
     var form = $(this);
     var actionUrl = form.attr('action');
     alertUser = '';
@@ -33,34 +32,30 @@ $("#regristerForm").submit(function(e)
 
     //check Key 
     keyValue = this[3].value;
-    if(keyValue.length != 0)
+    if(keyValue != '')
     {
         if(!containsAnyLetters(keyValue))
         {
-            alertUser += "The Alias requires at least one letter. ";
+            alertUser += "The Key requires at least one letter. ";
         }
 
         if(keyValue.length < 5 || keyValue.length > 32)
         {
-            alertUser += "The Alias requires a lenght between 5 and 32. ";
+            alertUser += "The Key requires a lenght between 5 and 32. ";
         }
     }
 
     //check Password
-    passwordIndex = 1;
-    if(this[passwordIndex].value.length < 12)
+    passwordValue = this[1].value;
+    if(passwordValue.length < 12)
     {
         alertUser += "The Password requires a minimum lenght of 12. ";
     }
 
-    console.log(form.serialize());
-    console.log(this[0]);
-    userName = this[0].value;
-    console.log(userName);
-    console.log(this[3]);
-    console.log(this[1]);
-    console.log(this[2]);
-
+    if(!atLeastOneLowerCaseUpperCaseNumber(passwordValue))
+    {
+        alertUser += "The Password requires uppercase, lowercase and numbers. ";
+    }
 
     //if there is at least one alert abort regristration and 
     if(alertUser != '')
@@ -68,11 +63,7 @@ $("#regristerForm").submit(function(e)
         e.preventDefault(); // avoid to execute the actual submit of the form.
         alert(alertUser);
     }
-    //for debug purposes this needs to stay offline at the moment, sorry event///////////////////////////////////////////////////////////////////////////////////////////////////////
     e.preventDefault(); // avoid to execute the actual submit of the form.
-
-    
-    console.log('a');
 });
 console.log('started')
 async function getKeys(form, actionUrl)
@@ -150,3 +141,13 @@ if(false)
 ////////////////////////////////////////
 
 function containsAnyLetters(str) { return /[a-zA-Z]/.test(str); }
+function atLeastOneLowerCaseUpperCaseNumber(str) 
+{ 
+    if(!/[a-z]/.test(str))
+        return false;
+    if(!/[A-Z]/.test(str))
+        return false;
+    if(!/[0-9]/.test(str))
+        return false;
+    return true;
+}
