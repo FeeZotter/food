@@ -63,7 +63,6 @@ $("#regristerForm").submit(function(e)
         e.preventDefault(); // avoid to execute the actual submit of the form.
         alert(alertUser);
     }
-    e.preventDefault(); // avoid to execute the actual submit of the form.
 });
 console.log('started')
 async function getKeys(form, actionUrl)
