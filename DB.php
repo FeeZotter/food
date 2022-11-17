@@ -1,7 +1,7 @@
 <?php
-    class DBConnection
+    class DB
     {
-        private static DBConnection $instance;
+        private static DB $instance;
         private $conn;
 
         private function __construct()
@@ -26,7 +26,7 @@
         {
             if (self::$instance == null)
             {
-                self::$instance = new DBConnection();
+                self::$instance = new DB();
             }
             return self::$conn; 
         }

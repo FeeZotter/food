@@ -7,7 +7,7 @@
 
         function __construct()
         {
-            $this->db = new DBConnection();
+            $this->db = new DB();
             $this->dbconn = $this->db->getConnection();;
         } 
 
