@@ -7,9 +7,7 @@
 
         function __construct()
         {
-            include('serverconfig.php');
-
-            $this->db = new DBConnection($servername, $username, $password, $dbname);
+            $this->db = new DBConnection();
             $this->dbconn = $this->db->getConnection();;
         } 
 
@@ -136,19 +134,20 @@
             return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
         } 
         
-        private function keyUsable($key)
+        private function keyUsable(string $key)
         {
             $sql = "SELECT EXISTS(SELECT product_key from product_keys WHERE product_key='$key')";
             $result = mysqli_query($this->dbconn ,$sql);
             if(!mysqli_fetch_row($result)[0])
                 return false;
-
+            echo "first";
             $keyUses = intval($this->getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
-
             $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
+            $result = mysqli_query($this->dbconn ,$sql);
             $alreadyUsed = mysqli_fetch_row($result)[0];
 
-            if($keyUses >= $alreadyUsed)
+            echo "{" . $keyUses . " | " . $alreadyUsed . "}";
+            if($keyUses <= $alreadyUsed)
             {
                 return false;
             }
@@ -208,16 +207,17 @@
             //check Key
             if($key != "")
             {
-                trim($key, " \n\r\t\v\x00");
                 if (strlen($key) != 32) {
-                    $echo .= "The key needs a lenght of 32. ";
+                    $echo .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
                 }
                 if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) {
                     $echo .= 'The key has illegal Letters. ';
                 } 
             }
 
-            $this->keyUsable($key);
+            echo ' | ';
+            echo intval($this->keyUsable($key));
+            echo ' | ';
 
             //to save ressources only check something with the database if there is no error
             if($echo == "")
@@ -291,7 +291,8 @@
             }
             
             $newKey = '';
-            for ($i=0; $i < 32; $i++) { 
+            while (strlen($newKey) != 32) 
+            { 
                 $newKey .= RandomLetter();
             }
 
