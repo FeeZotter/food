@@ -1,26 +1,34 @@
 <?php
     class DBConnection
     {
+        private static DBConnection $instance;
         private $conn;
 
-        function __construct()
+        private function __construct()
         {
-            $this->conn = new mysqli("localhost", 
+            self::$conn = new mysqli("localhost", 
                                      "mypref", 
                                      "wH5dKtdFaUe3wbX", 
                                      "mypreferences");
 
-            if ($this->conn->connect_error) 
+            if (self::$conn->connect_error) 
             {
-                die("Connection failed: " . $this->conn->connect_error);
+                die("Connection failed: " . self::$conn->connect_error);
             }
         }   
 
         function __destruct() 
         {
-            $this->conn->close();
+            self::$conn->close();
         }
 
-        function getConnection(){ return $this->conn; }
+        static function getConnection() 
+        {
+            if (self::$instance == null)
+            {
+                self::$instance = new DBConnection();
+            }
+            return self::$conn; 
+        }
     }
 ?>
