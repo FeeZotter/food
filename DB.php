@@ -22,7 +22,7 @@
             self::$conn->close();
         }
 
-        static function getConnection() 
+        static function connection() 
         {
             if (self::$instance == null)
             {
