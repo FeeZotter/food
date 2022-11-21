@@ -175,7 +175,7 @@ class HTML
 
     private function table($select, $from)
     {
-        $array = $this->dml->getTable($select, $from);
+        $array = DMLModules::getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -199,7 +199,7 @@ class HTML
 
     public function returnTable($select, $from)
     {
-        $array = $this->dml->getTable($select, $from);
+        $array = DMLModules::getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -224,13 +224,13 @@ class HTML
     function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
-        return $this->dml->getTableWhere($select, $from, $where); 
+        return DMLModules::getTableWhere($select, $from, $where); 
     }
 
     private function preferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $this->dml->getPreferenceTable($categoryID);
+        $array = DMLModules::getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -258,7 +258,7 @@ class HTML
     public function returnPreferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $this->dml->getPreferenceTable($categoryID);
+        $array = DMLModules::getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -285,7 +285,7 @@ class HTML
 
     private function categoriesTable($personID)
     {
-        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -310,7 +310,7 @@ class HTML
 
     public function returnCategoriesTable($personID)
     {
-        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -420,7 +420,7 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function getByRequest($select, $from, $where)
     {
-        $result = $this->dml->getTableWhere($select, 
+        $result = DMLModules::getTableWhere($select, 
                                             $from, 
                                             "$where='$_REQUEST[$where]'");
         return $result[0][$select];
@@ -428,7 +428,7 @@ class HTML
 
     public function personTable($select, $from, $where, $person)
     {
-        $result = $this->dml->getTableWhere($select, 
+        $result = DMLModules::getTableWhere($select, 
                                             $from, 
                                             "$where='$person'");
         return $result[0][$select];
@@ -436,32 +436,32 @@ class HTML
 
     public function getAlias($name)
     {
-        return $this->dml->getAlias($name);
+        return DMLModules::getAlias($name);
     }
 
     public function getName($alias)
     {
-        return $this->dml->getName($alias);
+        return DMLModules::getName($alias);
     }
 
     public function getPersonCategoryIdByPersCate($persons_id, $category)
     {
-        return $this->dml->getPersonCategoryIdByPersCate($persons_id, $category);
+        return DMLModules::getPersonCategoryIdByPersCate($persons_id, $category);
     }
 
     public function getPersonCategoryIdByPreference($preferenceId)
     {
-        return $this->dml->getPersonCategoryIdByPreference($preferenceId);
+        return DMLModules::getPersonCategoryIdByPreference($preferenceId);
     }
 
     public function newKey($max_users, $adminname, $adminpass)
     {
-        return $this->dml->addNewKey($max_users, $adminname, $adminpass);
+        return DMLModules::addNewKey($max_users, $adminname, $adminpass);
     }
 
     public function addAccount($accountname, $alias, $password, $key)
     {
-        return $this->dml->addAccount($accountname, $alias, $password, $key);
+        return DMLModules::addAccount($accountname, $alias, $password, $key);
     } 
 }
 ?>
