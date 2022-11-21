@@ -16,10 +16,8 @@ class HTML
     private $htmlend     = "</html>";
     private $script      = "";
 
-    private $dml;
     function __construct()
     {
-        $this->dml = new DMLModules();
         $this->addStyle("/food/style/style.css");
         $this->addStyle("/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css");
         $this->addScript('/food/js/index.js');
