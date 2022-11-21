@@ -2,26 +2,17 @@
     include('DBConnection.php');
     class DMLModules
     {
-        private $db;
-        private mysqli $dbconn;
-
-        function __construct()
-        {
-            $this->db = new DB();
-            $this->dbconn = $this->db->connection();;
-        } 
-
         ///////////////////////////////////////////
         ////////////////punlic tables//////////////
-        public function getTable($select, $from)
+        public static function getTable($select, $from)
         {
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $select);
-            mysqli_real_escape_string($this->dbconn, $from);
+            mysqli_real_escape_string(DB::connection(), $select);
+            mysqli_real_escape_string(DB::connection(), $from);
             
             //try sql selection
             $sql = "SELECT $select FROM $from ORDER BY $select ASC";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
 
             //compose array from data
             $data = null;
@@ -35,15 +26,15 @@
             return $data;
         }
 
-        public function getTableWhere($select, $from, $where)
+        public static function getTableWhere($select, $from, $where)
         {
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $select);
-            mysqli_real_escape_string($this->dbconn, $from);
-            mysqli_real_escape_string($this->dbconn, $where);
+            mysqli_real_escape_string(DB::connection(), $select);
+            mysqli_real_escape_string(DB::connection(), $from);
+            mysqli_real_escape_string(DB::connection(), $where);
             //try sql selection
             $sql = "SELECT $select FROM $from WHERE $where ORDER BY $select ASC";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             
             //compose array from data
             $data = array();
@@ -57,19 +48,19 @@
             return $data;
         }  
 
-        public function getPreferenceTable($crossPersonCategoryID)
+        public static function getPreferenceTable($crossPersonCategoryID)
         {
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $crossPersonCategoryID);
+            mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
             
             //try sql selection
             $limit = "";
             $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             $person_id = mysqli_fetch_row($result)[0];
 
             $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             $key = mysqli_fetch_row($result)[0];
             if(!$key)
             {
@@ -82,7 +73,7 @@
                     WHERE cross_person_categories_id='$crossPersonCategoryID'
                     $limit";
                 #    ORDER BY preference ASC, rating DESC";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             
             //compose array from data
             $data = array();
@@ -99,51 +90,51 @@
 
         /////////////////////////////////////
         /////////single value////////////////
-        private function getFirstMatchValue($select, $from, $where)
+        private static function getFirstMatchValue($select, $from, $where)
         {
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $select);
-            mysqli_real_escape_string($this->dbconn, $from);
-            mysqli_real_escape_string($this->dbconn, $where);
+            mysqli_real_escape_string(DB::connection(), $select);
+            mysqli_real_escape_string(DB::connection(), $from);
+            mysqli_real_escape_string(DB::connection(), $where);
             //try sql selection
             $sql = "SELECT $select FROM $from WHERE $where";
             
             //echo $sql; //when debug in next row is needed this helps
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             
             return mysqli_fetch_row($result)[0];
         }
 
-        public function getAlias($name)
+        public static function getAlias($name)
         {
-            return $this->getFirstMatchValue('alias', 'persons', "name='$name'");
+            return self::getFirstMatchValue('alias', 'persons', "name='$name'");
         }
 
-        public function getName($alias)
+        public static function getName($alias)
         {
-            return $this->getFirstMatchValue('name', 'persons', "alias='$alias'");
+            return self::getFirstMatchValue('name', 'persons', "alias='$alias'");
         }
 
-        public function getPersonCategoryIdByPersCate($persons_id, $category)
+        public static function getPersonCategoryIdByPersCate($persons_id, $category)
         {
-            return $this->getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
+            return self::getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
         }     
         
-        public function getPersonCategoryIdByPreference($preferenceId)
+        public static function getPersonCategoryIdByPreference($preferenceId)
         {
-            return $this->getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
+            return self::getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
         } 
         
-        private function keyUsable(string $key)
+        private static function keyUsable(string $key)
         {
             $sql = "SELECT EXISTS(SELECT product_key from product_keys WHERE product_key='$key')";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             if(!mysqli_fetch_row($result)[0])
                 return false;
             echo "first";
-            $keyUses = intval($this->getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
+            $keyUses = intval(self::getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
             $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             $alreadyUsed = mysqli_fetch_row($result)[0];
 
             echo "{" . $keyUses . " | " . $alreadyUsed . "}";
@@ -157,7 +148,7 @@
 
         //////////////////////////////////
         /////////////Accounts/////////////
-        public function addAccount($accountname, $alias, $password, $key)
+        public static function addAccount($accountname, $alias, $password, $key)
         {
             /**
              * trys to add an account to the database
@@ -216,20 +207,20 @@
             }
 
             echo ' | ';
-            echo intval($this->keyUsable($key));
+            echo intval(self::keyUsable($key));
             echo ' | ';
 
             //to save ressources only check something with the database if there is no error
             if($echo == "")
             {
-                mysqli_real_escape_string($this->dbconn, $accountname);
-                mysqli_real_escape_string($this->dbconn, $password);
-                mysqli_real_escape_string($this->dbconn, $alias);
-                mysqli_real_escape_string($this->dbconn, $key);
+                mysqli_real_escape_string(DB::connection(), $accountname);
+                mysqli_real_escape_string(DB::connection(), $password);
+                mysqli_real_escape_string(DB::connection(), $alias);
+                mysqli_real_escape_string(DB::connection(), $key);
 
                 //check if account name exists
                 $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE name='$accountname')";
-                $result = mysqli_query($this->dbconn ,$sql);
+                $result = mysqli_query(DB::connection() ,$sql);
                 if(mysqli_fetch_row($result)[0])
                 {
                     $echo .= "There is already a person with this name, please choose another or you fail again.";
@@ -237,7 +228,7 @@
 
                 //check if alias exists
                 $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE alias='$alias')";
-                $result = mysqli_query($this->dbconn ,$sql);
+                $result = mysqli_query(DB::connection() ,$sql);
                 if(mysqli_fetch_row($result)[0])
                 {
                     $echo .= "There is already a person with this alias, you are not the first.";
@@ -259,25 +250,25 @@
             $sql = "INSERT INTO persons name, password, alias, key VALUES ($accountname, $password, $alias, $key)";
         }
 
-        public function deleteAccount($accountname, $password)
+        public static function deleteAccount($accountname, $password)
         {
-            mysqli_real_escape_string($this->dbconn, $accountname);
-            mysqli_real_escape_string($this->dbconn, $password);
+            mysqli_real_escape_string(DB::connection(), $accountname);
+            mysqli_real_escape_string(DB::connection(), $password);
 
             $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND password='$password'";
-            $result = mysqli_query($this->dbconn ,$sql);
+            $result = mysqli_query(DB::connection() ,$sql);
             if(!mysqli_fetch_row($result)[0])
             {
                 echo "Account does not exist or password is wrong.";
                 return;
             }
             $sql = "DELETE FROM persons WHERE name='$accountname' AND password='$password'";
-            echo mysqli_query($this->dbconn ,$sql);
+            echo mysqli_query(DB::connection() ,$sql);
         }
 
         ///////////////////////////////////////////
         ////////////administration/////////////////
-        public function addNewKey(int $max_users, string $adminname, string $adminpassword)
+        public static function addNewKey(int $max_users, string $adminname, string $adminpassword)
         {
             include('admin.php');
             if (!admin($adminname, $adminpassword))
@@ -306,13 +297,13 @@
                 $max_users = $max_users < 100 ? $max_users : 100; //100 maximal per key
                 $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
             }
-            mysqli_query($this->dbconn ,$sql);
+            mysqli_query(DB::connection() ,$sql);
             echo $newKey . "|" . $max_users;
         }
 
         //////////////////////////////////////
         ///////////outdated///////////////////
-        function addContent($user,
+        static function addContent($user,
                             $password,
                             $preference,
                             $rating, 
@@ -322,33 +313,33 @@
             trim($preference, " \n\r\t\v\x00");
             
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $user);
-            mysqli_real_escape_string($this->dbconn, $password);
-            mysqli_real_escape_string($this->dbconn, $preference);
-            mysqli_real_escape_string($this->dbconn, $rating);
-            mysqli_real_escape_string($this->dbconn, $cross_person_categories_id);
+            mysqli_real_escape_string(DB::connection(), $user);
+            mysqli_real_escape_string(DB::connection(), $password);
+            mysqli_real_escape_string(DB::connection(), $preference);
+            mysqli_real_escape_string(DB::connection(), $rating);
+            mysqli_real_escape_string(DB::connection(), $cross_person_categories_id);
         }
 
-        function deleteContent(string $from,  
+        static function deleteContent(string $from,  
                                string $where, 
                                string $eqals) 
         {
             //anti SQL injection
-            mysqli_real_escape_string($this->dbconn, $from);
-            mysqli_real_escape_string($this->dbconn, $where);
-            mysqli_real_escape_string($this->dbconn, $eqals);
+            mysqli_real_escape_string(DB::connection(), $from);
+            mysqli_real_escape_string(DB::connection(), $where);
+            mysqli_real_escape_string(DB::connection(), $eqals);
 
             //try sql delete
             $sql = "DELETE FROM $from
                     WHERE       $where = '$eqals'";
 
-            if(mysqli_query($this->dbconn, $sql))
+            if(mysqli_query(DB::connection(), $sql))
             {
                 $echo = "'$eqals' deleted successfully";
             } 
             else
             {
-                $echo = "ERROR: Could not able to execute " . $sql . ". " . $this->dbconn->connect_error;
+                $echo = "ERROR: Could not able to execute " . $sql . ". " . DB::connection()->connect_error;
             }
             echo $echo;
         }
