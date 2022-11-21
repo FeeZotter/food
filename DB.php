@@ -1,8 +1,8 @@
 <?php
     class DB
     {
-        private static DB $instance;
-        private $conn;
+        static private ?DB $instance = null;
+        static private $conn;
 
         private function __construct()
         {
