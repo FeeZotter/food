@@ -64,7 +64,7 @@ Route::add('/login',function()
     echo 'not implemented';
 }, 'get');
 
-Route::add('/register',function()
+Route::add('/regrister',function()
 {
     $htmlComp = new HTML();
     echo $htmlComp->regristration();
@@ -72,8 +72,9 @@ Route::add('/register',function()
 
 Route::add('/regrister',function()
 {
+    echo 'Hey! The form has been sent:<br/>';
     print_r($_POST);
-    HTML::addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
+    HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
 }, 'post');
 
 Route::add('/admin',function()
