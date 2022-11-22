@@ -8,14 +8,14 @@ Route::add('/',function()
 {
     $dl = new HTML();
     echo $dl->main();
-});
+}, 'get');
 
 //only main table
 Route::add('/get',function()
 {
     $htmlComp = new HTML();  
     echo $htmlComp->returnTable('alias', 'persons');
-});
+}, 'get');
 
 //get preference table
 Route::add('/get/([0-9]*)',function($preferenceID)
@@ -30,7 +30,7 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
     $htmlComp = new HTML();  
     $name = $htmlComp->getName($alias);
     return $htmlComp->returnCategoriesTable($name);
-});
+}, 'get');
 
 
 
@@ -51,17 +51,9 @@ Route::add('/contact-form',function()
 
 //////////////////////////////////////////////////
 //////////////////Generate Keys///////////////////
-Route::add('/newKey/([0-9]*)',function($max_users)
-{
-    $htmlMod = new HTML();
-    //echo $htmlMod->newKey($max_users);
-    echo "depreciated";
-});
-
 Route::add('/newKey',function()
 {
-    $htmlMod = new HTML();
-    echo $htmlMod->newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+    echo HTML::newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
 },'post');
 
 
@@ -78,18 +70,17 @@ Route::add('/register',function()
     echo $htmlComp->regristration();
 }, 'get');
 
-Route::add('/register',function()
+Route::add('/regrister',function()
 {
     print_r($_POST);
-    $htmlComp = new HTML();
-    $htmlComp->addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
+    HTML::addAccount($_REQUEST['account'], $_REQUEST['alias'], $_REQUEST['password'], $_REQUEST['key']);
 }, 'post');
 
 Route::add('/admin',function()
 {
     $admin = new HTML();
     echo $admin->adminPage();
-});
+}, 'get');
 
 
 //////////////////////////////////////
@@ -99,21 +90,21 @@ Route::add('/s/([0-9]*)',function($var1)
 {
     $preference = new HTML();
     echo $preference->PreferenceByID($var1);
-});
+}, 'get');
 
 //shortcut to person
 Route::add('/s/([a-z,0-9]*)',function($var1)
 {
     $person = new HTML();
     echo $person->Person($var1);
-});
+}, 'get');
 
 //shortcut to preference ID by alias and category
 Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     $preference = new HTML();
     echo $preference->Preference($alias, $category);
-});
+}, 'get');
 
 ////////////////
 //start router//
