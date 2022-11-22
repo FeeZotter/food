@@ -2,6 +2,7 @@
 
 $("#regristerForm").submit(function(e) 
 {
+    console.log(e);
     var form = $(this);
     var actionUrl = form.attr('action');
     alertUser = '';
@@ -56,10 +57,13 @@ $("#regristerForm").submit(function(e)
     {
         alertUser += "The Password requires uppercase, lowercase and numbers. ";
     }
-
+    console.log(e)
+    alert(e);
     //if there is at least one alert abort regristration and 
     if(alertUser != '')
     {
+        alert(e);
+        console.log('prevent');
         e.preventDefault(); // avoid to execute the actual submit of the form.
         alert(alertUser);
     }
