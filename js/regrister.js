@@ -63,6 +63,7 @@ $("#regristerForm").submit(function(e)
         e.preventDefault(); // avoid to execute the actual submit of the form.
         alert(alertUser);
     }
+    console.log('asdf')
 });
 console.log('started')
 

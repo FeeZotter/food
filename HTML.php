@@ -143,6 +143,7 @@ class HTML
 
     public function regristration()
     {
+        $this->resetScript();
         $this->accountCreateModule();
         echo $this->getHTML();
     }
@@ -385,7 +386,7 @@ class HTML
     private function accountCreateModule()
     {
         $this->addScript("food/js/regrister.js");
-        $this->addToBody("  <form>
+        $this->addToBody("  <form id='regristerForm'>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputName'>Name</label>
@@ -410,7 +411,7 @@ class HTML
                                         <input type='text' class='form-control' id='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
                                     </div>
                                 </div>
-                                <button type='button' class='btn btn-primary'>Submit Regristration</button>
+                                <button type='submit' class='btn btn-primary'>Submit Regristration</button>
                                 <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
                             </form>");
     }
