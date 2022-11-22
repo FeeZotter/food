@@ -339,8 +339,8 @@ class HTML
     {
         $this->addToBody("  <h1 class='navigation' id='navigation'>
                                 <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class='text-decoration-none'      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
-                                <a class='text-decoration-none'      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
+                                <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
+                                <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
                             </h1>");
     }
 
