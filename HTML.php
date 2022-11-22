@@ -16,8 +16,10 @@ class HTML
     private $htmlend     = "</html>";
     private $script      = "";
 
+    private $dml;
     function __construct()
     {
+        $this->dml = new DMLModules();
         $this->addStyle("/food/style/style.css");
         $this->addStyle("/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css");
         $this->addScript('/food/js/index.js');
@@ -80,7 +82,7 @@ class HTML
         //check if there is an error
         $name = '';
         try {
-            $name = $this->getName($alias);
+            $name = DMLModules::getName($alias);
         } catch (\Throwable $throwedError) {
             $html = new HTML('error 404');
             $html->resetScript();
@@ -96,8 +98,8 @@ class HTML
     public function Preference(string $alias, string $category)
     {
             //start navigation bar
-        $persons_id = $this->getName($alias);
-        $cross_person_categories_id = $this->getPersonCategoryIdByPersCate($persons_id, $category);
+        $persons_id = DMLModules::getName($alias);
+        $cross_person_categories_id = DMLModules::getPersonCategoryIdByPersCate($persons_id, $category);
         $this->navigationBar('Start', $alias, $category);
             //end navigation bar
         $this->preferenceTable($cross_person_categories_id);
@@ -107,14 +109,14 @@ class HTML
     public function PreferenceByID(int $preferenceId)
     {
             //start navigation bar
-        $cross_person_categories_id = $this->getPersonCategoryIdByPreference($preferenceId);
+        $cross_person_categories_id = DMLModules::getPersonCategoryIdByPreference($preferenceId);
         $result = $this->dataTableWhere('categories_id, persons_id', 
                                         'cross_person_categories', 
                                         "cross_person_categories_id=$cross_person_categories_id");
         $result = $result[0];
         $categories_id = $result['categories_id'];
         $persons_id    = $result['persons_id'];
-        $name = $this->getAlias($persons_id);
+        $name = DMLModules::getAlias($persons_id);
         $this->navigationBar('Start', $name, $categories_id);
             //end navigation bar
         $this->preferenceTable($preferenceId);
@@ -175,7 +177,7 @@ class HTML
 
     private function table($select, $from)
     {
-        $array = DMLModules::getTable($select, $from);
+        $array = $this->dml->getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -199,7 +201,7 @@ class HTML
 
     public function returnTable($select, $from)
     {
-        $array = DMLModules::getTable($select, $from);
+        $array = $this->dml->getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -224,13 +226,13 @@ class HTML
     function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
-        return DMLModules::getTableWhere($select, $from, $where); 
+        return $this->dml->getTableWhere($select, $from, $where); 
     }
 
     private function preferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = DMLModules::getPreferenceTable($categoryID);
+        $array = $this->dml->getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -258,7 +260,7 @@ class HTML
     public function returnPreferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = DMLModules::getPreferenceTable($categoryID);
+        $array = $this->dml->getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -285,7 +287,7 @@ class HTML
 
     private function categoriesTable($personID)
     {
-        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -310,7 +312,7 @@ class HTML
 
     public function returnCategoriesTable($personID)
     {
-        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -337,8 +339,8 @@ class HTML
     {
         $this->addToBody("  <h1 class='navigation' id='navigation'>
                                 <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class='text-decoration-none'       id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
-                                <a class='text-decoration-none'       id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
+                                <a class='text-decoration-none'      id='navigation2'>" . ucfirst($navigationPoint2) . "</a>                
+                                <a class='text-decoration-none'      id='navigation3'>" . ucfirst($navigationPoint3) . "</a>
                             </h1>");
     }
 
@@ -382,34 +384,33 @@ class HTML
 
     private function accountCreateModule()
     {
-        $this->resetScript();
         $this->addScript("food/js/regrister.js");
-        $this->addToBody("  <form id='regristerForm' method='post'>
+        $this->addToBody("  <form>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputName'>Name</label>
-                                        <input type='text' class='form-control' name='inputName' id='inputName' placeholder='Private name for login'>
+                                        <input type='text' class='form-control' id='inputName' placeholder='Private name for login'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputPassword'>Password</label>
-                                        <input type='password' class='form-control' id='inputPassword' name='inputPassword' placeholder='Password'>
+                                        <input type='password' class='form-control' id='inputPassword' placeholder='Password'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputAlias'>Name</label>
-                                        <input type='text' class='form-control' id='inputAlias' name='inputAlias' placeholder='Public name'>
+                                        <input type='text' class='form-control' id='inputAlias' placeholder='Public name'>
                                     </div>
                                 </div>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputKey'>Key</label>
-                                        <input type='text' class='form-control' id='inputKey' name='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
+                                        <input type='text' class='form-control' id='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
                                     </div>
                                 </div>
-                                <button type='submit' class='btn btn-primary'>Submit Regristration</button>
+                                <button type='button' class='btn btn-primary'>Submit Regristration</button>
                                 <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
                             </form>");
     }
@@ -420,7 +421,7 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function getByRequest($select, $from, $where)
     {
-        $result = DMLModules::getTableWhere($select, 
+        $result = $this->dml->getTableWhere($select, 
                                             $from, 
                                             "$where='$_REQUEST[$where]'");
         return $result[0][$select];
@@ -428,38 +429,38 @@ class HTML
 
     public function personTable($select, $from, $where, $person)
     {
-        $result = DMLModules::getTableWhere($select, 
+        $result = $this->dml->getTableWhere($select, 
                                             $from, 
                                             "$where='$person'");
         return $result[0][$select];
     }
 
-    public function getAlias($name)
+    public static function getAlias($name)
     {
         return DMLModules::getAlias($name);
     }
 
-    public function getName($alias)
+    public static function getName($alias)
     {
         return DMLModules::getName($alias);
     }
 
-    public function getPersonCategoryIdByPersCate($persons_id, $category)
+    public static function getPersonCategoryIdByPersCate($persons_id, $category)
     {
         return DMLModules::getPersonCategoryIdByPersCate($persons_id, $category);
     }
 
-    public function getPersonCategoryIdByPreference($preferenceId)
+    public static function getPersonCategoryIdByPreference($preferenceId)
     {
         return DMLModules::getPersonCategoryIdByPreference($preferenceId);
     }
 
-    public function newKey($max_users, $adminname, $adminpass)
+    public static function newKey($max_users, $adminname, $adminpass)
     {
         return DMLModules::addNewKey($max_users, $adminname, $adminpass);
     }
 
-    public function addAccount($accountname, $alias, $password, $key)
+    public static function addAccount($accountname, $alias, $password, $key)
     {
         return DMLModules::addAccount($accountname, $alias, $password, $key);
     } 
