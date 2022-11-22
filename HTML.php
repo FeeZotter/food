@@ -386,7 +386,7 @@ class HTML
     private function accountCreateModule()
     {
         $this->addScript("food/js/regrister.js");
-        $this->addToBody("  <form id='regristerForm'>
+        $this->addToBody("  <form id='regristerForm' method='post'>
                                 <div class='form-row'>
                                     <div class='form-group col-md-5'>
                                         <label for='inputName'>Name</label>
