@@ -84,11 +84,7 @@ class HTML
         try {
             $name = DMLModules::getName($alias);
         } catch (\Throwable $throwedError) {
-            $html = new HTML('error 404');
-            $html->resetScript();
-            $html->addScript('/food/js/error404.js');
-            $html->addToBody('Person not found | redirecting you shortly in <a id="timer"></a> seconds');
-            return $html->getHTML();
+            return $this->error404();
         }
         $this->navigationBar('Start', $alias, null);
         $this->categoriesTable($name);
@@ -152,6 +148,15 @@ class HTML
     {
         $this->addScript("food/js/login.js");
         echo $this->getHTML();
+    }
+
+    public function error404()
+    {
+        $html = new HTML('error 404');
+        $html->resetScript();
+        $html->addScript('/food/js/error404.js');
+        $html->addToBody('Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds');
+        return $html->getHTML();
     }
 
 
