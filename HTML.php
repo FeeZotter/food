@@ -468,7 +468,16 @@ class HTML
 
     public static function addAccount($accountname, $alias, $password, $key)
     {
-        return DMLModules::addAccount($accountname, $alias, $password, $key);
+        if(DMLModules::addAccount($accountname, $alias, $password, $key))
+        {
+            $html = new HTML();
+            return $html->login();
+        }
+        else 
+        {
+            $html = new HTML();
+            return $html->error404();
+        }
     } 
 }
 ?>
