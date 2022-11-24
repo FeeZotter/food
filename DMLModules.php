@@ -217,14 +217,11 @@
             if($echo != "")
             {
                 echo $echo;
-                return;
+                return false;
             }
 
             //////////////////Error handeling ends
             //////////////////Add new user
-
-
-
 
             //try adding a new user || not really for testing purposes
             $sql = "INSERT INTO persons (name, pasword, alias, key) VALUES ('$accountname', '$password', '$alias', $key)";
@@ -232,8 +229,14 @@
             {
                 $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')";
             }
-            echo $sql;
-            echo mysqli_query(DB::connection() ,$sql);
+            if(mysqli_query(DB::connection() ,$sql))
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
         }
 
         public static function deleteAccount($accountname, $password)
