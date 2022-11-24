@@ -72,8 +72,6 @@ Route::add('/regrister',function()
 
 Route::add('/regrister',function()
 {
-    echo 'Hey! The form has been sent:<br/>';
-    print_r($_POST);
     HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
 }, 'post');
 
