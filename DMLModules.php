@@ -131,17 +131,13 @@
             $result = mysqli_query(DB::connection() ,$sql);
             if(!mysqli_fetch_row($result)[0])
                 return false;
-            echo "first";
             $keyUses = intval(self::getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
             $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
             $result = mysqli_query(DB::connection() ,$sql);
             $alreadyUsed = mysqli_fetch_row($result)[0];
 
-            echo "{" . $keyUses . " | " . $alreadyUsed . "}";
             if($keyUses <= $alreadyUsed)
-            {
                 return false;
-            }
 
             return true;
         } 
@@ -162,53 +158,39 @@
              * @return Status
              */ 
 
-             //////////////////Error handeling
+            //////////////////Error handeling
             $echo = "";
             //check accountname
             //if the accountname contains no letters throw an error
-            if(!preg_match("/[a-z]/i", $accountname)){
+            if(!preg_match("/[a-z]/i", $accountname))
                 $echo .= "You need at least 1 alphabet letter in your Account name. ";
-            }
 
             if(strlen($accountname) > 32)
-            {
                 $echo .= "A maximum of 32 Letters are allowed for the Account name. ";
-            }
 
             if(strlen($accountname) < 5)
-            {
                 $echo .= "You need at least 5 Letters for the Account name. ";
-            }
 
             //check alias
-            if(!preg_match("/[a-z]/i", $alias)){
+            if(!preg_match("/[a-z]/i", $alias))
                 $echo .= "You need at least 1 alphabet letter in your public alias. ";
-            }
 
             if(strlen($alias) > 32)
-            {
                 $echo .= "A maximum of 32 Letters are allowed for the public alias. ";
-            }
 
             if(strlen($alias) < 5)
-            {
-                $echo .= "You need at least 5 Letters for the public alias. ";
-            }
+                $echo .= "You need at least 5 Letters for the public alias. ";     
 
             //check Key
             if($key != "")
             {
-                if (strlen($key) != 32) {
+                if (strlen($key) != 32)
                     $echo .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
-                }
-                if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) {
+                if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
                     $echo .= 'The key has illegal Letters. ';
-                } 
+                if(!self::keyUsable($key))
+                    $echo .= "You cant use this key. Please insert another or none. ";
             }
-
-            echo ' | ';
-            echo intval(self::keyUsable($key));
-            echo ' | ';
 
             //to save ressources only check something with the database if there is no error
             if($echo == "")
@@ -222,19 +204,14 @@
                 $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE name='$accountname')";
                 $result = mysqli_query(DB::connection() ,$sql);
                 if(mysqli_fetch_row($result)[0])
-                {
                     $echo .= "There is already a person with this name, please choose another or you fail again.";
-                }
 
                 //check if alias exists
                 $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE alias='$alias')";
                 $result = mysqli_query(DB::connection() ,$sql);
                 if(mysqli_fetch_row($result)[0])
-                {
                     $echo .= "There is already a person with this alias, you are not the first.";
-                }
             } 
-
 
             //if there is at least one error send error and return
             if($echo != "")
@@ -246,8 +223,17 @@
             //////////////////Error handeling ends
             //////////////////Add new user
 
+
+
+
             //try adding a new user || not really for testing purposes
-            $sql = "INSERT INTO persons name, password, alias, key VALUES ($accountname, $password, $alias, $key)";
+            $sql = "INSERT INTO persons (name, pasword, alias, key) VALUES ('$accountname', '$password', '$alias', $key)";
+            if($key == "")
+            {
+                $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')";
+            }
+            echo $sql;
+            echo mysqli_query(DB::connection() ,$sql);
         }
 
         public static function deleteAccount($accountname, $password)
@@ -334,13 +320,9 @@
                     WHERE       $where = '$eqals'";
 
             if(mysqli_query(DB::connection(), $sql))
-            {
                 $echo = "'$eqals' deleted successfully";
-            } 
             else
-            {
                 $echo = "ERROR: Could not able to execute " . $sql . ". " . DB::connection()->connect_error;
-            }
             echo $echo;
         }
     }
