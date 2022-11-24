@@ -144,9 +144,10 @@ class HTML
         echo $this->getHTML();
     }
 
-    public function login()
+    public function login($name, $password)
     {
         $this->addScript("food/js/login.js");
+        $this->loginModule($name, $password);
         echo $this->getHTML();
     }
 
@@ -158,9 +159,6 @@ class HTML
         $html->addToBody('Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds');
         return $html->getHTML();
     }
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Modules                                                                                                          //
@@ -418,6 +416,26 @@ class HTML
                                 </div>
                                 <button type='submit' class='btn btn-primary'>Submit Regristration</button>
                                 <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
+                            </form>");
+    }
+
+    private function loginModule($name, $password)
+    {
+        $this->addScript("food/js/login.js");
+        $this->addToBody("  <form id='loginForm' method='post'>
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputName'>Name</label>
+                                        <input type='text' class='form-control' value='$name' id='inputName' name='inputName' placeholder='Private name for login'>
+                                    </div>
+                                </div>
+                                <div class='form-row'>
+                                    <div class='form-group col-md-5'>
+                                        <label for='inputPassword'>Password</label>
+                                        <input type='password' class='form-control' value='$password' id='inputPassword' name='inputPassword' placeholder='Password'>
+                                    </div>
+                                </div>
+                                <button type='submit' class='btn btn-primary'>Login</button>
                             </form>");
     }
 

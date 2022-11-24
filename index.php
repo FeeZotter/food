@@ -62,7 +62,7 @@ Route::add('/newKey',function()
 Route::add('/login',function()
 {
     $htmlComp = new HTML();
-    echo $htmlComp->login();
+    echo $htmlComp->login("", "");
 }, 'get');
 
 Route::add('/regrister',function()
