@@ -489,7 +489,7 @@ class HTML
         if(DMLModules::addAccount($accountname, $alias, $password, $key))
         {
             $html = new HTML();
-            return $html->login();
+            return $html->login($accountname, $password);
         }
         else 
         {
