@@ -61,7 +61,8 @@ Route::add('/newKey',function()
 ///////////user functions/////////////
 Route::add('/login',function()
 {
-    echo 'not implemented';
+    $htmlComp = new HTML();
+    echo $htmlComp->login();
 }, 'get');
 
 Route::add('/regrister',function()
