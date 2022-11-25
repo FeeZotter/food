@@ -146,6 +146,7 @@ class HTML
 
     public function login($name, $password)
     {
+        $this->resetScript();
         $this->addScript("food/js/login.js");
         $this->loginModule($name, $password);
         echo $this->getHTML();
@@ -153,10 +154,38 @@ class HTML
 
     public function error404()
     {
-        $html = new HTML('error 404');
+        $html = new HTML();
         $html->resetScript();
         $html->addScript('/food/js/error404.js');
         $html->addToBody('Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds');
+        return $html->getHTML();
+    }
+
+    public function userMainPage()
+    {
+        $html = new HTML();
+        $html->addToBody("nothing here for the moment.<br>
+                          Want: See list with all categories<br>
+                          +------------------------+<br>
+                          |Category   |Count Items |<br>
+                          +------------------------+<br>
+                          |Food       | 4          |<br>
+                          |Colour     | 0          |<br>
+                          |Flowers    | 0          |<br>
+                          |Laptops    | 7          |<br>
+                          +------------------------+<br>
+                          <br>
+                          if clicked it looks like this:<br>
+                          Add Food: [____] with Rating: [_____]<br>
+                          +---------------------+<br>
+                          |Food     | Rating    |<br>
+                          +---------------------+<br>
+                          |Potato   | 9         |<br>
+                          |Potato   | 9         |<br>
+                          |Potato   | 9         |<br>
+                          |Potato   | 9         |<br>
+                          +---------------------+<br>  
+                            ");
         return $html->getHTML();
     }
 

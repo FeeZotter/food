@@ -65,6 +65,12 @@ Route::add('/login',function()
     echo $htmlComp->login("", "");
 }, 'get');
 
+Route::add('/login',function()
+{
+    $htmlComp = new HTML();
+    echo $htmlComp->userMainPage();
+}, 'post');
+
 Route::add('/regrister',function()
 {
     $htmlComp = new HTML();

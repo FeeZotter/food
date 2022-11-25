@@ -87,6 +87,11 @@
             return $data;
         }
 
+        public static function userCategoryTable($person, $category)
+        {
+            $cross_person_categories_id = self::getPersonCategoryIdByPersCate($person, $category);
+            $sql = "SELECT COUNT(preference) FROM preferences WHERE cross_person_categories_id='$cross_person_categories_id'";
+        }
 
         /////////////////////////////////////
         /////////single value////////////////
@@ -118,8 +123,8 @@
         public static function getPersonCategoryIdByPersCate($persons_id, $category)
         {
             return self::getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
-        }     
-        
+        } 
+                
         public static function getPersonCategoryIdByPreference($preferenceId)
         {
             return self::getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
