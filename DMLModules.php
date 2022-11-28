@@ -96,7 +96,6 @@
             //for Result
             
             foreach ($result as $key => $id) {
-                echo "asdf" . print_r($id) . "jklö";
                 $sql = "SELECT categories_id, (SELECT COUNT(*) 
                                                FROM preferences 
                                                WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
@@ -104,7 +103,6 @@
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
                 $result = mysqli_query(DB::connection(), $sql);
               #  $table += mysqli_fetch_array($result, MYSQLI_NUM);
-              echo "   |";
               $table += $id;
               #  echo "   /<<   " . mysqli_fetch_array($result, MYSQLI_NUM) . "   />>   ";
                # echo mysqli_fetch_array($result, MYSQLI_NUM);
@@ -112,11 +110,15 @@
 
                 echo "|   ";
                 echo "<br>|||";
-                echo print_r(mysqli_fetch_row($result));
+                $test = mysqli_fetch_row($result);
+                echo print_r($test);
                 echo "...";
-                echo print_r(mysqli_fetch_row($result)[0]);
+                $foo = $test[0];
+                echo print($foo);
                 echo "...";
-                #echo print_r(mysqli_fetch_row($result));
+                $foo = $test[1];
+                echo print($foo);
+                echo "...";
             }  
             
             return $table;
