@@ -102,18 +102,25 @@
                         FROM cross_person_categories 
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
                 $result = mysqli_query(DB::connection(), $sql);
-              #  $table += mysqli_fetch_array($result, MYSQLI_NUM);
-              $table += $id;
-              #  echo "   /<<   " . mysqli_fetch_array($result, MYSQLI_NUM) . "   />>   ";
-               # echo mysqli_fetch_array($result, MYSQLI_NUM);
-                #echo mysqli_fetch_array($result, MYSQLI_NUM);
+                $table += $id;
 
+                /*
+                |
+                    |||Array ( [0] => essen [1] => 25 ) 1...essen1...251...| {why essen+1 & 25+1?}
+                    |||Array ( [0] => farbe [1] => 11 ) 1...farbe1...111...|
+                    |||Array ( [0] => spiele [1] => 0 ) 1...spiele1...01...Array 
+                    ( [0] => Array ( [cross_person_categories_id] => 2 ) 
+                    [1] => Array ( [cross_person_categories_id] => 6 ) 
+                    [2] => Array ( [cross_person_categories_id] => 7 ) 
+                    [cross_person_categories_id] => 2 )
+                */
                 echo "|   ";
                 echo "<br>|||";
                 $test = mysqli_fetch_row($result);
                 echo print_r($test);
                 echo "...";
                 $foo = $test[0];
+
                 echo print($foo);
                 echo "...";
                 $foo = $test[1];
