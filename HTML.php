@@ -161,8 +161,12 @@ class HTML
         return $html->getHTML();
     }
 
-    public function userMainPage()
+    public function userMainPage($userName, $password)
     {
+        if(!DMLModules::loginSuccess($userName, $password))
+        {
+            return self::error404();
+        }
         $html = new HTML();
         $html->addToBody("nothing here for the moment.<br>
                           Want: See list with all categories<br>
@@ -185,7 +189,8 @@ class HTML
                           |Potato   | 9         |<br>
                           |Potato   | 9         |<br>
                           +---------------------+<br>  
-                            ");
+                          ");
+        $html->addToBody(print_r($html->userCategoyTable($userName)));
         return $html->getHTML();
     }
 
@@ -316,6 +321,11 @@ class HTML
                         $returnTable .
                     "</tbody>
                 </table>";
+    }
+
+    private function userCategoyTable($userId)
+    {
+        return $this->dml->userCategoryTable($userId);
     }
 
     private function categoriesTable($personID)

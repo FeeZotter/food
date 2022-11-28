@@ -87,10 +87,39 @@
             return $data;
         }
 
-        public static function userCategoryTable($person, $category)
+        public static function userCategoryTable($person)
         {
-            $cross_person_categories_id = self::getPersonCategoryIdByPersCate($person, $category);
-            $sql = "SELECT COUNT(preference) FROM preferences WHERE cross_person_categories_id='$cross_person_categories_id'";
+            $table = array();
+            $result = self::getTableWhere("cross_person_categories_id", "cross_person_categories", "persons_id='$person'");
+            $table += $result;
+            
+            //for Result
+            
+            foreach ($result as $key => $id) {
+                echo "asdf" . print_r($id) . "jklö";
+                $sql = "SELECT categories_id, (SELECT COUNT(*) 
+                                               FROM preferences 
+                                               WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
+                        FROM cross_person_categories 
+                        WHERE cross_person_categories_id=$id[cross_person_categories_id];";
+                $result = mysqli_query(DB::connection(), $sql);
+              #  $table += mysqli_fetch_array($result, MYSQLI_NUM);
+              echo "   |";
+              $table += $id;
+              #  echo "   /<<   " . mysqli_fetch_array($result, MYSQLI_NUM) . "   />>   ";
+               # echo mysqli_fetch_array($result, MYSQLI_NUM);
+                #echo mysqli_fetch_array($result, MYSQLI_NUM);
+
+                echo "|   ";
+                echo "<br>|||";
+                echo print_r(mysqli_fetch_row($result));
+                echo "...";
+                echo print_r(mysqli_fetch_row($result)[0]);
+                echo "...";
+                #echo print_r(mysqli_fetch_row($result));
+            }  
+            
+            return $table;
         }
 
         /////////////////////////////////////
@@ -243,20 +272,32 @@
                 return false;
             }
         }
+    
+        public static function loginSuccess($accountname, $password)
+        {
+            mysqli_real_escape_string(DB::connection(), $accountname);
+            mysqli_real_escape_string(DB::connection(), $password);
+
+            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='$password'";
+            $result = mysqli_query(DB::connection() ,$sql);
+            if(mysqli_fetch_row($result)[0])
+                return true;
+            return false;
+        }
 
         public static function deleteAccount($accountname, $password)
         {
             mysqli_real_escape_string(DB::connection(), $accountname);
             mysqli_real_escape_string(DB::connection(), $password);
 
-            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND password='$password'";
+            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='$password'";
             $result = mysqli_query(DB::connection() ,$sql);
             if(!mysqli_fetch_row($result)[0])
             {
                 echo "Account does not exist or password is wrong.";
                 return;
             }
-            $sql = "DELETE FROM persons WHERE name='$accountname' AND password='$password'";
+            $sql = "DELETE FROM persons WHERE name='$accountname' AND pasword='$password'";
             echo mysqli_query(DB::connection() ,$sql);
         }
 

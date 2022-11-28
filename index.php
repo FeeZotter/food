@@ -68,7 +68,7 @@ Route::add('/login',function()
 Route::add('/login',function()
 {
     $htmlComp = new HTML();
-    echo $htmlComp->userMainPage();
+    echo $htmlComp->userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
 }, 'post');
 
 Route::add('/regrister',function()
