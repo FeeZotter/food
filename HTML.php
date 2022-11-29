@@ -329,7 +329,7 @@ class HTML
         $returnTable = "";
         $a = 0;
         $b = 1;
-        
+
         foreach ($array as $value)
         {
             $returnTable .=
@@ -337,7 +337,7 @@ class HTML
             .   "<td class='" . $value . "' id='" . $value . "'>" . ucfirst($value) . "</td>"
             ."</tr>";
         }
-
+        
         $this->addToBody("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>

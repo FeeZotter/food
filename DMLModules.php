@@ -105,6 +105,9 @@
                 echo print_r($fr);
                 echo "[[[<br>";
             }  
+            echo "asdf<br>";
+            echo print_r($table);
+            echo "<br>jklö";
             return $table;
         }
 
