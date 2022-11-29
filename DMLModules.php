@@ -91,10 +91,6 @@
         {
             $table = array();
             $result = self::getTableWhere("cross_person_categories_id", "cross_person_categories", "persons_id='$person'");
-            $table += $result;
-            
-            //for Result
-            
             foreach ($result as $key => $id) {
                 $sql = "SELECT categories_id, (SELECT COUNT(*) 
                                                FROM preferences 
@@ -102,32 +98,8 @@
                         FROM cross_person_categories 
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
                 $result = mysqli_query(DB::connection(), $sql);
-                $table += $id;
-
-                /*
-                |
-                    |||Array ( [0] => essen [1] => 25 ) 1...essen1...251...| {why essen+1 & 25+1?}
-                    |||Array ( [0] => farbe [1] => 11 ) 1...farbe1...111...|
-                    |||Array ( [0] => spiele [1] => 0 ) 1...spiele1...01...Array 
-                    ( [0] => Array ( [cross_person_categories_id] => 2 ) 
-                    [1] => Array ( [cross_person_categories_id] => 6 ) 
-                    [2] => Array ( [cross_person_categories_id] => 7 ) 
-                    [cross_person_categories_id] => 2 )
-                */
-                echo "|   ";
-                echo "<br>|||";
-                $test = mysqli_fetch_row($result);
-                echo print_r($test);
-                echo "...";
-                $foo = $test[0];
-
-                echo print($foo);
-                echo "...";
-                $foo = $test[1];
-                echo print($foo);
-                echo "...";
+                $table = array_merge($table, (array)mysqli_fetch_row($result));
             }  
-            
             return $table;
         }
 
