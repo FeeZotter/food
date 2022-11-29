@@ -341,8 +341,8 @@ class HTML
         $this->addToBody("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
-                                        <th scope='col'>" . 'Category'  . "/th>
-                                        <th scope='col'>" . 'Amonut'  . "/th>
+                                        <th scope='col'>" . 'Category'  . "</th>
+                                        <th scope='col'>" . 'Amonut'  . "</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
