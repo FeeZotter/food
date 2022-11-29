@@ -190,7 +190,7 @@ class HTML
                           |Potato   | 9         |<br>
                           +---------------------+<br>  
                           ");
-        $html->addToBody(print_r($html->userCategoyTable($userName)));
+        $html->addToBody($html->userCategoyTable($userName));
         return $html->getHTML();
     }
 
@@ -325,7 +325,31 @@ class HTML
 
     private function userCategoyTable($userId)
     {
-        return $this->dml->userCategoryTable($userId);
+        $array = $this->dml->userCategoryTable($userId);
+        $returnTable = "";
+        $a = 0;
+        $b = 1;
+        
+        foreach ($array as $value)
+        {
+            $returnTable .=
+            "<tr>" //need to look for values
+            .   "<td class='" . $value . "' id='" . $value . "'>" . ucfirst($value) . "</td>"
+            ."</tr>";
+        }
+
+        $this->addToBody("  <table class='table table-hover' id='table'>
+                                <thead id='tabletop'>
+                                    <tr>
+                                        <th scope='col'>" . 'Category'  . "/th>
+                                        <th scope='col'>" . 'Amonut'  . "/th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tableContent'>" .
+                                    $returnTable .
+                                "</tbody>
+                            </table>");
+        return print_r($this->dml->userCategoryTable($userId), true);
     }
 
     private function categoriesTable($personID)
