@@ -6,8 +6,8 @@ include('./food/HTML.php');
 // Add base route (startpage)
 Route::add('/',function()
 {
-    $dl = new HTML();
-    echo $dl->main();
+    $html = new HTML();
+    echo $html->main();
 }, 'get');
 
 //only main table
@@ -92,17 +92,17 @@ Route::add('/admin',function()
 //////////////////////////////////////
 //////////////Shortcuts///////////////
 //shortcut to preference ID by id
-Route::add('/s/([0-9]*)',function($var1)
+Route::add('/s/([0-9]*)',function($id)
 {
     $preference = new HTML();
-    echo $preference->PreferenceByID($var1);
+    echo $preference->PreferenceByID($id);
 }, 'get');
 
 //shortcut to person
-Route::add('/s/([a-z,0-9]*)',function($var1)
+Route::add('/s/([a-z,0-9]*)',function($name)
 {
     $person = new HTML();
-    echo $person->Person($var1);
+    echo $person->Person($name);
 }, 'get');
 
 //shortcut to preference ID by alias and category

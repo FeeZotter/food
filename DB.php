@@ -6,10 +6,11 @@
 
         private function __construct()
         {
-            self::$conn = new mysqli("localhost", 
-                                     "mypref", 
-                                     "wH5dKtdFaUe3wbX", 
-                                     "mypreferences");
+            include("./config.php");
+            self::$conn = new mysqli($hostname, 
+                                     $username, 
+                                     $password, 
+                                     $database);
 
             if (self::$conn->connect_error) 
             {
