@@ -168,18 +168,9 @@ class HTML
             return self::error404();
         }
         $html = new HTML();
-        $html->addToBody("nothing here for the moment.<br>
-                          Want: See list with all categories<br>
-                          +------------------------+<br>
-                          |Category   |Count Items |<br>
-                          +------------------------+<br>
-                          |Food       | 4          |<br>
-                          |Colour     | 0          |<br>
-                          |Flowers    | 0          |<br>
-                          |Laptops    | 7          |<br>
-                          +------------------------+<br>
-                          <br>
-                          if clicked it looks like this:<br>
+        $html->addToBody($html->userCategoyTable($userName));
+        $html->addToBody("<br>
+                          if clicked on an item it should look like this:<br>
                           Add Food: [____] with Rating: [_____]<br>
                           +---------------------+<br>
                           |Food     | Rating    |<br>
@@ -190,7 +181,6 @@ class HTML
                           |Potato   | 9         |<br>
                           +---------------------+<br>  
                           ");
-        $html->addToBody($html->userCategoyTable($userName));
         return $html->getHTML();
     }
 
