@@ -6,7 +6,7 @@
 
         private function __construct()
         {
-            include("./config.php");
+            include("config.php");
             self::$conn = new mysqli($hostname, 
                                      $username, 
                                      $password, 
