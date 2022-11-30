@@ -192,7 +192,7 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private function searchbarName()
     {
-        $this->addToBody('<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>');
+        return '<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
     }
 
     private function searchbarNameRating()
@@ -203,7 +203,7 @@ class HTML
 
     private function searchbarRating()
     {
-        $this->addToBody('<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>');
+        return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
     }
 
     private function helloUser($name)
@@ -345,8 +345,8 @@ class HTML
         $this->addToBody("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
-                                        <th scope='col'>" . 'Category'  . "</th>
-                                        <th scope='col'>" . 'Amount'  . "</th>
+                                        <th scope='col'>" . 'Category' . $this->searchbarName()   . "</th>
+                                        <th scope='col'>" . 'Amount'   . $this->searchbarRating() . "</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
@@ -555,7 +555,8 @@ class HTML
         if(DMLModules::addAccount($accountname, $alias, $password, $key))
         {
             $html = new HTML();
-            return $html->login($accountname, $password);
+            $html->login($accountname, $password);
+            echo $html->getHTML();
         }
         else 
         {
