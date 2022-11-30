@@ -346,7 +346,7 @@ class HTML
                                 <thead id='tabletop'>
                                     <tr>
                                         <th scope='col'>" . 'Category' . $this->searchbarName()   . "</th>
-                                        <th scope='col'>" . 'Amount'   . $this->searchbarRating() . "</th>
+                                        <th scope='col'>" . 'Amount '  . $this->searchbarRating() . "</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
