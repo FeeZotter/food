@@ -82,6 +82,17 @@ Route::add('/regrister',function()
     HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
 }, 'post');
 
+Route::add('/reg',function()
+{
+    $htmlComp = new HTML();
+    echo $htmlComp->regristration();
+}, 'get');
+
+Route::add('/reg',function()
+{
+    HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
+}, 'post');
+
 Route::add('/admin',function()
 {
     $admin = new HTML();
