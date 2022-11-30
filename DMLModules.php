@@ -98,7 +98,7 @@
                         FROM cross_person_categories 
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
                 $result = mysqli_query(DB::connection(), $sql);
-                $table[] = mysqli_fetch_row($result)[0];
+                $table[] = mysqli_fetch_row($result);
             }  
             return $table;
         }
