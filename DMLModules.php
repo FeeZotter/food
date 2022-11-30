@@ -164,13 +164,13 @@
             /**
              * trys to add an account to the database
              *
-             * @param accountname min 5, max 32 letters
-             * @param alias min 5, max 32 letters
-             * @param password 
-             * @param key 32 letters, a-z, A-Z, 0-9 
+             *  accountname min 5, max 32 letters
+             *  alias min 5, max 32 letters
+             *  password 
+             *  key 32 letters, a-z, A-Z, 0-9 
              * 
-             * @throws Some_Exception_Class If something interesting cannot happen
-             * @return Status
+             *  Some_Exception_Class If something interesting cannot happen
+             *  Status
              */ 
 
             //////////////////Error handeling
