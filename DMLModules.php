@@ -97,10 +97,10 @@
                                                WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
                         FROM cross_person_categories 
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
-                $result = mysqli_query(DB::connection(), $sql);
-                $table[] = mysqli_fetch_row($result);
+                $secondResult = mysqli_query(DB::connection(), $sql);
+                $table[] = mysqli_fetch_row($secondResult);
             }  
-            return $table;
+            return [$table, $result];
         }
 
         /////////////////////////////////////

@@ -168,7 +168,10 @@ class HTML
             return self::error404();
         }
         $html = new HTML();
-        $html->addToBody($html->userCategoyTable($userName));
+        $html->resetScript();
+        $html->addScript("/food/js/userPage.js");
+        $html->helloUser($userName);
+        $html->userCategoyTable($userName);
         $html->addToBody("<br>
                           if clicked on an item it should look like this:<br>
                           Add Food: [____] with Rating: [_____]<br>
@@ -201,6 +204,11 @@ class HTML
     private function searchbarRating()
     {
         $this->addToBody('<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>');
+    }
+
+    private function helloUser($name)
+    {
+        $this->addToBody("<h1>Hello $name and i know your public name is " . $this->dml->getAlias($name) . "</h1>");
     }
 
     private function table($select, $from)
@@ -315,20 +323,25 @@ class HTML
 
     private function userCategoyTable($userId)
     {
-        $array = $this->dml->userCategoryTable($userId);
+        $arrays = $this->dml->userCategoryTable($userId);
+        $array1 = $arrays[0];
+        $array2 = $arrays[1];
         $returnTable = "";
+
         $a = 0;
         $b = 1;
+        $c = "cross_person_categories_id";
 
-        foreach ($array as $value)
+        for ($i = 0; $i != count($array1); $i++)
         {
+            $value  = $array1[$i];
+            $value2 = $array2[$i];
             $returnTable .=
             "<tr>" //need to look for values
-            .   "<td class='" . $value[$a] . "' id='" . $value[$a] . "'>" . ucfirst($value[$a]) . "</td>"
-            .   "<td class='" . $value[$b] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
+            .   "<td class='" . $value2[$c] . "' id='" . $value[$a] . "'>" . ucfirst($value[$a]) . "</td>"
+            .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
-        
         $this->addToBody("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
