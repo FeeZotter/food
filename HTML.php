@@ -326,6 +326,7 @@ class HTML
     private function userCategoyTable($userId)
     {
         $array = $this->dml->userCategoryTable($userId);
+        echo print_r($array, true);
         $returnTable = "";
         $a = 0;
         $b = 1;
@@ -334,7 +335,8 @@ class HTML
         {
             $returnTable .=
             "<tr>" //need to look for values
-            .   "<td class='" . $value . "' id='" . $value . "'>" . ucfirst($value) . "</td>"
+            .   "<td class='" . $value[$a] . "' id='" . $value[$a] . "'>" . ucfirst($value[$a]) . "</td>"
+            .   "<td class='" . $value[$b] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
         
