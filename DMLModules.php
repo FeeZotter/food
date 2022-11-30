@@ -98,16 +98,8 @@
                         FROM cross_person_categories 
                         WHERE cross_person_categories_id=$id[cross_person_categories_id];";
                 $result = mysqli_query(DB::connection(), $sql);
-                $fr = (array)mysqli_fetch_row($result);
-                $table = array_merge($table, $fr);
-                echo print_r($table);
-                echo "<br>]]]";
-                echo print_r($fr);
-                echo "[[[<br>";
+                $table[] = mysqli_fetch_row($result)[0];
             }  
-            echo "asdf<br>";
-            echo print_r($table);
-            echo "<br>jklö";
             return $table;
         }
 
