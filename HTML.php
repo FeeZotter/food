@@ -326,7 +326,6 @@ class HTML
     private function userCategoyTable($userId)
     {
         $array = $this->dml->userCategoryTable($userId);
-        echo print_r($array, true);
         $returnTable = "";
         $a = 0;
         $b = 1;
@@ -344,14 +343,13 @@ class HTML
                                 <thead id='tabletop'>
                                     <tr>
                                         <th scope='col'>" . 'Category'  . "</th>
-                                        <th scope='col'>" . 'Amonut'  . "</th>
+                                        <th scope='col'>" . 'Amount'  . "</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
                                     $returnTable .
                                 "</tbody>
                             </table>");
-        return print_r($this->dml->userCategoryTable($userId), true);
     }
 
     private function categoriesTable($personID)
