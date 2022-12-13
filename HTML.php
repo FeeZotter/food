@@ -171,7 +171,7 @@ class HTML
         $html->resetScript();
         $html->addScript("/food/js/userPage.js");
         $html->helloUser($userName);
-        $html->userCategoyTable($userName);
+        $html->addToBody(self::userCategoyTable($userName));
         $html->addToBody("<br>
                           if clicked on an item it should look like this:<br>
                           Add Food: [____] with Rating: [_____]<br>
@@ -321,9 +321,19 @@ class HTML
                 </table>";
     }
 
-    private function userCategoyTable($userId)
+    public function onlyUserCategoyTable($userName, $password)
     {
-        $arrays = $this->dml->userCategoryTable($userId);
+        if(!DMLModules::loginSuccess($userName, $password))
+        {
+            return self::error404();
+        }
+        return self::userCategoyTable($userName);
+
+    }
+
+    private static function userCategoyTable($userId)
+    {
+        $arrays = DMLModules::userCategoryTable($userId);
         $array1 = $arrays[0];
         $array2 = $arrays[1];
         $returnTable = "";
@@ -342,11 +352,11 @@ class HTML
             .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
-        $this->addToBody("  <table class='table table-hover' id='table'>
+        return ("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
-                                        <th scope='col'>" . 'Category' . $this->searchbarName()   . "</th>
-                                        <th scope='col'>" . 'Amount '  . $this->searchbarRating() . "</th>
+                                        <th scope='col'>" . 'Category' . self::searchbarName()   . "</th>
+                                        <th scope='col'>" . 'Amount '  . self::searchbarRating() . "</th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
