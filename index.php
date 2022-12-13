@@ -71,6 +71,12 @@ Route::add('/login',function()
     echo $htmlComp->userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
 }, 'post');
 
+Route::add('/login/table',function()
+{
+    $htmlComp = new HTML();
+    echo $htmlComp->onlyUserCategoyTable($_REQUEST['inputName'], $_REQUEST['inputPassword']);    
+});
+
 Route::add('/regrister',function()
 {
     $htmlComp = new HTML();
