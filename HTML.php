@@ -6,7 +6,7 @@ class HTML
 //   basic                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private $htmlstart   = "<!DOCTYPE html><html>";
-    private $headstart   = "<head><title>LiKings</title>";
+    private $headstart   = "<head><title>Preferix</title>";
     private $style       = "";
     private $headcontent = "";
     private $headend     = "</head>";
@@ -190,18 +190,18 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Modules                                                                                                          //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private function searchbarName()
+    private static function searchbarName()
     {
         return '<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
     }
 
-    private function searchbarNameRating()
+    private static function searchbarNameRating()
     {
-        $this->addToBody('<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
-                          <input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>');
+        return ('<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
+                 <input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>');
     }
 
-    private function searchbarRating()
+    private static function searchbarRating()
     {
         return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
     }
@@ -321,7 +321,7 @@ class HTML
                 </table>";
     }
 
-    public function onlyUserCategoyTable($userName, $password)
+    public static function onlyUserCategoyTable($userName, $password)
     {
         if(!DMLModules::loginSuccess($userName, $password))
         {

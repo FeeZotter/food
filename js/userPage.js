@@ -43,13 +43,16 @@ function searchByRating() {
 //        navigation        //
 //////////////////////////////
 var table;
+var name     = "feezotter";
+var password = "asdf";
+var categorytable = true;
 
-function replaceByID(url, ID) {
+function categoryTable(url, ID) {
     // Assign handlers immediately after making the request,
     // and remember the jqxhr object for this request
-    var jqxhr = $.get(url, function() {
-        //nothing
-    })
+    console.log({ inputName: name, inputPassword: password});
+    console.log(url);
+    var jqxhr = $.get(url, { inputName: name, inputPassword: password})
     .done(function(data) {
         //$( "table.table" ).replaceWith( data );
         temporaryObjectDelete();
@@ -61,37 +64,48 @@ function replaceByID(url, ID) {
     .fail(function() {
         alert( 'request failed' );
     });
+    console.log(jqxhr);
+}
+
+function preferenceTable()
+{
+    // Assign handlers immediately after making the request,
+    // and remember the jqxhr object for this request
+    console.log({ inputName: name, inputPassword: password});
+    console.log(url);
+    var jqxhr = $.get(url, { inputName: name, inputPassword: password})
+    .done(function(data) {
+        //$( "table.table" ).replaceWith( data );
+        temporaryObjectDelete();
+        $( document.getElementById(ID) ).replaceWith( data );
+    })
+    .then(function() {
+        createEvents();
+    })
+    .fail(function() {
+        alert( 'request failed' );
+    });
+    console.log(jqxhr);
 }
 
 function createEvents()
 {
     tableEvent();
-    navigationEvents();
+    searchByName();
+    searchByRating();
 }
 
 function tableEvent()
 {
     table = document.getElementById('tableContent');
+    console.log(table);
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
-            if      (navigation3.innerHTML != '')
-                return;
-            if      (navigation2.innerHTML == '')
-                navigation2.innerHTML = capitalizeFirstLetter($(event.target).attr('class'));
-            else if (navigation3.innerHTML == '')
-                navigation3.innerHTML = capitalizeFirstLetter($(event.target).attr('id'));
-            replaceByID("http://localhost/get/" + $(event.target).attr('class'), 'table');
+            if(categorytable)
+                categoryTable();
+            preferenceTable();
         }
-    }
-}
-
-function navigationEvents()
-{
-    navigation1.onclick = () => {
-        replaceByID("http://localhost/get", 'table');
-        navigation2.innerHTML = "";
-        navigation3.innerHTML = "";
     }
 }
 
