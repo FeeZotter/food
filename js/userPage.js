@@ -43,18 +43,20 @@ function searchByRating() {
 //        navigation        //
 //////////////////////////////
 var table;
-var name     = "feezotter";
-var password = "asdf";
+var name          = "feezotter";
+var password      = "asdf";
 var categorytable = true;
 
-function categoryTable(url, ID) {
+function categoryTable(url, ID) //post request
+{
     // Assign handlers immediately after making the request,
     // and remember the jqxhr object for this request
     console.log({ inputName: name, inputPassword: password});
     console.log(url);
-    var jqxhr = $.get(url, { inputName: name, inputPassword: password})
+    var jqxhr = $.post(url, { inputName: name, inputPassword: password})
     .done(function(data) {
         //$( "table.table" ).replaceWith( data );
+        categorytable != categorytable;
         temporaryObjectDelete();
         $( document.getElementById(ID) ).replaceWith( data );
     })
@@ -67,15 +69,18 @@ function categoryTable(url, ID) {
     console.log(jqxhr);
 }
 
-function preferenceTable()
+function preferenceTable(url, ID) //get request
 {
     // Assign handlers immediately after making the request,
     // and remember the jqxhr object for this request
     console.log({ inputName: name, inputPassword: password});
     console.log(url);
-    var jqxhr = $.get(url, { inputName: name, inputPassword: password})
+    var jqxhr = $.get(url,function(){
+        
+    })
     .done(function(data) {
         //$( "table.table" ).replaceWith( data );
+        categorytable != categorytable;
         temporaryObjectDelete();
         $( document.getElementById(ID) ).replaceWith( data );
     })
@@ -103,8 +108,8 @@ function tableEvent()
         if(event.target.tagName == "TD")
         {
             if(categorytable)
-                categoryTable();
-            preferenceTable();
+                categoryTable("localhost/get/", "");
+            preferenceTable("", "");
         }
     }
 }
