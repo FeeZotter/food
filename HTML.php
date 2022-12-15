@@ -5,21 +5,13 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   basic                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private $htmlstart   = "<!DOCTYPE html><html>";
-    private $headstart   = "<head><title>Preferix</title>";
     private $style       = "";
     private $headcontent = "";
-    private $headend     = "</head>";
-    private $bodystart   = "<body>";
     private $bodycontent = "";
-    private $bodyend     = "</body>";
-    private $htmlend     = "</html>";
     private $script      = "";
 
-    private $dml;
     function __construct()
     {
-        $this->dml = new DMLModules();
         $this->addStyle("/food/style/style.css");
         $this->addStyle("/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css");
         $this->addScript('/food/js/index.js');
@@ -27,16 +19,32 @@ class HTML
 
     public function getHTML()
     {
-        return $this->htmlstart.
-               $this->headstart.
+        return "<!DOCTYPE html><html>
+                <head><title>Preferix</title>".
                $this->style.
                $this->headcontent.
-               $this->headend.
-               $this->bodystart.
+               "</head>
+                <body>".
                $this->bodycontent.
-               $this->bodyend.
-               $this->htmlend.
+               "</body>
+                </html>".
                $this->script;
+    }
+
+    public static function getHTMLStatic($style, $headcontent, $bodycontent, $script)
+    {
+        return "<!DOCTYPE html><html>
+                <head><title>Preferix</title>
+                <link rel='stylesheet' href='/food/style/style.css'>
+                <link rel='stylesheet' href='/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css'>".
+                $style.
+                $headcontent.
+               "</head>
+                <body>".
+                $bodycontent.
+               "</body>
+                </html>".
+                $script;
     }
 
     public function resetHead()   { $this->headcontent = ""; }
@@ -77,18 +85,18 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Pages                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function Person(string $alias)
+    public static function Person(string $alias)
     {
         //check if there is an error
         $name = '';
         try {
             $name = DMLModules::getName($alias);
         } catch (\Throwable $throwedError) {
-            return $this->error404();
+            return self::error404();
         }
-        $this->navigationBar('Start', $alias, null);
-        $this->categoriesTable($name);
-        echo $this->getHTML();
+        $bodycontent = self::navigationBar('Start', $alias, null);
+        $bodycontent = self::categoriesTableReturn($name);
+        echo self::getHTMLStatic("", "", $bodycontent, "");
     }
 
     public function Preference(string $alias, string $category)
@@ -152,13 +160,12 @@ class HTML
         echo $this->getHTML();
     }
 
-    public function error404()
+    public static function error404()
     {
-        $html = new HTML();
-        $html->resetScript();
-        $html->addScript('/food/js/error404.js');
-        $html->addToBody('Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds');
-        return $html->getHTML();
+        return self::getHTMLStatic('', 
+                                   '', 
+                                   'Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds',
+                                   "<script src/food/js/error404.js'></script>");
     }
 
     public function userMainPage($userName, $password)
@@ -367,7 +374,7 @@ class HTML
 
     private function categoriesTable($personID)
     {
-        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -382,6 +389,31 @@ class HTML
                                 <thead id='tabletop'>
                                     <tr>
                                         <th scope='col'>" . 'Preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tableContent'>" .
+                                    $returnTable .
+                                "</tbody>
+                            </table>");
+    }
+
+    private static function categoriesTableReturn($personID)
+    {
+        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $returnTable = "";
+        
+        foreach ($array as $value)
+        {
+            $returnTable .=
+            "<tr>"
+            .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
+            ."</tr>";
+        }
+
+        return ("  <table class='table table-hover' id='table'>
+                                <thead id='tabletop'>
+                                    <tr>
+                                        <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
@@ -418,6 +450,15 @@ class HTML
     private function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
         $this->addToBody("  <h1 class='navigation' id='navigation'>
+                                <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
+                                <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
+                                <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
+                            </h1>");
+    }
+
+    private static function navigationBarReturn($navigationPoint1, $navigationPoint2, $navigationPoint3)
+    {
+        return ("  <h1 class='navigation' id='navigation'>
                                 <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
                                 <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
                                 <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
