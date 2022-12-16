@@ -21,6 +21,11 @@ class HTML
                 $script;
     }
 
+    private static function scriptJS($src)
+    {
+        return "<script src='food/js/".$src.".js'></script>";
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Pages                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +40,7 @@ class HTML
         }
         $bodycontent = self::navigationBar('Start', $alias, null);
         $bodycontent = self::categoriesTableReturn($name);
-        echo self::getHTML("", "", $bodycontent, "<script src='food/js/index.js'></script>");
+        echo self::getHTML("", "", $bodycontent, self::scriptJS("index"));
     }
 
     public static function Preference(string $alias, string $category)
@@ -46,7 +51,7 @@ class HTML
         $bodycontent = self::navigationBar('Start', $alias, $category);
             //end navigation bar
         $bodycontent .= self::preferenceTable($cross_person_categories_id);
-        echo self::getHTML("", "", $bodycontent, "<script src='food/js/index.js'></script>");
+        echo self::getHTML("", "", $bodycontent, self::scriptJS("index"));
     }
 
     public static function PreferenceByID(int $preferenceId)
@@ -69,12 +74,12 @@ class HTML
 
     public static function main()
     {
-        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), "<script src='food/js/index.js'></script>");
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), self::scriptJS("index"));
     }
 
     public static function adminPage()
     {
-        echo self::getHTML("", "", self::keyModule(), "<script src='food/js/admin.js'></script>");
+        echo self::getHTML("", "", self::keyModule(), self::scriptJS("admin"));
     }
 
     public static function regristration()
@@ -84,7 +89,7 @@ class HTML
 
     public static function login($name, $password)
     {
-        echo self::getHTML("", "", self::loginModule($name, $password),  "<script src='food/js/login.js'></script>");
+        echo self::getHTML("", "", self::loginModule($name, $password), self::scriptJS("login"));
     }
 
     public static function error404()
@@ -92,7 +97,7 @@ class HTML
         return self::getHTML('', 
                              '', 
                              'Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds',
-                             "<script src='/food/js/error404.js'></script>");
+                             "error404");
     }
 
     public function userMainPage($userName, $password)
@@ -102,9 +107,9 @@ class HTML
             return self::error404();
         }
         return self::getHTML("", "", 
-                             self::helloUser($userName) . 
-                             self::userCategoyTable($userName) .
-                             "<br>
+                            self::helloUser($userName) . 
+                            self::userCategoyTable($userName) .
+                            "<br>
                                 if clicked on an item it should look like this:<br>
                                 Add Food: [____] with Rating: [_____]<br>
                                 +---------------------+<br>
@@ -115,7 +120,7 @@ class HTML
                                 |Potato   | 9         |<br>
                                 |Potato   | 9         |<br>
                                 +---------------------+<br>", 
-                             "/food/js/userPage.js");
+                            self::scriptJS("userPage"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,8 +247,8 @@ class HTML
         return "<table class='table table-hover' id='table'>
                     <thead id='tabletop'>
                         <tr>
-                            <th scope='col'>" . 'Preference'       . '</a><a>'. self::searchbarName() . "</a></th>
-                            <th scope='col'>" . 'Rating' . '</a><a>'. self::searchbarRating() . "</a></th>
+                            <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName() .   "</a></th>
+                            <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
                         </tr>
                     </thead>
                     <tbody id='tableContent'>" .
