@@ -21,7 +21,7 @@ class HTML
                 $script;
     }
 
-    private static function scriptJS($src)
+    private static function script($src)
     {
         return "<script src='food/js/".$src.".js'></script>";
     }
@@ -40,7 +40,7 @@ class HTML
         }
         $bodycontent = self::navigationBar('Start', $alias, null);
         $bodycontent = self::categoriesTableReturn($name);
-        echo self::getHTML("", "", $bodycontent, self::scriptJS("index"));
+        echo self::getHTML("", "", $bodycontent, self::script("index"));
     }
 
     public static function Preference(string $alias, string $category)
@@ -51,7 +51,7 @@ class HTML
         $bodycontent = self::navigationBar('Start', $alias, $category);
             //end navigation bar
         $bodycontent .= self::preferenceTable($cross_person_categories_id);
-        echo self::getHTML("", "", $bodycontent, self::scriptJS("index"));
+        echo self::getHTML("", "", $bodycontent, self::script("index"));
     }
 
     public static function PreferenceByID(int $preferenceId)
@@ -74,22 +74,22 @@ class HTML
 
     public static function main()
     {
-        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), self::scriptJS("index"));
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), self::script("index"));
     }
 
     public static function adminPage()
     {
-        echo self::getHTML("", "", self::keyModule(), self::scriptJS("admin"));
+        echo self::getHTML("", "", self::keyModule(), self::script("admin"));
     }
 
     public static function regristration()
     {
-        echo self::getHTML("", "", self::accountCreateModule(), "");
+        echo self::getHTML("", "", self::accountCreateModule(), self::script("regrister"));
     }
 
     public static function login($name, $password)
     {
-        echo self::getHTML("", "", self::loginModule($name, $password), self::scriptJS("login"));
+        echo self::getHTML("", "", self::loginModule($name, $password), self::script("login"));
     }
 
     public static function error404()
@@ -120,7 +120,7 @@ class HTML
                                 |Potato   | 9         |<br>
                                 |Potato   | 9         |<br>
                                 +---------------------+<br>", 
-                            self::scriptJS("userPage"));
+                            self::script("userPage"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,14 +240,14 @@ class HTML
             $returnTable .=
             "<tr>"
             .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['preference']) . "</td>"
-            .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['rating'])    . "</td>"
+            .   "<td class='color" . $value['rating'] . "'>" . ucfirst($value['rating'])     . "</td>"
             ."</tr>";
         }
 
         return "<table class='table table-hover' id='table'>
                     <thead id='tabletop'>
                         <tr>
-                            <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName() .   "</a></th>
+                            <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName()   . "</a></th>
                             <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
                         </tr>
                     </thead>
@@ -433,7 +433,6 @@ class HTML
 
     private function accountCreateModule()
     {
-        self::addScript("food/js/regrister.js");
         return ("   <form id='regristerForm' method='post'>
                         <div class='form-row'>
                             <div class='form-group col-md-5'>
@@ -466,7 +465,6 @@ class HTML
 
     private static function loginModule($name, $password)
     {
-        self::addScript("food/js/login.js");
         return ("   <form id='loginForm' method='post'>
                         <div class='form-row'>
                             <div class='form-group col-md-5'>
