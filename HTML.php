@@ -5,33 +5,7 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   basic                                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private $style       = "";
-    private $headcontent = "";
-    private $bodycontent = "";
-    private $script      = "";
-
-    function __construct()
-    {
-        $this->addStyle("/food/style/style.css");
-        $this->addStyle("/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css");
-        $this->addScript('/food/js/index.js');
-    }
-
-    public function getHTML()
-    {
-        return "<!DOCTYPE html><html>
-                <head><title>Preferix</title>".
-               $this->style.
-               $this->headcontent.
-               "</head>
-                <body>".
-               $this->bodycontent.
-               "</body>
-                </html>".
-               $this->script;
-    }
-
-    public static function getHTMLStatic($style, $headcontent, $bodycontent, $script)
+    public static function getHTML($style, $headcontent, $bodycontent, $script)
     {
         return "<!DOCTYPE html><html>
                 <head><title>Preferix</title>
@@ -45,41 +19,6 @@ class HTML
                "</body>
                 </html>".
                 $script;
-    }
-
-    public function resetHead()   { $this->headcontent = ""; }
-    public function resetBody()   { $this->bodycontent = ""; }
-    public function resetStyle()  { $this->style       = ""; }
-    public function resetScript() { $this->script      = ""; }
-
-    private function addToBody($addToBody)
-    {
-        $this->bodycontent .= $addToBody;
-    }
-
-    private function addStyle($styleLink)
-    {
-        $this->style .="<link rel='stylesheet' href='$styleLink'>";
-    }
-
-    private function addStyleAdvanced($style)
-    {
-        $this->style .= $style;
-    }
-
-    private function addToHead($addToHead)
-    {
-        $this->headcontent .= $addToHead;
-    }
-
-    private function addScript($script)
-    {
-        $this->script .= "<script src='$script'></script>";
-    }
-
-    private function addScriptWithSource($script)
-    {
-        $this->script .= $script;
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,76 +35,64 @@ class HTML
         }
         $bodycontent = self::navigationBar('Start', $alias, null);
         $bodycontent = self::categoriesTableReturn($name);
-        echo self::getHTMLStatic("", "", $bodycontent, "");
+        echo self::getHTML("", "", $bodycontent, "<script src='food/js/index.js'></script>");
     }
 
-    public function Preference(string $alias, string $category)
+    public static function Preference(string $alias, string $category)
     {
             //start navigation bar
         $persons_id = DMLModules::getName($alias);
         $cross_person_categories_id = DMLModules::getPersonCategoryIdByPersCate($persons_id, $category);
-        $this->navigationBar('Start', $alias, $category);
+        $bodycontent = self::navigationBar('Start', $alias, $category);
             //end navigation bar
-        $this->preferenceTable($cross_person_categories_id);
-        echo $this->getHTML();
+        $bodycontent .= self::preferenceTable($cross_person_categories_id);
+        echo self::getHTML("", "", $bodycontent, "<script src='food/js/index.js'></script>");
     }
 
-    public function PreferenceByID(int $preferenceId)
+    public static function PreferenceByID(int $preferenceId)
     {
             //start navigation bar
         $cross_person_categories_id = DMLModules::getPersonCategoryIdByPreference($preferenceId);
-        $result = $this->dataTableWhere('categories_id, persons_id', 
+        $result = self::dataTableWhere('categories_id, persons_id', 
                                         'cross_person_categories', 
                                         "cross_person_categories_id=$cross_person_categories_id");
         $result = $result[0];
         $categories_id = $result['categories_id'];
         $persons_id    = $result['persons_id'];
         $name = DMLModules::getAlias($persons_id);
-        $this->navigationBar('Start', $name, $categories_id);
+        $bodycontent = self::navigationBar('Start', $name, $categories_id);
             //end navigation bar
-        $this->preferenceTable($preferenceId);
+        $bodycontent .= self::preferenceTable($preferenceId);
 
-        echo $this->getHTML();
+        echo self::getHTML("", "", $bodycontent, "");
     }
 
-    public function main()
+    public static function main()
     {
-        $this->navigationBar('Start', null, null);
-        $this->table('alias', 'persons');
-        echo $this->getHTML();
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), "<script src='food/js/index.js'></script>");
     }
 
-    public function adminPage()
+    public static function adminPage()
     {
-        $this->resetScript();
-        $this->addScript('food/js/admin.js');
-
-        $this->keyModule();
-
-        echo $this->getHTML();
+        echo self::getHTML("", "", self::keyModule(), "<script src='food/js/admin.js'></script>");
     }
 
-    public function regristration()
+    public static function regristration()
     {
-        $this->resetScript();
-        $this->accountCreateModule();
-        echo $this->getHTML();
+        echo self::getHTML("", "", self::accountCreateModule(), "");
     }
 
-    public function login($name, $password)
+    public static function login($name, $password)
     {
-        $this->resetScript();
-        $this->addScript("food/js/login.js");
-        $this->loginModule($name, $password);
-        echo $this->getHTML();
+        echo self::getHTML("", "", self::loginModule($name, $password),  "<script src='food/js/login.js'></script>");
     }
 
     public static function error404()
     {
-        return self::getHTMLStatic('', 
-                                   '', 
-                                   'Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds',
-                                   "<script src/food/js/error404.js'></script>");
+        return self::getHTML('', 
+                             '', 
+                             'Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds',
+                             "<script src='/food/js/error404.js'></script>");
     }
 
     public function userMainPage($userName, $password)
@@ -174,24 +101,21 @@ class HTML
         {
             return self::error404();
         }
-        $html = new HTML();
-        $html->resetScript();
-        $html->addScript("/food/js/userPage.js");
-        $html->helloUser($userName);
-        $html->addToBody(self::userCategoyTable($userName));
-        $html->addToBody("<br>
-                          if clicked on an item it should look like this:<br>
-                          Add Food: [____] with Rating: [_____]<br>
-                          +---------------------+<br>
-                          |Food     | Rating    |<br>
-                          +---------------------+<br>
-                          |Potato   | 9         |<br>
-                          |Potato   | 9         |<br>
-                          |Potato   | 9         |<br>
-                          |Potato   | 9         |<br>
-                          +---------------------+<br>  
-                          ");
-        return $html->getHTML();
+        return self::getHTML("", "", 
+                             self::helloUser($userName) . 
+                             self::userCategoyTable($userName) .
+                             "<br>
+                                if clicked on an item it should look like this:<br>
+                                Add Food: [____] with Rating: [_____]<br>
+                                +---------------------+<br>
+                                |Food     | Rating    |<br>
+                                +---------------------+<br>
+                                |Potato   | 9         |<br>
+                                |Potato   | 9         |<br>
+                                |Potato   | 9         |<br>
+                                |Potato   | 9         |<br>
+                                +---------------------+<br>", 
+                             "/food/js/userPage.js");
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,12 +139,12 @@ class HTML
 
     private function helloUser($name)
     {
-        $this->addToBody("<h1>Hello $name and i know your public name is " . $this->dml->getAlias($name) . "</h1>");
+        return ("<h1>Hello $name and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
     }
 
     private function table($select, $from)
     {
-        $array = $this->dml->getTable($select, $from);
+        $array = DMLModules::getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -230,10 +154,10 @@ class HTML
             ."</tr>";
         }
 
-        $this->addToBody("  <table class='table table-hover' id='table'>
+        return ("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
-                                        <th scope='col'><a>" . ucfirst($select) . '</a><a>' . $this->searchbarName() . '</a>' . '</th>
+                                        <th scope='col'><a>" . ucfirst($select) . '</a><a>' . self::searchbarName() . '</a>' . '</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableContent">' .
@@ -244,7 +168,7 @@ class HTML
 
     public function returnTable($select, $from)
     {
-        $array = $this->dml->getTable($select, $from);
+        $array = DMLModules::getTable($select, $from);
         $returnTable = "";
         foreach ($array as $value)
         {
@@ -257,7 +181,7 @@ class HTML
         return "<table class='table table-hover' id='table'>
                     <thead id='tabletop'>
                         <tr>
-                            <th scope='col'><a>" . ucfirst($select) . '</a><a>' . $this->searchbarName() . '</a>' . '</th>
+                            <th scope='col'><a>" . ucfirst($select) . '</a><a>' . self::searchbarName() . '</a>' . '</th>
                         </tr>
                     </thead>
                     <tbody id="tableContent">' .
@@ -269,13 +193,13 @@ class HTML
     function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
-        return $this->dml->getTableWhere($select, $from, $where); 
+        return DMLModules::getTableWhere($select, $from, $where); 
     }
 
     private function preferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $this->dml->getPreferenceTable($categoryID);
+        $array = DMLModules::getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -287,11 +211,11 @@ class HTML
             ."</tr>";
         }
 
-        $this->addToBody("  <table class='table table-hover' id='table'>
+        return ("  <table class='table table-hover' id='table'>
                                 <thead id='tabletop'>
                                     <tr>
-                                        <th scope='col'>" . 'Preference'       . '</a><a>'. $this->searchbarName() . "</a></th>
-                                        <th scope='col'>" . 'Rating' . '</a><a>'. $this->searchbarRating() . "</a></th>
+                                        <th scope='col'>" . 'Preference'       . '</a><a>'. self::searchbarName() . "</a></th>
+                                        <th scope='col'>" . 'Rating' . '</a><a>'. self::searchbarRating() . "</a></th>
                                     </tr>
                                 </thead>
                                 <tbody id='tableContent'>" .
@@ -303,7 +227,7 @@ class HTML
     public function returnPreferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
-        $array = $this->dml->getPreferenceTable($categoryID);
+        $array = DMLModules::getPreferenceTable($categoryID);
         $returnTable = "";
         
         foreach ($array as $value)
@@ -318,8 +242,8 @@ class HTML
         return "<table class='table table-hover' id='table'>
                     <thead id='tabletop'>
                         <tr>
-                            <th scope='col'>" . 'Preference'       . '</a><a>'. $this->searchbarName() . "</a></th>
-                            <th scope='col'>" . 'Rating' . '</a><a>'. $this->searchbarRating() . "</a></th>
+                            <th scope='col'>" . 'Preference'       . '</a><a>'. self::searchbarName() . "</a></th>
+                            <th scope='col'>" . 'Rating' . '</a><a>'. self::searchbarRating() . "</a></th>
                         </tr>
                     </thead>
                     <tbody id='tableContent'>" .
@@ -335,7 +259,6 @@ class HTML
             return self::error404();
         }
         return self::userCategoyTable($userName);
-
     }
 
     private static function userCategoyTable($userId)
@@ -385,16 +308,16 @@ class HTML
             ."</tr>";
         }
 
-        $this->addToBody("  <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>" . 'Preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tableContent'>" .
-                                    $returnTable .
-                                "</tbody>
-                            </table>");
+        return ("   <table class='table table-hover' id='table'>
+                        <thead id='tabletop'>
+                            <tr>
+                                <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
+                            </tr>
+                        </thead>
+                        <tbody id='tableContent'>" .
+                            $returnTable .
+                        "</tbody>
+                    </table>");
     }
 
     private static function categoriesTableReturn($personID)
@@ -422,9 +345,9 @@ class HTML
                             </table>");
     }
 
-    public function returnCategoriesTable($personID)
+    public static function returnCategoriesTable($personID)
     {
-        $array = $this->dml->getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
         $returnTable = "";
         
         foreach ($array as $value)
@@ -438,7 +361,7 @@ class HTML
         return "<table class='table table-hover' id='table'>
                     <thead id='tabletop'>
                         <tr>
-                            <th scope='col'>" . 'Preference'  . '</a><a>'. $this->searchbarName() . "</a></th>
+                            <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
                         </tr>
                     </thead>
                     <tbody id='tableContent'>" .
@@ -447,130 +370,130 @@ class HTML
                 </table>";
     }
 
-    private function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
+    private static function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
-        $this->addToBody("  <h1 class='navigation' id='navigation'>
-                                <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
-                                <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
-                            </h1>");
+        return ("   <h1 class='navigation' id='navigation'>
+                        <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
+                        <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
+                        <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
+                    </h1>");
     }
 
     private static function navigationBarReturn($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
-        return ("  <h1 class='navigation' id='navigation'>
-                                <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                                <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
-                                <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
-                            </h1>");
+        return ("   <h1 class='navigation' id='navigation'>
+                        <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
+                        <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
+                        <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
+                    </h1>");
     }
 
-    private function keyModule()
+    private static function keyModule()
     {
-        $this->addToBody("  <span class='border border-light'>
-                                <form action='/newKey' method='post' id='keyForm'>
-                                    <div class='form-row'>
-                                        <div class='form-group col-md-6'>
-                                            <label for='inputName'>Name</label>
-                                            <input type='text' name='inputName' class='form-control' id='inputName' placeholder='AdminName'>
-                                        </div>
-                                        <div class='form-group col-md-6'>
-                                            <label for='inputPassword'>Password</label>
-                                            <input type='password' name='inputPassword' class='form-control' id='inputPassword' placeholder='Password'>
-                                        </div>
-                                        </div>
-                                        <div class='form-row'>
-                                        <div class='form-group col-md-4'>
-                                            <label for='inputKeyCount'>Key Count</label>
-                                            <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
-                                        </div>
-                                        <div class='form-group col-md-4'>
-                                            <label for='inputKeyUses'>Key Uses</label>
-                                            <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
-                                        </div>
-                                    </div>
-                                    <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
-                                </form>
-                                <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id='keyTable'>
-                                </tbody>
-                                </table>
-                            </span>");
+        return ("   <span class='border border-light'>
+                        <form action='/newKey' method='post' id='keyForm'>
+                            <div class='form-row'>
+                                <div class='form-group col-md-6'>
+                                    <label for='inputName'>Name</label>
+                                    <input type='text' name='inputName' class='form-control' id='inputName' placeholder='AdminName'>
+                                </div>
+                                <div class='form-group col-md-6'>
+                                    <label for='inputPassword'>Password</label>
+                                    <input type='password' name='inputPassword' class='form-control' id='inputPassword' placeholder='Password'>
+                                </div>
+                                </div>
+                                <div class='form-row'>
+                                <div class='form-group col-md-4'>
+                                    <label for='inputKeyCount'>Key Count</label>
+                                    <input type='number' class='form-control' id='inputKeyCount' min='1' max='5'>
+                                </div>
+                                <div class='form-group col-md-4'>
+                                    <label for='inputKeyUses'>Key Uses</label>
+                                    <input type='number' name='inputKeyUses' id='inputKeyUses' class='form-control' min='1' max='100'></input>
+                                </div>
+                            </div>
+                            <button type='submit' class='btn btn-primary' id='getNewKeysBtn'>Submit</button>
+                        </form>
+                        <table class='table table-hover' id='table'>
+                        <thead id='tabletop'>
+                            <tr>
+                                <th scope='col'>Keys</a></th><th scope='col'>Uses</a></th>
+                            </tr>
+                        </thead>
+                        <tbody id='keyTable'>
+                        </tbody>
+                        </table>
+                    </span>");
     }
 
     private function accountCreateModule()
     {
-        $this->addScript("food/js/regrister.js");
-        $this->addToBody("  <form id='regristerForm' method='post'>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputName'>Name</label>
-                                        <input type='text' class='form-control' id='inputName' name='inputName' placeholder='Private name for login'>
-                                    </div>
-                                </div>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputPassword'>Password</label>
-                                        <input type='password' class='form-control' id='inputPassword' name='inputPassword' placeholder='Password'>
-                                    </div>
-                                </div>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputAlias'>Name</label>
-                                        <input type='text' class='form-control' id='inputAlias' name='inputAlias' placeholder='Public name'>
-                                    </div>
-                                </div>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputKey'>Key</label>
-                                        <input type='text' class='form-control' id='inputKey' name='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
-                                    </div>
-                                </div>
-                                <button type='submit' class='btn btn-primary'>Submit Regristration</button>
-                                <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
-                            </form>");
-    }
+        self::addScript("food/js/regrister.js");
+        return ("   <form id='regristerForm' method='post'>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputName'>Name</label>
+                                <input type='text' class='form-control' id='inputName' name='inputName' placeholder='Private name for login'>
+                            </div>
+                        </div>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputPassword'>Password</label>
+                                <input type='password' class='form-control' id='inputPassword' name='inputPassword' placeholder='Password'>
+                            </div>
+                        </div>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputAlias'>Name</label>
+                                <input type='text' class='form-control' id='inputAlias' name='inputAlias' placeholder='Public name'>
+                            </div>
+                        </div>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputKey'>Key</label>
+                                <input type='text' class='form-control' id='inputKey' name='inputKey' maxlength='32' placeholder='unlocks unlimited preferences'>
+                            </div>
+                        </div>
+                        <button type='submit' class='btn btn-primary'>Submit Regristration</button>
+                        <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
+                    </form>");
+}
 
-    private function loginModule($name, $password)
+    private static function loginModule($name, $password)
     {
-        $this->addScript("food/js/login.js");
-        $this->addToBody("  <form id='loginForm' method='post'>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputName'>Name</label>
-                                        <input type='text' class='form-control' value='$name' id='inputName' name='inputName' placeholder='Private name for login'>
-                                    </div>
-                                </div>
-                                <div class='form-row'>
-                                    <div class='form-group col-md-5'>
-                                        <label for='inputPassword'>Password</label>
-                                        <input type='password' class='form-control' value='$password' id='inputPassword' name='inputPassword' placeholder='Password'>
-                                    </div>
-                                </div>
-                                <button type='submit' class='btn btn-primary'>Login</button>
-                            </form>");
+        self::addScript("food/js/login.js");
+        return ("   <form id='loginForm' method='post'>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputName'>Name</label>
+                                <input type='text' class='form-control' value='$name' id='inputName' name='inputName' placeholder='Private name for login'>
+                            </div>
+                        </div>
+                        <div class='form-row'>
+                            <div class='form-group col-md-5'>
+                                <label for='inputPassword'>Password</label>
+                                <input type='password' class='form-control' value='$password' id='inputPassword' name='inputPassword' placeholder='Password'>
+                            </div>
+                        </div>
+                        <button type='submit' class='btn btn-primary'>Login</button>
+                    </form>");
     }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Forwarings                                                                                                       //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    function getByRequest($select, $from, $where)
+    private static function getByRequest($select, $from, $where)
     {
-        $result = $this->dml->getTableWhere($select, 
+        $result = DMLModules::getTableWhere($select, 
                                             $from, 
                                             "$where='$_REQUEST[$where]'");
         return $result[0][$select];
     }
 
-    public function personTable($select, $from, $where, $person)
+    public static function personTable($select, $from, $where, $person)
     {
-        $result = $this->dml->getTableWhere($select, 
+        $result = DMLModules::getTableWhere($select, 
                                             $from, 
                                             "$where='$person'");
         return $result[0][$select];
@@ -605,14 +528,11 @@ class HTML
     {
         if(DMLModules::addAccount($accountname, $alias, $password, $key))
         {
-            $html = new HTML();
-            $html->login($accountname, $password);
-            echo $html->getHTML();
+            echo self::login($accountname, $password);
         }
         else 
         {
-            $html = new HTML();
-            return $html->error404();
+            return self::error404();
         }
     } 
 }
