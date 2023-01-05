@@ -74,7 +74,7 @@ class HTML
 
     public static function main()
     {
-        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), self::script("index"));
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'persons'), self::script("index"));
     }
 
     public static function adminPage()
@@ -147,7 +147,7 @@ class HTML
         return ("<h1>Hello $name and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
     }
 
-    private function table($select, $from)
+    private static function table($select, $from)
     {
         $array = DMLModules::getTable($select, $from);
         $returnTable = "";
@@ -171,7 +171,7 @@ class HTML
                             </table>');
     }
 
-    public function returnTable($select, $from)
+    public static function returnTable($select, $from)
     {
         $array = DMLModules::getTable($select, $from);
         $returnTable = "";
