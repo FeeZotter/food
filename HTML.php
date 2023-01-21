@@ -39,7 +39,7 @@ class HTML
             return self::error404();
         }
         $bodycontent = self::navigationBar('Start', $alias, null);
-        $bodycontent = self::categoriesTableReturn($name);
+        $bodycontent .= self::categoriesTableReturn($name);
         echo self::getHTML("", "", $bodycontent, self::script("index"));
     }
 
@@ -142,12 +142,12 @@ class HTML
         return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
     }
 
-    private function helloUser($name)
+    private static function helloUser($name)
     {
         return ("<h1>Hello $name and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
     }
 
-    private function table($select, $from)
+    private static function table($select, $from)
     {
         $array = DMLModules::getTable($select, $from);
         $returnTable = "";
@@ -171,7 +171,7 @@ class HTML
                             </table>');
     }
 
-    public function returnTable($select, $from)
+    public static function returnTable($select, $from)
     {
         $array = DMLModules::getTable($select, $from);
         $returnTable = "";
@@ -201,7 +201,7 @@ class HTML
         return DMLModules::getTableWhere($select, $from, $where); 
     }
 
-    private function preferenceTable($categoryID)
+    private static function preferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
         $array = DMLModules::getPreferenceTable($categoryID);
@@ -229,7 +229,7 @@ class HTML
                             </table>");
     }
 
-    public function returnPreferenceTable($categoryID)
+    public static function returnPreferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
         $array = DMLModules::getPreferenceTable($categoryID);
