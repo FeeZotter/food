@@ -74,7 +74,7 @@ class HTML
 
     public static function main()
     {
-        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'person'), self::script("index"));
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'persons'), self::script("index"));
     }
 
     public static function adminPage()

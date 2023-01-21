@@ -103,7 +103,6 @@ function createEvents()
 function tableEvent()
 {
     table = document.getElementById('tableContent');
-    console.log(table);
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
