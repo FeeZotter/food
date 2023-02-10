@@ -197,24 +197,23 @@
                 $echo .= "You need at least 5 Letters for the public alias. ";     
 
             //check Key
-            if($key != "")
-            {
-                if (strlen($key) != 32)
-                    $echo .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
-                if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
-                    $echo .= 'The key has illegal Letters. ';
-                if(!self::keyUsable($key))
-                    $echo .= "You cant use this key. Please insert another or none. ";
-            }
+            if (strlen($key) != 32)
+                $echo .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
+            if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
+                $echo .= 'The key has illegal Letters. ';
+            if(!self::keyUsable($key))
+                $echo .= "You cant use this key. Please insert another or none. ";
+            
+
+            //anti sql injection
+            mysqli_real_escape_string(DB::connection(), $accountname);
+            mysqli_real_escape_string(DB::connection(), $password);
+            mysqli_real_escape_string(DB::connection(), $alias);
+            mysqli_real_escape_string(DB::connection(), $key);
 
             //to save ressources only check something with the database if there is no error
             if($echo == "")
             {
-                mysqli_real_escape_string(DB::connection(), $accountname);
-                mysqli_real_escape_string(DB::connection(), $password);
-                mysqli_real_escape_string(DB::connection(), $alias);
-                mysqli_real_escape_string(DB::connection(), $key);
-
                 //check if account name exists
                 $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE name='$accountname')";
                 $result = mysqli_query(DB::connection() ,$sql);
@@ -245,13 +244,9 @@
                 $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')";
             }
             if(mysqli_query(DB::connection() ,$sql))
-            {
                 return true;
-            }
             else 
-            {
                 return false;
-            }
         }
     
         public static function loginSuccess($accountname, $password)
