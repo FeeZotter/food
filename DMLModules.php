@@ -238,7 +238,7 @@
             //////////////////Add new user
 
             //try adding a new user || not really for testing purposes
-            $sql = "INSERT INTO persons (name, pasword, alias, key) VALUES ('$accountname', '$password', '$alias', $key)";
+            $sql = "INSERT INTO persons (name, pasword, alias, key) VALUES ('$accountname', '$password', '$alias', hash('sha256', $key))";
             if($key == "")
             {
                 $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')";
@@ -252,9 +252,9 @@
         public static function loginSuccess($accountname, $password)
         {
             mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), $password);
+            mysqli_real_escape_string(DB::connection(), hash('sha256', $password));
 
-            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='$password'";
+            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='hash('sha256', $password)'";
             $result = mysqli_query(DB::connection() ,$sql);
             if(mysqli_fetch_row($result)[0])
                 return true;

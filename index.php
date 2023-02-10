@@ -33,22 +33,6 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 }, 'get');
 
 
-
-/////////////////////////////////////
-////////Post route example///////////
-Route::add('/contact-form',function()
-{
-    echo '<form method="post"><input type="text" name="test" /><input type="submit" value="send" /></form>';
-},'get');
-// Post route example
-Route::add('/contact-form',function()
-{
-    echo 'Hey! The form has been sent:<br/>';
-    print_r($_POST);
-},'post');
-
-
-
 //////////////////////////////////////////////////
 //////////////////Generate Keys///////////////////
 Route::add('/newKey',function()
@@ -70,6 +54,12 @@ Route::add('/login',function()
     $htmlComp = new HTML();
     echo $htmlComp->userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
 }, 'post');
+
+Route::add('/login/table',function()
+{
+    $htmlComp = new HTML();
+    echo $htmlComp->onlyUserCategoyTable($_REQUEST['inputName'], $_REQUEST['inputPassword']);    
+}, 'post' );
 
 Route::add('/regrister',function()
 {
