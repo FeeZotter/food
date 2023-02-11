@@ -518,14 +518,22 @@ class HTML
         return DMLModules::getTable('alias', 'persons');
     }
 
-    public static function getPreferenceTableData($categoryID)
+    public static function getCategoriesTableData($personID)
     {
-        return DMLModules::getPreferenceTable($categoryID);
+        $myArray = array();
+        while($row = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'")) {
+            $myArray[] = $row;
+        }
+        return json_encode($myArray);
     }
 
-    public static function getCategoriesTableData()
+    public static function getPreferenceTableData($categoryID)
     {
-        return DMLModules::getTable('alias', 'persons');
+        $myArray = array();
+        while($row = DMLModules::getPreferenceTable($categoryID)) {
+            $myArray[] = $row;
+        }
+        return json_encode($myArray);
     }
 
     public static function getAlias($name)
