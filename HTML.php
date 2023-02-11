@@ -108,7 +108,17 @@ class HTML
         }
         return self::getHTML("", "", 
                             self::helloUser($userName) . 
+                            "<div class='container text-center'>
+                                <div class='row'>
+                                    <div class='col'>" .
                             self::userCategoyTable($userName) .
+                            "</div>
+                             <div class='col' id='items'>" .
+                            self::userItemsTable() .
+                            "       </div>
+                                </div>
+                            </div>" .
+
                             "<br>
                                 if clicked on an item it should look like this:<br>
                                 Add Food: [____] with Rating: [_____]<br>
@@ -460,8 +470,8 @@ class HTML
                         </div>
                         <button type='submit' class='btn btn-primary'>Submit Regristration</button>
                         <p>NOTE: There is <b>no email communication</b> that can help you, so its easy that the <b>password is lost</b></p>
-                    </form>");
-}
+                    </form>");  
+    }
 
     private static function loginModule($name, $password)
     {
@@ -482,6 +492,19 @@ class HTML
                     </form>");
     }
 
+    private static function userItemsTable()
+    {
+        return "<table class='table table-hover' id='table'>
+                    <thead id='tabletop'>
+                        <tr>
+                            <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
+                        </tr>
+                    </thead>
+                    <tbody id='tableContent'>
+                    </tbody>
+                </table>";
+    }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Forwarings                                                                                                       //
@@ -500,6 +523,21 @@ class HTML
                                             $from, 
                                             "$where='$person'");
         return $result[0][$select];
+    }
+
+    public static function getFrontPageData()
+    {
+        return DMLModules::getTable('alias', 'persons');
+    }
+
+    public static function getPreferenceTableData($categoryID)
+    {
+        return DMLModules::getPreferenceTable($categoryID);
+    }
+
+    public static function getCategoriesTableData()
+    {
+        return DMLModules::getTable('alias', 'persons');
     }
 
     public static function getAlias($name)
