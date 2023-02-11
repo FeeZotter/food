@@ -219,6 +219,7 @@
             if(strlen($accountname) < 5)
                 $echo .= "You need at least 5 Letters for the Account name. ";
 
+
             //check alias
             if(!preg_match("/[a-z]/i", $alias))
                 $echo .= "You need at least 1 alphabet letter in your public alias. ";
@@ -228,6 +229,18 @@
 
             if(strlen($alias) < 5)
                 $echo .= "You need at least 5 Letters for the public alias. ";     
+            
+                
+            //check password
+            if(!preg_match("/[a-z]/i", $password))
+                $echo .= "You need at least 1 alphabet letter in your password. ";
+
+            if(strlen($password) > 50)
+                $echo .= "A maximum of 50 Letters are allowed for the password. ";
+
+            if(strlen($password) < 5)
+                $echo .= "You need at least 5 Letters for the password. ";   
+
 
             //check Key
             if (strlen($key) != 32)
@@ -240,7 +253,7 @@
 
             //anti sql injection
             mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), $password);
+            mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
             mysqli_real_escape_string(DB::connection(), $alias);
             mysqli_real_escape_string(DB::connection(), $key);
 
@@ -271,11 +284,18 @@
             //////////////////Add new user
 
             //try adding a new user || not really for testing purposes
-            $sql = "INSERT INTO persons (name, pasword, alias, key) VALUES ('$accountname', '$password', '$alias', hash('sha256', $key))";
-            if($key == "")
-            {
-                $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')";
-            }
+            $sql = "INSERT INTO persons (
+                        name, 
+                        pasword, 
+                        alias, 
+                        product_key) 
+                    VALUES (
+                        '$accountname', 
+                        '" . hash('sha256', "'" . $password . "'") . "', 
+                        '$alias', 
+                        (select product_key from product_keys where product_key = '$key')
+                    )";
+            //if i want users without key if($key == "") { $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')"; }
             if(mysqli_query(DB::connection() ,$sql))
                 return true;
             else 
@@ -288,7 +308,6 @@
             mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
 
             $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='" . hash('sha256', "'" . $password . "'") . "'";
-           // $result = mysqli_query(DB::connection() ,$sql);
             if(mysqli_query(DB::connection() ,$sql))
                 return true;
             return false;
