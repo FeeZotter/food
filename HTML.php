@@ -100,7 +100,7 @@ class HTML
                              "error404");
     }
 
-    public function userMainPage($userName, $password)
+    public static function userMainPage($userName, $password)
     {
         if(!DMLModules::loginSuccess($userName, $password))
         {
