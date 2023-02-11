@@ -43,9 +43,8 @@ function searchByRating() {
 //        navigation        //
 //////////////////////////////
 var table;
-var name          = "feezotter";
-var password      = "asdf";
-var categorytable = true;
+var name     = "feezotter";
+var password = "asdf";
 
 function categoryTable(url, ID) //post request
 {
@@ -80,7 +79,6 @@ function preferenceTable(url, ID) //get request
     })
     .done(function(data) {
         //$( "table.table" ).replaceWith( data );
-        categorytable != categorytable;
         temporaryObjectDelete();
         $( document.getElementById(ID) ).replaceWith( data );
     })

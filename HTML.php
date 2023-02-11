@@ -106,16 +106,38 @@ class HTML
         {
             return self::error404();
         }
+        $array = DMLModules::getTable("category", "categories");
+        $table = "";
+        foreach ($array as $value) { $table .= "<option value='$value'>$value</option>"; }
+
         return self::getHTML("", "", 
                             self::helloUser($userName) . 
-                            "<div class='container text-center'>
+                           "<div class='container text-center'>
                                 <div class='row'>
                                     <div class='col-6'>" .
-                            self::userCategoyTable($userName) .
-                            "</div>
-                             <div class='col-6' id='items'>" .
-                            self::userItemsTable() .
+                                        self::userCategoyTable($userName) .
+                                   "</div>
+                                    <div class='col-6' id='items'>" .
+                                        self::userItemsTable() .
                             "       </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-6'>
+                                        <select class='form-select' aria-label='Default select example'>" . 
+                                            $table .                                            
+                                        "</select>
+                                        <button id='addCategory'>Add Category</button>
+                                        <button id='addCategory'>Delete Category</button>
+                                    </div>
+                                    <div class='col-6'>
+                                    <input class='form-control' type='text' placeholder='Default input' aria-label='default input example'>
+                                    <input class='form-control' type='number' value='0' min='0' max='10' placeholder='Default input' aria-label='default input example'>
+                                        <select id='manipulatePreferenceMenu' class='form-select' aria-label='Default select example'>
+                                            <option value='addPreference'>Add/Change</option>
+                                            <option value='deletePreference'>Delete</option>
+                                        </select>
+                                        <button id='manipulatePreference'>Preference</button>
+                                    </div>
                                 </div>
                             </div>", 
                             self::script("userPage"));
