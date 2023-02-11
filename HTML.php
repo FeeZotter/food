@@ -515,25 +515,17 @@ class HTML
 
     public static function getFrontPageData()
     {
-        return DMLModules::getTable('alias', 'persons');
+        return json_encode(DMLModules::getTable('alias', 'persons'));
     }
 
     public static function getCategoriesTableData($personID)
     {
-        $myArray = array();
-        while($row = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'")) {
-            $myArray[] = $row;
-        }
-        return json_encode($myArray);
+        return json_encode(DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'"));
     }
 
     public static function getPreferenceTableData($categoryID)
     {
-        $myArray = array();
-        while($row = DMLModules::getPreferenceTable($categoryID)) {
-            $myArray[] = $row;
-        }
-        return json_encode($myArray);
+        return json_encode(DMLModules::getPreferenceTableData($categoryID));
     }
 
     public static function getAlias($name)

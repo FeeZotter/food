@@ -86,6 +86,39 @@
             }
             return $data;
         }
+        public static function getPreferenceTableData($crossPersonCategoryID)
+        {
+            //anti SQL injection
+            mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
+            
+            //try sql selection
+            $limit = "";
+            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
+            $result = mysqli_query(DB::connection() ,$sql);
+            $person_id = mysqli_fetch_row($result)[0];
+
+            $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
+            $result = mysqli_query(DB::connection() ,$sql);
+            $key = mysqli_fetch_row($result)[0];
+
+            $sql = "SELECT preference, rating 
+                    FROM preferences 
+                    WHERE cross_person_categories_id='$crossPersonCategoryID'
+                    $limit";
+                #    ORDER BY preference ASC, rating DESC";
+            $result = mysqli_query(DB::connection() ,$sql);
+            
+            //compose array from data
+            $data = array();
+            if ($result)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    $data[] = $row;
+                }
+            }
+            return $data;
+        }
 
         public static function userCategoryTable($person)
         {

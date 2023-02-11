@@ -42,7 +42,7 @@ Route::add('/g/([0-9]*)',function($preferenceID)
 //get person table data
 Route::add('/g/([a-z,0-9]*)',function($alias)
 {
-    echo HTML::returnCategoriesTable(HTML::getName($alias));
+    echo HTML::getCategoriesTableData(HTML::getName($alias));
 }, 'get');
 
 
