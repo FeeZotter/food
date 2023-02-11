@@ -1,9 +1,9 @@
 <?php
     function admin($name, $password)
     {
-        if(hash('ripemd160', $name) != '1a003b58873a43d604b05d94a3a82263ef2ea907')
+        if(hash('ripemd160', $name) != 'cbab26c4570a17bd673d64d6bc1f2df9d9b3206c')
             return false; //wrong name
-        if(hash('ripemd160', $password) != '92717f866acad4776c43a9b0b6e0dbaf29200f37')
+        if(hash('ripemd160', $password) != '82f0b74a5e3581e346ecf2915ca6e806434d9863')
             return false; //wrong password
         return true; //no wrongs
     }
