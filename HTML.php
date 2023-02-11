@@ -110,26 +110,14 @@ class HTML
                             self::helloUser($userName) . 
                             "<div class='container text-center'>
                                 <div class='row'>
-                                    <div class='col'>" .
+                                    <div class='col-6'>" .
                             self::userCategoyTable($userName) .
                             "</div>
-                             <div class='col' id='items'>" .
+                             <div class='col-6' id='items'>" .
                             self::userItemsTable() .
                             "       </div>
                                 </div>
-                            </div>" .
-
-                            "<br>
-                                if clicked on an item it should look like this:<br>
-                                Add Food: [____] with Rating: [_____]<br>
-                                +---------------------+<br>
-                                |Food     | Rating    |<br>
-                                +---------------------+<br>
-                                |Potato   | 9         |<br>
-                                |Potato   | 9         |<br>
-                                |Potato   | 9         |<br>
-                                |Potato   | 9         |<br>
-                                +---------------------+<br>", 
+                            </div>", 
                             self::script("userPage"));
     }
 
@@ -154,7 +142,7 @@ class HTML
 
     private static function helloUser($name)
     {
-        return ("<h1>Hello $name and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
+        return ("<h1>Hello <div id='username' >$name</div> and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
     }
 
     private static function table($select, $from)
