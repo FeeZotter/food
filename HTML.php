@@ -103,15 +103,13 @@ class HTML
     public static function userMainPage($userName, $password)
     {
         if(!DMLModules::loginSuccess($userName, $password))
-        {
             return self::error404();
-        }
         $array = DMLModules::getTable("category", "categories");
         $table = "";
         foreach ($array as $value) { $table .= "<option value='$value'>$value</option>"; }
 
         return self::getHTML("", "", 
-                            self::helloUser($userName) . 
+                            self::helloUser($userName, $password) . 
                            "<div class='container text-center'>
                                 <div class='row'>
                                     <div class='col-6'>" .
@@ -162,9 +160,9 @@ class HTML
         return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
     }
 
-    private static function helloUser($name)
+    private static function helloUser($name, $password)
     {
-        return ("<h1>Hello <div id='username' >$name</div> and i know your public name is " . DMLModules::getAlias($name) . "</h1>");
+        return ("<h1>Hello <b id='myUsername' class='$password'>$name</b> and i know your public name is <b id='myAlias'>" . DMLModules::getAlias($name) . "</b></h1>");
     }
 
     private static function table($select, $from)
@@ -280,9 +278,7 @@ class HTML
     public static function onlyUserCategoyTable($userName, $password)
     {
         if(!DMLModules::loginSuccess($userName, $password))
-        {
             return self::error404();
-        }
         return self::userCategoyTable($userName);
     }
 
@@ -451,7 +447,7 @@ class HTML
                     </span>");
     }
 
-    private function accountCreateModule()
+    private static function accountCreateModule()
     {
         return ("   <form id='regristerForm' method='post'>
                         <div class='form-row'>
