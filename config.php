@@ -3,7 +3,7 @@
 
     $hostname = "localhost";
     $username = "mypref";
-    $password = "wH5dKtdFaUe3wbX";
+    $password = "wH5dKtdFaUe3wbX,";
     $database = "mypreferences";/**/
     
    /* 
