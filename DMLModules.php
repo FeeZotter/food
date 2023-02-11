@@ -252,11 +252,11 @@
         public static function loginSuccess($accountname, $password)
         {
             mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), hash('sha256', $password));
+            mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
 
-            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='hash('sha256', $password)'";
-            $result = mysqli_query(DB::connection() ,$sql);
-            if(mysqli_fetch_row($result)[0])
+            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='" . hash('sha256', "'" . $password . "'") . "'";
+           // $result = mysqli_query(DB::connection() ,$sql);
+            if(mysqli_query(DB::connection() ,$sql))
                 return true;
             return false;
         }
