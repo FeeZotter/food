@@ -83,8 +83,7 @@ Route::add('/regrister',function()
 
 Route::add('/reg',function()
 {
-    $htmlComp = new HTML();
-    echo $htmlComp->regristration();
+    echo HTML::regristration();
 }, 'get');
 
 Route::add('/reg',function()

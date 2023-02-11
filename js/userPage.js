@@ -43,8 +43,9 @@ function searchByRating() {
 //        navigation        //
 //////////////////////////////
 var table;
-var name     = "feezotter";
-var password = "asdf";
+var name     = document.getElementById("myUsername").innerHTML;
+var password = document.getElementById('myUsername').className;
+
 
 function categoryTable(url, ID) //post request
 {
