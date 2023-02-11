@@ -47,7 +47,7 @@ var name     = document.getElementById("myUsername").innerHTML;
 var password = document.getElementById('myUsername').className;
 
 
-function categoryTable(url, ID) //post request
+function postReq(url, ID) //post request
 {
     // Assign handlers immediately after making the request,
     // and remember the jqxhr object for this request
@@ -106,11 +106,35 @@ function tableEvent()
         if(event.target.tagName == "TD")
         {
             if(categorytable)
-                categoryTable("localhost/get/", "");
+                postReq("localhost/get/", "");
             preferenceTable("", "");
         }
     }
 }
+
+function addCategory()
+{
+    table = document.getElementById('tableContent');
+    table.onclick = () => {
+        if(event.target.tagName == "TD")
+        {
+            if(categorytable)
+                postReq("localhost/get/", "");
+            preferenceTable("", "");
+        }
+    }
+}
+
+function deleteCategory()
+{}
+
+function acPreference()
+{
+
+}
+
+function deletePreference()
+{}
 
 createEvents();
 
