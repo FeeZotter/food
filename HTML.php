@@ -124,17 +124,14 @@ class HTML
                                         <select class='form-select' aria-label='Default select example'>" . 
                                             $table .                                            
                                         "</select>
-                                        <button id='addCategory'>Add Category</button>
-                                        <button id='addCategory'>Delete Category</button>
+                                        <button id='addCategory' class='btn btn-primary'>Add Category</button>
+                                        <button id='addCategory'class='btn btn-dark'>Delete Category</button>
                                     </div>
                                     <div class='col-6'>
-                                    <input class='form-control' type='text' placeholder='Default input' aria-label='default input example'>
-                                    <input class='form-control' type='number' value='0' min='0' max='10' placeholder='Default input' aria-label='default input example'>
-                                        <select id='manipulatePreferenceMenu' class='form-select' aria-label='Default select example'>
-                                            <option value='addPreference'>Add/Change</option>
-                                            <option value='deletePreference'>Delete</option>
-                                        </select>
-                                        <button id='manipulatePreference'>Preference</button>
+                                    <input class='form-control' type='text' placeholder='your preference'>
+                                    <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
+                                        <button id='addChangePreference' class='btn btn-primary'>Add/Change Preference</button>
+                                        <button id='deletePreference' class='btn btn-dark'>Delete Preference</button>
                                     </div>
                                 </div>
                             </div>", 
@@ -500,15 +497,18 @@ class HTML
 
     private static function userItemsTable()
     {
-        return "<table class='table table-hover' id='table'>
-                    <thead id='tabletop'>
-                        <tr>
-                            <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
-                        </tr>
-                    </thead>
-                    <tbody id='tableContent'>
-                    </tbody>
-                </table>";
+        return "
+        <table class='table table-hover' id='table'>
+            <thead id='tabletop'>
+                <tr>
+                    <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName()   . "</a></th>
+                    <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
+                </tr>
+            </thead>
+            <tbody id='tableContent'>
+            </tbody>
+        </table>";
+
     }
 
 
