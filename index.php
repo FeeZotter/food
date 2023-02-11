@@ -27,6 +27,24 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
     return HTML::returnCategoriesTable(HTML::getName($alias));
 }, 'get');
 
+//only main table data
+Route::add('/g',function()
+{
+    echo HTML::getFrontPageData();
+}, 'get');
+
+//get preference table data
+Route::add('/g/([0-9]*)',function($preferenceID)
+{
+    echo HTML::getPreferenceTableData($preferenceID);
+}, 'get');
+
+//get person table data
+Route::add('/g/([a-z,0-9]*)',function($alias)
+{
+    return HTML::returnCategoriesTable(HTML::getName($alias));
+}, 'get');
+
 
 //////////////////////////////////////////////////
 //////////////////Generate Keys///////////////////
