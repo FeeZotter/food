@@ -248,7 +248,7 @@
             if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
                 $echo .= 'The key has illegal Letters. ';
             if(!self::keyUsable($key))
-                $echo .= "You cant use this key. Please insert another or none. ";
+                $echo .= "You cant use this key. Please insert another. ";
             
 
             //anti sql injection
