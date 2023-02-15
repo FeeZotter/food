@@ -96,6 +96,10 @@ Route::add('/admin',function()
     echo HTML::adminPage();
 }, 'get');
 
+Route::add('/delcate',function()
+{
+    echo DMLModules::removeCategory($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory']);
+}, 'ost');
 
 //////////////////////////////////////
 //////////////Shortcuts///////////////
