@@ -96,8 +96,8 @@ class HTML
     {
         return self::getHTML('', 
                              '', 
-                             'Error 404: Page not found | redirecting you shortly in <a id="timer"></a> seconds',
-                             "error404");
+                             'Error 418: I AM A TEAPOD | redirecting you shortly in <a id="timer"></a> seconds',
+                             self::script("error404"));
     }
 
     public static function userMainPage($userName, $password)

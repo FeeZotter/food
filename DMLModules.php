@@ -55,7 +55,7 @@
             
             //try sql selection
             $limit = "";
-            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
+            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID' ORDER BY persons_id ASC";
             $result = mysqli_query(DB::connection() ,$sql);
             $person_id = mysqli_fetch_row($result)[0];
 
@@ -71,8 +71,8 @@
             $sql = "SELECT preference, rating 
                     FROM preferences 
                     WHERE cross_person_categories_id='$crossPersonCategoryID'
+                    ORDER BY rating DESC, preference ASC 
                     $limit";
-                #    ORDER BY preference ASC, rating DESC";
             $result = mysqli_query(DB::connection() ,$sql);
             
             //compose array from data
@@ -104,7 +104,9 @@
             $sql = "SELECT preference, rating 
                     FROM preferences 
                     WHERE cross_person_categories_id='$crossPersonCategoryID'
+                    ORDER BY rating DESC, preference ASC 
                     $limit";
+                    
                 #    ORDER BY preference ASC, rating DESC";
             $result = mysqli_query(DB::connection() ,$sql);
             
@@ -307,10 +309,12 @@
             mysqli_real_escape_string(DB::connection(), $accountname);
             mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
 
+
             $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='" . hash('sha256', "'" . $password . "'") . "'";
-            if(mysqli_query(DB::connection() ,$sql))
-                return true;
-            return false;
+            $result = mysqli_query(DB::connection() ,$sql);#
+            if(mysqli_fetch_row($result) == null)
+                return false;
+            return true;
         }
 
         public static function deleteAccount($accountname, $password)
@@ -365,43 +369,7 @@
         }
 
         //////////////////////////////////////
-        ///////////outdated///////////////////
-        static function addContent( $user,
-                                    $password,
-                                    $preference,
-                                    $rating, 
-                                    $cross_person_categories_id)
-        {
-            //trim empty spaces from $preference
-            trim($preference, " \n\r\t\v\x00");
-            
-            //anti SQL injection
-            mysqli_real_escape_string(DB::connection(), $user);
-            mysqli_real_escape_string(DB::connection(), $password);
-            mysqli_real_escape_string(DB::connection(), $preference);
-            mysqli_real_escape_string(DB::connection(), $rating);
-            mysqli_real_escape_string(DB::connection(), $cross_person_categories_id);
-        }
-
-        static function deleteContent(string $from,  
-                                      string $where, 
-                                      string $eqals) 
-        {
-            //anti SQL injection
-            mysqli_real_escape_string(DB::connection(), $from);
-            mysqli_real_escape_string(DB::connection(), $where);
-            mysqli_real_escape_string(DB::connection(), $eqals);
-
-            //try sql delete
-            $sql = "DELETE FROM $from
-                    WHERE       $where = '$eqals'";
-
-            if(mysqli_query(DB::connection(), $sql))
-                $echo = "'$eqals' deleted successfully";
-            else
-                $echo = "ERROR: Could not able to execute " . $sql . ". " . DB::connection()->connect_error;
-            echo $echo;
-        }
+        ///////testarea userinteraction///////
 
         static function addChangePreference ($user, $password, $category, $preference, $rating)
         {
@@ -410,6 +378,25 @@
             mysqli_real_escape_string(DB::connection(), $category);
             mysqli_real_escape_string(DB::connection(), $preference);
             mysqli_real_escape_string(DB::connection(), $rating);
+
+            if (!self::loginSuccess($user, $password))
+                return false;
+
+            $cpc = self::getPersonCategoryIdByPersCate($user, $category);
+
+            $sql = "INSERT INTO preferences (cross_persons_categories_id, 
+                                             preference, 
+                                             rating) 
+                    VALUES (" . 
+                            $cpc . ", " . 
+                            $preference . ", " . 
+                            $rating . 
+                           ")";
+
+                           
+            if(mysqli_query(DB::connection(), $sql))
+                return true;
+            return false;
         }
 
         static function removePreference ($user, $password, $category, $preference)
@@ -434,8 +421,7 @@
 
             if(mysqli_query(DB::connection(), $sql))
                 return true;
-            return false;
-                
+            return false;      
         }
 
         static function removeCategory ($name, $password, $category)
