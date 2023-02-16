@@ -103,6 +103,7 @@ function tableEvent()
 {
     table = document.getElementById('tableContent');
     table.onclick = () => {
+        console.log(event)
         if(event.target.tagName == "TD")
         {
             if(categorytable)
