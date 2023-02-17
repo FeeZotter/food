@@ -119,7 +119,7 @@ class HTML
                                         self::userItemsTable() .
                             "       </div>
                                 </div>
-                                <div class='row'>
+                                <div class='row overflow-auto'>
                                     <div class='col-6'>
                                         <select class='form-select' aria-label='Default select example'>" . 
                                             $table .                                            
@@ -174,16 +174,62 @@ class HTML
             ."</tr>";
         }
 
-        return ("  <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'><a>" . ucfirst($select) . '</a><a>' . self::searchbarName() . '</a>' . '</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableContent">' .
-                                    $returnTable .
-                                '</tbody>
-                            </table>');
+        return self::tablePresetOneRow($select, $returnTable);
+    }
+
+    private static function tablePresetOneRow($header, $table)
+    {
+        return ("  
+        <div class='col-xs-8 col-xs-offset-2'>
+            <table class='table table-striped' id='table'>
+                <thead id='tabletop'>
+                    <tr>
+                        <th scope='col'><a>" . ucfirst($header) . '</a><a>' . self::searchbarName() . '</a>' . "</th>
+                    </tr>   
+                </thead>
+            </table>
+        <div>
+        <div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
+            <table class='table table-striped' id='table'>
+                <tbody id='tableContent'>" .
+                        $table .
+               '</tbody>
+            </table>
+        </div>');
+    }
+
+    private static function tablePresetOneRowBody($table)
+    {
+        return 
+        "<div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
+            <table class='table table-striped' id='table'>
+                <tbody id='tableContent'>" .
+                        $table .
+               '</tbody>
+            </table>
+        </div>';
+    }
+
+    private static function tablePresetTwoRow($header1, $header2, $table)
+    {
+        return ("  
+        <div class='col-xs-8 col-xs-offset-2' style='height: 10vh'>
+            <table class='table table-striped' id='table'>
+                <thead id='tabletop'>
+                    <tr>
+                        <th scope='col'><a>" . ucfirst($header1) . "</a><a>" . self::searchbarName() .   "</a></th>
+                        <th scope='col'>" .    ucfirst($header2) . '</a><a>' . self::searchbarRating() . "</a></th>
+                    </tr>   
+                </thead>
+            </table>
+        <div>
+        <div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
+            <table class='table table-striped' id='table'>
+                <tbody id='tableContent'>" .
+                        $table .
+               '</tbody>
+            </table>
+        </div>');
     }
 
     public static function returnTable($select, $from)
@@ -197,17 +243,7 @@ class HTML
             .   "<td class='$value'>{$value}</td>"
             ."</tr>";
         }
-
-        return "<table class='table table-hover' id='table'>
-                    <thead id='tabletop'>
-                        <tr>
-                            <th scope='col'><a>" . ucfirst($select) . '</a><a>' . self::searchbarName() . '</a>' . '</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableContent">' .
-                        $returnTable .
-                    '</tbody>
-                </table>';
+        return self::tablePresetOneRow($select, $returnTable);
     }
 
     function dataTableWhere($select, $from, $where)
@@ -231,17 +267,7 @@ class HTML
             ."</tr>";
         }
 
-        return ("  <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>" . 'Preference'       . '</a><a>'. self::searchbarName() . "</a></th>
-                                        <th scope='col'>" . 'Rating' . '</a><a>'. self::searchbarRating() . "</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tableContent'>" .
-                                    $returnTable .
-                                "</tbody>
-                            </table>");
+        return self::tablePresetTwoRow('Preference', 'Rating', $returnTable);
     }
 
     public static function returnPreferenceTable($categoryID)
@@ -259,17 +285,7 @@ class HTML
             ."</tr>";
         }
 
-        return "<table class='table table-hover' id='table'>
-                    <thead id='tabletop'>
-                        <tr>
-                            <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName()   . "</a></th>
-                            <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
-                        </tr>
-                    </thead>
-                    <tbody id='tableContent'>" .
-                        $returnTable .
-                    "</tbody>
-                </table>";
+        return self::tablePresetTwoRow('Preference', 'Rating', $returnTable);
     }
 
     public static function onlyUserCategoyTable($userName, $password)
@@ -300,17 +316,7 @@ class HTML
             .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
-        return ("  <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>" . 'Category' . self::searchbarName()   . "</th>
-                                        <th scope='col'>" . 'Amount '  . self::searchbarRating() . "</th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tableContent'>" .
-                                    $returnTable .
-                                "</tbody>
-                            </table>");
+        return self::tablePresetTwoRow('Category', 'Amount', $returnTable);
     }
 
     private function categoriesTable($personID)
@@ -325,17 +331,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-
-        return ("   <table class='table table-hover' id='table'>
-                        <thead id='tabletop'>
-                            <tr>
-                                <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
-                            </tr>
-                        </thead>
-                        <tbody id='tableContent'>" .
-                            $returnTable .
-                        "</tbody>
-                    </table>");
+        return self::tablePresetOneRow('Preference', $returnTable);
     }
 
     private static function categoriesTableReturn($personID)
@@ -350,17 +346,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-
-        return ("  <table class='table table-hover' id='table'>
-                                <thead id='tabletop'>
-                                    <tr>
-                                        <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tableContent'>" .
-                                    $returnTable .
-                                "</tbody>
-                            </table>");
+        return self::tablePresetOneRow('Preference', $returnTable);
     }
 
     public static function returnCategoriesTable($personID)
@@ -375,17 +361,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-
-        return "<table class='table table-hover' id='table'>
-                    <thead id='tabletop'>
-                        <tr>
-                            <th scope='col'>" . 'Preference'  . '</a><a>'. self::searchbarName() . "</a></th>
-                        </tr>
-                    </thead>
-                    <tbody id='tableContent'>" .
-                        $returnTable .
-                    "</tbody>
-                </table>";
+        return self::tablePresetOneRow('Preference', $returnTable);
     }
 
     private static function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
