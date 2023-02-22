@@ -55,7 +55,9 @@ function postReq(url, ID) //post request
     console.log(url);
     var jqxhr = $.post(url, { inputName: name, inputPassword: password})
     .done(function(data) {
+        console.log(data)
         data = JSON.parse(data)
+        console.log(data)
         temporaryObjectDelete();
         generateTable = "";
         data.forEach(element => {
