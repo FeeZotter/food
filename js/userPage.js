@@ -55,10 +55,16 @@ function postReq(url, ID) //post request
     console.log(url);
     var jqxhr = $.post(url, { inputName: name, inputPassword: password})
     .done(function(data) {
-        //$( "table.table" ).replaceWith( data );
-        categorytable != categorytable;
+        data = JSON.parse(data)
         temporaryObjectDelete();
-        $( document.getElementById(ID) ).replaceWith( data );
+        generateTable = "";
+        data.forEach(element => {
+            preferenceItem = document.createElement("div");
+            preferenceItem.className = element["rating"];
+            preferenceItem.innerHTML = element["preference"];
+            generateTable.appendChild(userButton);
+        });
+        $( document.getElementById(ID) ).replaceWith( generateTable );
     })
     .then(function() {
         createEvents();
@@ -80,7 +86,6 @@ function preferenceTable(url, ID) //get request
     })
     .done(function(data) {
         //$( "table.table" ).replaceWith( data );
-        temporaryObjectDelete();
         $( document.getElementById(ID) ).replaceWith( data );
     })
     .then(function() {
@@ -106,9 +111,7 @@ function tableEvent()
         console.log(event)
         if(event.target.tagName == "TD")
         {
-            if(categorytable)
-                postReq("localhost/get/", "");
-            preferenceTable("", "");
+            postReq("localhost/g/" + $(event.target).attr('class'), "");
         }
     }
 }
@@ -119,9 +122,7 @@ function addCategory()
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
-            if(categorytable)
-                postReq("localhost/get/", "");
-            preferenceTable("", "");
+            postReq("localhost/get/", "");
         }
     }
 }

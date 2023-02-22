@@ -505,7 +505,7 @@ class HTML
                     <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
                 </tr>
             </thead>
-            <tbody id='tableContent'>
+            <tbody id='userItemsTable'>
             </tbody>
         </table>";
 
