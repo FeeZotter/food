@@ -1,12 +1,11 @@
 <?php 
-include("DMLModules.php");
 
 echo '<!DOCTYPE>
 <body>
     <head>
         <title>test</title>
         <style>
-            .tableFixHead          { overflow: auto; height: 100px; }
+            .tableFixHead          { overflow: auto; height: 80%; }
 .tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
 
 /* Just common table stuff. Really. */
