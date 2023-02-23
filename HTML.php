@@ -128,8 +128,8 @@ class HTML
                                         <button id='deleteCategory'class='btn btn-dark' onclick='deleteCategory()'>Delete Category</button>
                                     </div>
                                     <div class='col-6'>
-                                    <input class='form-control' type='text' placeholder='your preference'>
-                                    <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
+                                        <input class='form-control' type='text' placeholder='your preference'>
+                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
                                         <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
                                         <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
                                     </div>

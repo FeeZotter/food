@@ -9,6 +9,11 @@ Route::add('/',function()
     echo HTML::main();
 }, 'get');
 
+Route::add('/a', function()
+{
+    include("test.php");
+});
+
 //only main table
 Route::add('/get',function()
 {

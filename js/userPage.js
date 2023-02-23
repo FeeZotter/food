@@ -113,7 +113,7 @@ function tableEvent()
         console.log(event)
         if(event.target.tagName == "TD")
         {
-            postReq("localhost/g/" + $(event.target).attr('class'), "");
+            postReq("localhost/g/" + $(event.target).attr('class'), "items");
         }
     }
 }
