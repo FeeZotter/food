@@ -9,10 +9,10 @@ Route::add('/',function()
     echo HTML::main();
 }, 'get');
 
-Route::add('/a', function()
+Route::add('/impressum',function()
 {
-    include("test.php");
-});
+    echo HTML::Impressum();
+}, 'get');
 
 //only main table
 Route::add('/get',function()

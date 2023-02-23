@@ -14,10 +14,14 @@ class HTML
                 $style.
                 $headcontent.
                "</head>
-                <body>".
-                $bodycontent.
-               "</body>
-                </html>".
+                <body>
+                    <div id='content' style='width:80vw;margin:auto;'>".
+                        $bodycontent.
+               '    </div>' . 
+               self::Impressum() .
+               '
+                </body>
+                </html>'.
                 $script;
     }
 
@@ -41,6 +45,35 @@ class HTML
         $bodycontent = self::navigationBar('Start', $alias, null);
         $bodycontent .= self::categoriesTableReturn($name);
         echo self::getHTML("", "", $bodycontent, self::script("index"));
+    }
+
+    public static function Impressum()
+    {
+        return '
+        <footer class="bg-light text-center text-lg-start" style="width: 100%;">
+        <div class="container p-4 pb-0">
+            <form action="">
+            <div class="row">
+                <div class="col-auto mb-4 mb-md-0">
+                <h1>Impressum</h1>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th scope="col"><b>Name:</b></th>
+                            <th scope="col">Fee-Zara Julianna Zotter</th>
+                        </tr>  
+                        <tr>
+                            <th scope="col"><b>E-Mail:</b></th>
+                            <th scope="col">julianazotter@proton.me</th>
+                        </tr>   
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            </form>
+        </div>
+        </footer>
+        ';
     }
 
     public static function Preference(string $alias, string $category)
@@ -122,17 +155,17 @@ class HTML
                                 </div>
                                 <div class='row overflow-auto'>
                                     <div class='col-6'>
+                                        <input class='form-control' type='text' placeholder='your preference'>
+                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
+                                        <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
+                                        <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
+                                    </div>
+                                    <div class='col-6'>
                                         <select class='form-select' aria-label='Default select example'>" . 
                                             $table .                                            
                                         "</select>
                                         <button id='addCategory' class='btn btn-primary' onclick='addCategory()'>Add Category</button>
                                         <button id='deleteCategory'class='btn btn-dark' onclick='deleteCategory()'>Delete Category</button>
-                                    </div>
-                                    <div class='col-6'>
-                                        <input class='form-control' type='text' placeholder='your preference'>
-                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
-                                        <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
-                                        <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
                                     </div>
                                 </div>
                             </div>", 
@@ -550,5 +583,83 @@ class HTML
             return self::error404();
         }
     } 
+
+    public static function test()
+    {
+        
+return '
+<!DOCTYPE html>
+<body>
+    <head>
+        <title>test</title>
+        <link rel="stylesheet" href="/food/style/style.css">
+        <link rel="stylesheet" href="/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css">
+        <style>
+        </style>
+    </head>
+    <body>
+ ' . HTML::helloUser("feezotter", "asdfASDF1234") . '
+ <br>
+<div class="container overflow-hidden text-center">
+  <div class="row gy-5">
+    <div class="col-6">
+      <div class="p-3 border bg-light">1</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">2</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">3</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">4</div>
+    </div>
+  </div>
+</div>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+        <div class="tableFixHead">
+  <table >
+    <thead >
+      <tr><th>TH 1</th><th>TH 2</th></tr>
+    </thead>
+    <tbody >
+      <tr><td>A1</td><td>A2</td></tr>
+      <tr><td>B1</td><td>B2</td></tr>
+      <tr><td>C1</td><td>C2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>E1</td><td>E2</td></tr>
+    </tbody>
+  </table>
+</div>
+    </body>
+</body>';
+
+    }
 }
 ?>
