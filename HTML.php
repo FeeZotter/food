@@ -104,6 +104,7 @@ class HTML
     {
         if(!DMLModules::loginSuccess($userName, $password))
             return self::error404();
+
         $array = DMLModules::getTable("category", "categories");
         $table = "";
         foreach ($array as $value) { $table .= "<option value='$value'>$value</option>"; }
@@ -174,10 +175,18 @@ class HTML
             ."</tr>";
         }
 
-        return self::tablePresetOneRow($select, $returnTable);
+        return self::tableOne($select, $returnTable);
     }
 
-    private static function tablePresetOneRow($header, $table)
+    private static function tableOne($header, $table)
+    {
+        return (
+        self::theadOne($header) . 
+        self::tbody($table)
+        );
+    }
+
+    private static function theadOne($header)
     {
         return ("  
         <div class='col-xs-8 col-xs-offset-2'>
@@ -188,20 +197,13 @@ class HTML
                     </tr>   
                 </thead>
             </table>
-        <div>
-        <div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
-            <table class='table table-striped' id='table'>
-                <tbody id='tableContent'>" .
-                        $table .
-               '</tbody>
-            </table>
-        </div>');
+        <div>");
     }
 
-    private static function tablePresetOneRowBody($table)
+    private static function tbody($table)
     {
         return 
-        "<div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
+        "<div class='col-xs-8 col-xs-offset-2 tableFixHead' style=''>
             <table class='table table-striped' id='table'>
                 <tbody id='tableContent'>" .
                         $table .
@@ -210,10 +212,15 @@ class HTML
         </div>';
     }
 
-    private static function tablePresetTwoRow($header1, $header2, $table)
+    private static function tableTwo($header1, $header2, $table)
     {
-        return ("  
-        <div class='col-xs-8 col-xs-offset-2' style='height: 10vh'>
+        return self::theadTwo($header1, $header2) . self::tbody($table);
+    }
+
+    private static function theadTwo ($header1, $header2)
+    {
+        return
+        "<div class='col-xs-8 col-xs-offset-2' style='height: 10vh'>
             <table class='table table-striped' id='table'>
                 <thead id='tabletop'>
                     <tr>
@@ -222,14 +229,7 @@ class HTML
                     </tr>   
                 </thead>
             </table>
-        <div>
-        <div class='col-xs-8 col-xs-offset-2' style='overflow: auto; height: 80vh;'>
-            <table class='table table-striped' id='table'>
-                <tbody id='tableContent'>" .
-                        $table .
-               '</tbody>
-            </table>
-        </div>');
+        <div>";
     }
 
     public static function returnTable($select, $from)
@@ -243,7 +243,7 @@ class HTML
             .   "<td class='$value'>{$value}</td>"
             ."</tr>";
         }
-        return self::tablePresetOneRow($select, $returnTable);
+        return self::tableOne($select, $returnTable);
     }
 
     function dataTableWhere($select, $from, $where)
@@ -267,7 +267,7 @@ class HTML
             ."</tr>";
         }
 
-        return self::tablePresetTwoRow('Preference', 'Rating', $returnTable);
+        return self::tableTwo('Preference', 'Rating', $returnTable);
     }
 
     public static function returnPreferenceTable($categoryID)
@@ -285,10 +285,10 @@ class HTML
             ."</tr>";
         }
 
-        return self::tablePresetTwoRow('Preference', 'Rating', $returnTable);
+        return self::tableTwo('Preference', 'Rating', $returnTable);
     }
 
-    public static function onlyUserCategoyTable($userName, $password)
+    public static function onlyUserCategoryTable($userName, $password)
     {
         if(!DMLModules::loginSuccess($userName, $password))
             return self::error404();
@@ -316,7 +316,7 @@ class HTML
             .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
-        return self::tablePresetTwoRow('Category', 'Amount', $returnTable);
+        return self::tableTwo('Category', 'Amount', $returnTable);
     }
 
     private function categoriesTable($personID)
@@ -331,7 +331,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-        return self::tablePresetOneRow('Preference', $returnTable);
+        return self::tableOne('Preference', $returnTable);
     }
 
     private static function categoriesTableReturn($personID)
@@ -346,7 +346,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-        return self::tablePresetOneRow('Preference', $returnTable);
+        return self::tableOne('Preference', $returnTable);
     }
 
     public static function returnCategoriesTable($personID)
@@ -361,7 +361,7 @@ class HTML
             .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
             ."</tr>";
         }
-        return self::tablePresetOneRow('Preference', $returnTable);
+        return self::tableOne('Preference', $returnTable);
     }
 
     private static function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
@@ -477,8 +477,8 @@ class HTML
         <table class='table table-hover' id='table'>
             <thead id='tabletop'>
                 <tr>
-                    <th scope='col'>" . 'Preference' . '</a><a>'. self::searchbarName()   . "</a></th>
-                    <th scope='col'>" . 'Rating' .     '</a><a>'. self::searchbarRating() . "</a></th>
+                    <th scope='col'>" . 'Preference' . '<a>'. self::searchbarName()   . "</a></th>
+                    <th scope='col'>" . 'Rating' .     '<a>'. self::searchbarRating() . "</a></th>
                 </tr>
             </thead>
             <tbody id='userItemsTable'>
@@ -491,14 +491,6 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Forwarings                                                                                                       //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static function getByRequest($select, $from, $where)
-    {
-        $result = DMLModules::getTableWhere($select, 
-                                            $from, 
-                                            "$where='$_REQUEST[$where]'");
-        return $result[0][$select];
-    }
-
     public static function personTable($select, $from, $where, $person)
     {
         $result = DMLModules::getTableWhere($select, 

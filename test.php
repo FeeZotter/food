@@ -1,23 +1,58 @@
 <?php 
 
-echo '<!DOCTYPE>
+echo '
+<!DOCTYPE>
 <body>
     <head>
         <title>test</title>
-        <style>
-            .tableFixHead          { overflow: auto; height: 80%; }
-.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
-
-/* Just common table stuff. Really. */
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th     { background:#eee; }
-        </style>
+        <link rel="stylesheet" href="/food/style/style.css">
+        <link rel="stylesheet" href="/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css">
     </head>
     <body>
-        <form action="post">
+ 
+<div class="container overflow-hidden text-center">
+  <div class="row gy-5">
+    <div class="col-6">
+      <div class="p-3 border bg-light">1</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">2</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">3</div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">4</div>
+    </div>
+  </div>
+</div>
 
-        </form>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
         <div class="tableFixHead">
   <table>
     <thead>

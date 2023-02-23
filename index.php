@@ -73,7 +73,7 @@ Route::add('/login',function()
 
 Route::add('/login/table',function()
 {
-    echo HTML::onlyUserCategoyTable($_REQUEST['inputName'], $_REQUEST['inputPassword']);    
+    echo HTML::onlyUserCategoryTable($_REQUEST['inputName'], $_REQUEST['inputPassword']);    
 }, 'post' );
 
 Route::add('/regrister',function()
