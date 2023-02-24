@@ -77,6 +77,10 @@ function postReq(url, ID) //post request
     console.log(jqxhr);
 }
 
+console.log("replace child of userItemsTable on click")
+console.log("still need manipulate data")
+console.log("")
+
 function preferenceTable(url, ID) //get request
 {
     // Assign handlers immediately after making the request,
@@ -113,7 +117,8 @@ function tableEvent()
         console.log(event)
         if(event.target.tagName == "TD")
         {
-            postReq("localhost/g/" + $(event.target).attr('class'), "items");
+            console.log('row 121 select userItems.twoTable ')
+            postReq("localhost/g/" + $(event.target).attr('class'), "userItems");
         }
     }
 }

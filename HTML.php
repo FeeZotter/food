@@ -72,6 +72,7 @@ class HTML
             </div>
             </form>
         </div>
+        <br>
         </footer>
         ';
     }
@@ -146,26 +147,26 @@ class HTML
                             self::helloUser($userName, $password) . 
                            "<div class='container text-center'>
                                 <div class='row'>
-                                    <div class='col-6'>" .
+                                    <div class='col-6' id='userCategories'>" .
                                         self::userCategoyTable($userName) .
                                    "</div>
-                                    <div class='col-6' id='items'>" .
+                                    <div class='col-6' id='userItems'>" .
                                         self::userItemsTable() .
                             "       </div>
                                 </div>
                                 <div class='row overflow-auto'>
-                                    <div class='col-6'>
-                                        <input class='form-control' type='text' placeholder='your preference'>
-                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
-                                        <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
-                                        <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
-                                    </div>
                                     <div class='col-6'>
                                         <select class='form-select' aria-label='Default select example'>" . 
                                             $table .                                            
                                         "</select>
                                         <button id='addCategory' class='btn btn-primary' onclick='addCategory()'>Add Category</button>
                                         <button id='deleteCategory'class='btn btn-dark' onclick='deleteCategory()'>Delete Category</button>
+                                    </div>
+                                    <div class='col-6'>
+                                        <input class='form-control' type='text' placeholder='your preference'>
+                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
+                                        <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
+                                        <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
                                     </div>
                                 </div>
                             </div>", 
@@ -214,8 +215,10 @@ class HTML
     private static function tableOne($header, $table)
     {
         return (
-        self::theadOne($header) . 
-        self::tbody($table)
+        '<div id="table">' .
+            self::theadOne($header) . 
+            self::tbody($table) .
+        '</div>'
         );
     }
 
@@ -223,21 +226,21 @@ class HTML
     {
         return ("  
         <div class='col-xs-8 col-xs-offset-2'>
-            <table class='table table-striped' id='table'>
+            <table class='table table-striped' id='oneTableHead'>
                 <thead id='tabletop'>
                     <tr>
                         <th scope='col'><a>" . ucfirst($header) . '</a><a>' . self::searchbarName() . '</a>' . "</th>
                     </tr>   
                 </thead>
             </table>
-        <div>");
+        </div>");
     }
 
     private static function tbody($table)
     {
         return 
         "<div class='col-xs-8 col-xs-offset-2 tableFixHead' style=''>
-            <table class='table table-striped' id='table'>
+            <table class='table' id='oneTable'>
                 <tbody id='tableContent'>" .
                         $table .
                '</tbody>
@@ -247,14 +250,18 @@ class HTML
 
     private static function tableTwo($header1, $header2, $table)
     {
-        return self::theadTwo($header1, $header2) . self::tbody($table);
+        return
+        '<div id="twoTable">' .
+            self::theadTwo($header1, $header2) . 
+            self::tbody($table) .
+        '</div>';
     }
 
     private static function theadTwo ($header1, $header2)
     {
         return
-        "<div class='col-xs-8 col-xs-offset-2' style='height: 10vh'>
-            <table class='table table-striped' id='table'>
+        "<div class='col-xs-8 col-xs-offset-2' style=''>
+            <table class='table' id='twoTableHead'>
                 <thead id='tabletop'>
                     <tr>
                         <th scope='col'><a>" . ucfirst($header1) . "</a><a>" . self::searchbarName() .   "</a></th>
@@ -262,7 +269,7 @@ class HTML
                     </tr>   
                 </thead>
             </table>
-        <div>";
+        </div>";
     }
 
     public static function returnTable($select, $from)
@@ -399,11 +406,11 @@ class HTML
 
     private static function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
-        return ("   <h1 class='navigation' id='navigation'>
+        return ("   <h2 class='navigation' id='navigation'>
                         <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
                         <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
                         <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
-                    </h1>");
+                    </h2>");
     }
 
     private static function navigationBarReturn($navigationPoint1, $navigationPoint2, $navigationPoint3)
@@ -652,6 +659,62 @@ return '
       <tr><td>A1</td><td>A2</td></tr>
       <tr><td>B1</td><td>B2</td></tr>
       <tr><td>C1</td><td>C2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
+      <tr><td>D1</td><td>D2</td></tr>
       <tr><td>D1</td><td>D2</td></tr>
       <tr><td>E1</td><td>E2</td></tr>
     </tbody>
