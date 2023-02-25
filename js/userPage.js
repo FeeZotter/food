@@ -135,7 +135,24 @@ function addCategory()
 }
 
 function deleteCategory()
-{}
+{
+    deleteCategoryBtn = document.getElementById('deleteCategory');
+    deleteCategoryBtn.onclick = () => {
+       // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
+        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
+        var jqxhr = $.post("localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
+        .done(function(data) {
+            alert( console.log(data));
+        })
+        .then(function() {
+            createEvents();
+        })
+        .fail(function() {
+            alert( 'request failed' );
+        });
+        console.log(jqxhr);
+    }
+}
 
 function acPreference()
 {

@@ -53,14 +53,31 @@ class HTML
         <footer class="bg-light text-center text-lg-start" style="width: 100%;">
         <div class="container p-4 pb-0">
             <form action="">
-            <div class="row">
+                <div class="col">
+                    <div class="col-auto mb-4 mb-md-0">
+                    <h1>Impressum</h1>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th scope="col"><b>Name:</b></th>
+                                <th scope="col">Fee-Zara Julianna Zotter</th>
+                            </tr>  
+                            <tr>
+                                <th scope="col"><b>E-Mail:</b></th>
+                                <th scope="col">julianazotter@proton.me</th>
+                            </tr>   
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </form>
+            <div class="col">
                 <div class="col-auto mb-4 mb-md-0">
-                <h1>Impressum</h1>
+                <h1>Links</h1>
                 <table>
                     <tbody>
                         <tr>
-                            <th scope="col"><b>Name:</b></th>
-                            <th scope="col">Fee-Zara Julianna Zotter</th>
+                            <th scope="col"><a href="localhost/login">login</a></th>
                         </tr>  
                         <tr>
                             <th scope="col"><b>E-Mail:</b></th>
@@ -70,7 +87,6 @@ class HTML
                 </table>
                 </div>
             </div>
-            </form>
         </div>
         <br>
         </footer>
@@ -156,7 +172,7 @@ class HTML
                                 </div>
                                 <div class='row overflow-auto'>
                                     <div class='col-6'>
-                                        <select class='form-select' aria-label='Default select example'>" . 
+                                        <select class='form-select' aria-label='Default select example' id='selectCategories'>" . 
                                             $table .                                            
                                         "</select>
                                         <button id='addCategory' class='btn btn-primary' onclick='addCategory()'>Add Category</button>
