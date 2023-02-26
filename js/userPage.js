@@ -50,12 +50,14 @@ console.log("replace child of userItemsTable on click")
 console.log("still need manipulate data")
 console.log("")
 
-function preferenceTable(ID) //get request, dont touch it, works
+function preferenceTable(element) //get request, dont touch it, works
 {
-    var jqxhr = $.get("https://localhost/g/" + ID, function(){
+    var jqxhr = $.get("https://localhost/g/" + element.className, function(){
         
     })
     .done(function(data) {
+        document.getElementById("selectCategories").value = element.id;
+
         data = JSON.parse(data)
         temporaryObjectDelete();
 
@@ -87,12 +89,11 @@ function preferenceTable(ID) //get request, dont touch it, works
     //console.log(jqxhr);
 }
 
-
 function tableEvent()
 {
     table = document.getElementById('tableContent');
     table.onclick = () => {
-        preferenceTable( $(event.target).attr('class') );
+        preferenceTable( event.target );
     }
 }
 
