@@ -384,16 +384,21 @@
 
             $cpc = self::getPersonCategoryIdByPersCate($user, $category);
 
-            $sql = "INSERT INTO preferences (cross_persons_categories_id, 
+            $sql = "DELETE FROM preferences
+                    WHERE   cross_person_categories_id=$cpc AND
+                            preference='$preference'";
+
+            mysqli_query(DB::connection(), $sql);
+
+            $sql = "INSERT INTO preferences (cross_person_categories_id, 
                                              preference, 
                                              rating) 
                     VALUES (" . 
-                            $cpc . ", " . 
-                            $preference . ", " . 
+                            $cpc . ", '" . 
+                            $preference . "', " . 
                             $rating . 
                            ")";
 
-                           
             if(mysqli_query(DB::connection(), $sql))
                 return true;
             return false;

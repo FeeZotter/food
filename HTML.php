@@ -93,7 +93,6 @@ class HTML
                     </table>
                 </div>
             </div>
-
         </div>
         <br>
         </footer>
@@ -168,7 +167,8 @@ class HTML
 
         return self::getHTML("", "", 
                             self::helloUser($userName, $password) . 
-                           "<div class='container text-center'>
+                           "<h6>Note: reload the page often to see if you did everything right, when updating or deleting a preference or category it gets not shown in the list</h6>
+                            <div class='container text-center'>
                                 <div class='row'>
                                     <div class='col-6' id='userCategories'>" .
                                         self::userCategoyTable($userName) .
@@ -186,8 +186,8 @@ class HTML
                                         <button id='deleteCategory'class='btn btn-dark' onclick='deleteCategory()'>Delete Category</button>
                                     </div>
                                     <div class='col-6'>
-                                        <input class='form-control' type='text' placeholder='your preference'>
-                                        <input class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
+                                        <input id='inputPreference' class='form-control' type='text' placeholder='your preference'>
+                                        <input id='inputRating' class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
                                         <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
                                         <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
                                     </div>
@@ -268,7 +268,7 @@ class HTML
     {
         return ("  
         <div class='col-xs-8 col-xs-offset-2'>
-            <table class='table table-striped' id='oneTableHead'>
+            <table class='table' id='oneTableHead'>
                 <thead id='tabletop'>
                     <tr>
                         <th scope='col'><a>" . ucfirst($header) . '</a><a>' . self::searchbarName() . '</a>' . "</th>
@@ -282,7 +282,7 @@ class HTML
     {
         return 
         "<div class='col-xs-8 col-xs-offset-2 tableFixHead' style=''>
-            <table class='table' id='oneTable'>
+            <table class='table tableFixHead table-hover' id='oneTable'>
                 <tbody id='tableContent'>" .
                         $table .
                '</tbody>
@@ -556,14 +556,14 @@ class HTML
     private static function userItemsTable()
     {
         return "
-        <table class='table table-hover' id='table'>
+        <table class='tableFixHead table table-hover ' id='table'>
             <thead id='tabletop'>
                 <tr>
                     <th scope='col'>" . 'Preference' . '<a>'. self::searchbarName()   . "</a></th>
                     <th scope='col'>" . 'Rating' .     '<a>'. self::searchbarRating() . "</a></th>
                 </tr>
             </thead>
-            <tbody id='userItemsTable'>
+            <tbody id='userItemsTable' class=''>
             </tbody>
         </table>";
 
@@ -639,130 +639,13 @@ class HTML
 return '
 <!DOCTYPE html>
 <body>
-    <head>
-        <title>test</title>
-        <link rel="stylesheet" href="/food/style/style.css">
-        <link rel="stylesheet" href="/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css">
-        <style>
-        </style>
-    </head>
-    <body>
- ' . HTML::helloUser("feezotter", "asdfASDF1234") . '
- <br>
-<div class="container overflow-hidden text-center">
-  <div class="row gy-5">
-    <div class="col-6">
-      <div class="p-3 border bg-light">1</div>
-    </div>
-    <div class="col-6">
-      <div class="p-3 border bg-light">2</div>
-    </div>
-    <div class="col-6">
-      <div class="p-3 border bg-light">3</div>
-    </div>
-    <div class="col-6">
-      <div class="p-3 border bg-light">4</div>
-    </div>
-  </div>
+<div class="input-group mb-3">' . "
+<input type='text' class='form-control' placeholder='Recipient's username' aria-label='Recipient's username' aria-describedby='basic-addon2'>
+<div class='input-group-append'>
+  <button class='btn btn-outline-secondary' type='button'>Button</button>
 </div>
-
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-        <div class="tableFixHead">
-  <table >
-    <thead >
-      <tr><th>TH 1</th><th>TH 2</th></tr>
-    </thead>
-    <tbody >
-      <tr><td>A1</td><td>A2</td></tr>
-      <tr><td>B1</td><td>B2</td></tr>
-      <tr><td>C1</td><td>C2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>D1</td><td>D2</td></tr>
-      <tr><td>E1</td><td>E2</td></tr>
-    </tbody>
-  </table>
 </div>
-    </body>
+    </body>" . '
 </body>';
 
     }
