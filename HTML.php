@@ -51,7 +51,7 @@ class HTML
     {
         return '
         <footer class="bg-light text-center text-lg-start" style="width: 100%;">
-        <div class="container p-4 pb-0 row row-cols-3 py-3 my-3 border-top">
+        <div class="container p-6 pb-0 row row-cols-2 py-2 my-2 border-top">
             <div class="col">
                 <div class="col-auto mb-4 mb-md-0">
                     <h1>Impressum</h1>
@@ -68,8 +68,6 @@ class HTML
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="col">
             </div>
             <div class="col">
                 <div class="col-auto mb-4 mb-md-0">
@@ -95,8 +93,7 @@ class HTML
                     </table>
                 </div>
             </div>
-            <div class="col">
-            </div>
+
         </div>
         <br>
         </footer>
@@ -198,6 +195,25 @@ class HTML
                             </div>", 
                             self::script("userPage"));
     }
+
+    public static function hints()
+    {
+        return self::getHTML("", "", "
+        <h1>Shortlink</h1>
+        /s/name OR /s/name/category OR /s/id (left in a list as a class you can only see if you inspect the page)
+
+        <h1>API</h1>
+        note: please made your own page, mine is only functional but else crap
+        <table>
+            <thead>
+            <tr><th>type</th><th>parameters</th><th>input</th><th>output</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>get</td><td>none<td><td>/login</td><td>login page</td></tr>
+            </tbody>
+        </table>
+        ", "");
+    } 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Modules                                                                                                          //

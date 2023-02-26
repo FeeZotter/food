@@ -104,7 +104,23 @@ Route::add('/admin',function()
 Route::add('/delcate',function()
 {
     echo DMLModules::removeCategory($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory']);
-}, 'ost');
+}, 'post');
+
+Route::add('/addcate',function()
+{
+    echo DMLModules::addCategory($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory']);
+}, 'post');
+
+Route::add('/addchangepref',function()
+{
+    //$user, $password, $category, $preference, $rating
+    echo DMLModules::addChangePreference($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory'], $_REQUEST['inputPreference'], $_REQUEST['inputRating']);
+}, 'post');
+
+Route::add('/hints',function()
+{
+    echo HTML::hints();
+}, 'post');
 
 //////////////////////////////////////
 //////////////Shortcuts///////////////
