@@ -96,7 +96,7 @@ function tableEvent()
     }
 }
 
-function addCategory()
+function addCategory() //works
 {
     addCategoryBtn = document.getElementById('addCategory');
     addCategoryBtn.onclick = () => {
@@ -108,12 +108,12 @@ function addCategory()
         .done(function(data) {
             category = document.createElement("td");
             category.innerHTML = capitalizeFirstLetter(document.getElementById("selectCategories").value);
-            category.classname = document.getElementById("selectCategories").value;
-            category.id = 0;
+            category.id = document.getElementById("selectCategories").value;
+            category.className = data.replaceAll('"', "");
             
             amount = document.createElement("td");
-            amount.innerHTML = data.replace('"', "");
-            amount.classname = data.replace('"', "");
+            amount.innerHTML = 0;
+            amount.className = data.replaceAll('"', "");
             amount.id = 0;
             
             tablerow = document.createElement("tr");
@@ -132,7 +132,7 @@ function addCategory()
     }
 }
 
-function deleteCategory()
+function deleteCategory() //no visual effect, reload required
 {
     deleteCategoryBtn = document.getElementById('deleteCategory');
     deleteCategoryBtn.onclick = () => {
@@ -140,7 +140,7 @@ function deleteCategory()
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
         var jqxhr = $.post("https://localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         .done(function(data) {
-
+            alert (document.getElementById("selectCategories").value + " deleted successfully, reload to see result (sorry)")
         })
         .then(function() {
             createEvents();
