@@ -6,7 +6,8 @@ include('./food/HTML.php');
 // Add base route (startpage)
 Route::add('/',function()
 {
-    echo HTML::main();
+    echo HTML::test();
+   // echo HTML::main();
 }, 'get');
 
 Route::add('/impressum',function()
