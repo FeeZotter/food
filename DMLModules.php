@@ -417,11 +417,11 @@
                 return false;
 
             $sql = "INSERT INTO cross_person_categories (persons_id, categories_id) 
-                    VALUES (" . $name . "," . $category . ")";
+                    VALUES ('" . $name . "','" . $category . "'     )";
 
-            if(mysqli_query(DB::connection(), $sql))
-                return true;
-            return false;      
+            if(!mysqli_query(DB::connection(), $sql))
+                return false;
+            return json_encode(self::getPersonCategoryIdByPersCate($name, $category));     
         }
 
         static function removeCategory ($name, $password, $category)
@@ -432,8 +432,9 @@
 
             if(!self::loginSuccess($name, $password))
                 return false;
-            
-            $sql = "DELETE FROM cross_person_categories WHERE persons_id=" . $name . " AND categories_id=" . $category . ";";
+
+            $sql = "DELETE FROM cross_person_categories WHERE persons_id='" . $name . "' AND categories_id='" . $category . "';";
+            echo $sql;
 
             if(mysqli_query(DB::connection(), $sql))
                 return true;

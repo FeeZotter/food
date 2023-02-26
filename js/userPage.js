@@ -46,91 +46,89 @@ var table;
 var name     = document.getElementById("myUsername").innerHTML;
 var password = document.getElementById('myUsername').className;
 
-
-function postReq(url, ID) //post request
-{
-    // Assign handlers immediately after making the request,
-    // and remember the jqxhr object for this request
-    console.log({ inputName: name, inputPassword: password});
-    console.log(url);
-    var jqxhr = $.post(url, { inputName: name, inputPassword: password})
-    .done(function(data) {
-        console.log(data)
-        data = JSON.parse(data)
-        console.log(data)
-        temporaryObjectDelete();
-        generateTable = "";
-        data.forEach(element => {
-            preferenceItem = document.createElement("div");
-            preferenceItem.className = element["rating"];
-            preferenceItem.innerHTML = element["preference"];
-            generateTable.appendChild(userButton);
-        });
-        $( document.getElementById(ID) ).replaceWith( generateTable );
-    })
-    .then(function() {
-        createEvents();
-    })
-    .fail(function() {
-        alert( 'request failed' );
-    });
-    console.log(jqxhr);
-}
-
 console.log("replace child of userItemsTable on click")
 console.log("still need manipulate data")
 console.log("")
 
-function preferenceTable(url, ID) //get request
+function preferenceTable(ID) //get request, dont touch it, works
 {
-    // Assign handlers immediately after making the request,
-    // and remember the jqxhr object for this request
-    console.log({ inputName: name, inputPassword: password});
-    console.log(url);
-    var jqxhr = $.get(url,function(){
+    var jqxhr = $.get("https://localhost/g/" + ID, function(){
         
     })
     .done(function(data) {
-        //$( "table.table" ).replaceWith( data );
-        $( document.getElementById(ID) ).replaceWith( data );
+        data = JSON.parse(data)
+        temporaryObjectDelete();
+
+        document.getElementById("userItemsTable").innerHTML = '';
+        data.forEach(element => {
+            tablepreference = document.createElement("td");
+            tablepreference.innerHTML = element["preference"];
+            tablepreference.className = "color" + element["rating"];
+            
+            tablerating = document.createElement("td");
+            tablerating.innerHTML = element["rating"];
+            tablerating.className = "color" + element["rating"];
+            
+            tablerow = document.createElement("tr");
+            tablerow.appendChild(tablepreference);
+            tablerow.appendChild(tablerating);
+
+            document.getElementById("userItemsTable").appendChild(tablerow);
+        });
     })
-    .then(function() {
+    .then(function(data) {
+        console.log(data)
+
         createEvents();
     })
     .fail(function() {
         alert( 'request failed' );
     });
-    console.log(jqxhr);
+    //console.log(jqxhr);
 }
 
-function createEvents()
-{
-    tableEvent();
-    searchByName();
-    searchByRating();
-}
 
 function tableEvent()
 {
     table = document.getElementById('tableContent');
     table.onclick = () => {
-        console.log(event)
-        if(event.target.tagName == "TD")
-        {
-            console.log('row 121 select userItems.twoTable ')
-            postReq("localhost/g/" + $(event.target).attr('class'), "userItems");
-        }
+        preferenceTable( $(event.target).attr('class') );
     }
 }
 
 function addCategory()
 {
-    table = document.getElementById('tableContent');
-    table.onclick = () => {
-        if(event.target.tagName == "TD")
-        {
-            postReq("localhost/get/", "");
-        }
+    addCategoryBtn = document.getElementById('addCategory');
+    addCategoryBtn.onclick = () => {
+       // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
+        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
+        var jqxhr = $.post("https://localhost/addcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
+        
+
+        .done(function(data) {
+            category = document.createElement("td");
+            category.innerHTML = capitalizeFirstLetter(document.getElementById("selectCategories").value);
+            category.classname = document.getElementById("selectCategories").value;
+            category.id = 0;
+            
+            amount = document.createElement("td");
+            amount.innerHTML = data.replace('"', "");
+            amount.classname = data.replace('"', "");
+            amount.id = 0;
+            
+            tablerow = document.createElement("tr");
+            tablerow.appendChild(category);
+            tablerow.appendChild(amount);
+
+            document.getElementById("tableContent").appendChild(tablerow);
+        })
+        .then(function() {
+            createEvents();
+        })
+        .fail(function() {
+            alert( 'request failed' );
+        });
+        console.log(jqxhr);
     }
 }
 
@@ -140,9 +138,9 @@ function deleteCategory()
     deleteCategoryBtn.onclick = () => {
        // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
-        var jqxhr = $.post("localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
+        var jqxhr = $.post("https://localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         .done(function(data) {
-            alert( console.log(data));
+
         })
         .then(function() {
             createEvents();
@@ -162,9 +160,23 @@ function acPreference()
 function deletePreference()
 {}
 
+
+
+function createEvents()
+{
+    tableEvent();
+    
+    searchByName();
+    searchByRating();
+
+    addCategory();
+    deleteCategory();
+    
+    acPreference();
+    deletePreference();
+}
+
 createEvents();
-
-
 
 //////////////////////////////
 //          other           //
