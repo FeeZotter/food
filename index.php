@@ -36,6 +36,7 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 Route::add('/g',function()
 {
     echo HTML::getFrontPageData();
+    
 }, 'get');
 
 //get preference table data
@@ -120,7 +121,7 @@ Route::add('/addchangepref',function()
 Route::add('/hints',function()
 {
     echo HTML::hints();
-}, 'post');
+}, 'get');
 
 //////////////////////////////////////
 //////////////Shortcuts///////////////
