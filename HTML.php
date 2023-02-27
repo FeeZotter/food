@@ -167,7 +167,7 @@ class HTML
 
         return self::getHTML("", "", 
                             self::helloUser($userName, $password) . 
-                           "<h6>Note: reload the page often to see if you did everything right, when updating or deleting a preference or category it gets not shown in the list</h6>
+                           "<h6>Note: reload the page often to see if you did everything right, when updating or deleting a preference or category it gets not shown in the list and you cant search for preferences...</h6>
                             <div class='container text-center'>
                                 <div class='row'>
                                     <div class='col-6' id='userCategories'>" .

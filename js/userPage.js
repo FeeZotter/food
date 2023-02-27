@@ -61,10 +61,14 @@ function preferenceTable(element) //get request, dont touch it, works
     })
     .done(function(data) {
         document.getElementById("selectCategories").value = element.id;
-
         data = JSON.parse(data)
         temporaryObjectDelete();
 
+        cross = "🗙";
+        if (Math.floor(Math.random() * (100 - 0) + 0) == 42)
+        {
+            cross = "⛒ ☢ ☣ ⚰ ⌖ ⯐ 🗙 ⌧ 🗑 𝅅  🞨 🞩 🞪 🞫 🞬 🞭 🞮 🕀 ☓ ⛝ ";
+        }
         document.getElementById("userItemsTable").innerHTML = '';
         data.forEach(element => {
             tablepreference = document.createElement("td");
@@ -74,10 +78,19 @@ function preferenceTable(element) //get request, dont touch it, works
             tablerating = document.createElement("td");
             tablerating.innerHTML = element["rating"];
             tablerating.className = "color" + element["rating"];
+
+            deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = cross;
+            deleteBtn.id = element["preference"];
             
-            tablerow = document.createElement("tr");
+            deleteBtn.className = "input-group-append btn btn-outline-danger ";
+            
+            tablerow = document.createElement("tr"); 
+            tablerow.className = ""; 
+
             tablerow.appendChild(tablepreference);
             tablerow.appendChild(tablerating);
+            tablerow.appendChild(deleteBtn);
 
             document.getElementById("userItemsTable").appendChild(tablerow);
         });
@@ -145,7 +158,7 @@ function deleteCategory() //no visual effect, reload required
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
         var jqxhr = $.post("https://localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         .done(function(data) {
-            alert (document.getElementById("selectCategories").value + " deleted successfully, reload to see result (sorry)")
+            alert (document.getElementById("selectCategories").value + " deleted successfully, reload to see result (sorry)");
         })
         .then(function() {
             createEvents();
@@ -153,7 +166,6 @@ function deleteCategory() //no visual effect, reload required
         .fail(function() {
             alert( 'request failed' );
         });
-        console.log(jqxhr);
     }
 }
 
@@ -200,7 +212,27 @@ function acPreference()
 }
 
 function deletePreference()
-{}
+{
+    table = document.getElementById('userItemsTable');
+    table.onclick = () => {
+        if(!event.target.tagName == "button")
+            return;    
+
+        event.target.parentNode.remove()
+        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id});
+        var jqxhr = $.post("https://localhost/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
+        .done(function() {
+            alert ("Something deleted successfully")
+        })
+        .then(function() {
+            createEvents();
+        })
+        .fail(function() {
+            alert( 'request failed' );
+        });
+
+    }
+}
 
 
 
