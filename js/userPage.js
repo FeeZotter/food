@@ -56,7 +56,7 @@ console.log("    ")
 
 function preferenceTable(element) //get request, dont touch it, works
 {
-    var jqxhr = $.get("https://localhost/g/" + element.className, function(){
+    var jqxhr = $.get("https://preferix.000webhostapp.com/g/" + element.className, function(){
         
     })
     .done(function(data) {
@@ -118,9 +118,8 @@ function addCategory() //works
 {
     addCategoryBtn = document.getElementById('addCategory');
     addCategoryBtn.onclick = () => {
-       // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
-        var jqxhr = $.post("https://localhost/addcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
+        var jqxhr = $.post("https://preferix.000webhostapp.com/addcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         
 
         .done(function(data) {
@@ -154,9 +153,8 @@ function deleteCategory() //no visual effect, reload required
 {
     deleteCategoryBtn = document.getElementById('deleteCategory');
     deleteCategoryBtn.onclick = () => {
-       // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
-        var jqxhr = $.post("https://localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
+        var jqxhr = $.post("https://preferix.000webhostapp.com/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         .done(function(data) {
             alert (document.getElementById("selectCategories").value + " deleted successfully, reload to see result (sorry)");
         })
@@ -173,13 +171,12 @@ function acPreference()
 {
     acPreferenceBtn = document.getElementById('addChangePreference');
     acPreferenceBtn.onclick = () => {
-       // postReq("localhost/get/" + document.getElementById("selectCategories").value, "")
         console.log({ inputName: name, 
             inputPassword: password, 
             inputCategory: document.getElementById("selectCategories").value,
             inputPreference: document.getElementById("inputPreference").value,
             inputRating: document.getElementById("inputRating").value});
-        var jqxhr = $.post("https://localhost/addchangepref", { 
+        var jqxhr = $.post("https://preferix.000webhostapp.com/addchangepref", { 
             inputName: name, 
             inputPassword: password, 
             inputCategory: document.getElementById("selectCategories").value,
@@ -220,7 +217,7 @@ function deletePreference()
 
         event.target.parentNode.remove()
         console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id});
-        var jqxhr = $.post("https://localhost/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
+        var jqxhr = $.post("https://preferix.000webhostapp.com/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
         .done(function() {
             alert ("Something deleted successfully")
         })
