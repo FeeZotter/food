@@ -404,12 +404,24 @@
             return false;
         }
 
-        static function removePreference ($user, $password, $category, $preference)
+        static function deletePreference ($user, $password, $category, $preference)
         {
             mysqli_real_escape_string(DB::connection(), $user);
             mysqli_real_escape_string(DB::connection(), $password);
             mysqli_real_escape_string(DB::connection(), $category);
             mysqli_real_escape_string(DB::connection(), $preference);
+
+            if (!self::loginSuccess($user, $password))
+                return false;
+
+            $cpc = self::getPersonCategoryIdByPersCate($user, $category);
+
+            $sql = "DELETE FROM preferences
+                    WHERE   cross_person_categories_id=$cpc AND
+                            preference='$preference'";
+            if(mysqli_query(DB::connection(), $sql))
+                return true;
+            return false;
         }
 
         static function addCategory ($name, $password, $category)

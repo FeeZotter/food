@@ -7,7 +7,7 @@ include('./food/HTML.php');
 Route::add('/',function()
 {
     echo HTML::test();
-   // echo HTML::main();
+    // echo HTML::main();
 }, 'get');
 
 Route::add('/impressum',function()
@@ -116,7 +116,20 @@ Route::add('/addcate',function()
 Route::add('/addchangepref',function()
 {
     //$user, $password, $category, $preference, $rating
-    echo DMLModules::addChangePreference($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory'], $_REQUEST['inputPreference'], $_REQUEST['inputRating']);
+    echo DMLModules::addChangePreference(   $_REQUEST['inputName'], 
+                                            $_REQUEST['inputPassword'], 
+                                            $_REQUEST['inputCategory'], 
+                                            $_REQUEST['inputPreference'], 
+                                            $_REQUEST['inputRating']);
+}, 'post');
+
+Route::add('/delpref',function()
+{
+    //$user, $password, $category, $preference, $rating
+    echo DMLModules::deletePreference(  $_REQUEST['inputName'], 
+                                        $_REQUEST['inputPassword'], 
+                                        $_REQUEST['inputCategory'], 
+                                        $_REQUEST['inputPreference']);
 }, 'post');
 
 Route::add('/hints',function()
