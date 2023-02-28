@@ -82,7 +82,7 @@ function tableEvent()
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
-            replaceByID("https://preferix.000webhostapp.com/get/" + $(event.target).attr('class'), tableid);
+            replaceByID("https://localhost/get/" + $(event.target).attr('class'), tableid);
             tableid = "table";
             
             if      (navigation3.innerHTML != '')
@@ -108,14 +108,14 @@ function navigationEvents()
     navigation3 = document.getElementById('navigation3');
     
     navigation1.onclick = () => {
-        replaceByID("https://preferix.000webhostapp.com/get", tableid);
+        replaceByID("https://localhost/get", tableid);
         navigation2.innerHTML = "";
         navigation3.innerHTML = "";
         tableid = "table";
     }
     
     navigation2.onclick = () => {
-        replaceByID("https://preferix.000webhostapp.com/get/" + event.target.outerText, tableid);
+        replaceByID("https://localhost/get/" + event.target.outerText, tableid);
         navigation3.innerHTML = "";
         tableid = "table";
     }
