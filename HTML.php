@@ -349,7 +349,7 @@ class HTML
             ."</tr>";
         }
 
-        return self::tableTwo('Preference', 'Rating', $returnTable);
+        return self::tableTwo('Search Preference (not working)', 'Search Rating (not working)', $returnTable);
     }
 
     public static function returnPreferenceTable($categoryID)
@@ -398,7 +398,7 @@ class HTML
             .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
             ."</tr>";
         }
-        return self::tableTwo('Category', 'Amount', $returnTable);
+        return self::tableTwo('Search Category', 'Search Amount', $returnTable);
     }
 
     private function categoriesTable($personID)
@@ -559,8 +559,8 @@ class HTML
         <table class='tableFixHead table table-hover ' id='table'>
             <thead id='tabletop'>
                 <tr>
-                    <th scope='col'>" . 'Preference' . '<a>'. self::searchbarName()   . "</a></th>
-                    <th scope='col'>" . 'Rating' .     '<a>'. self::searchbarRating() . "</a></th>
+                    <th scope='col'>" . 'Search Preference (not working)' . '<a>'. self::searchbarName()   . "</a></th>
+                    <th scope='col'>" . 'Search Rating (not Working)' .     '<a>'. self::searchbarRating() . "</a></th>
                 </tr>
             </thead>
             <tbody id='userItemsTable' class=''>

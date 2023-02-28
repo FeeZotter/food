@@ -1,4 +1,7 @@
 <?php
+ini_set("allow_url_include", true);
+ini_set('error_reporting', E_ALL);
+error_reporting(E_ALL);
 // Include router class
 include('./food/Route.php');
 include('./food/HTML.php');
@@ -6,8 +9,7 @@ include('./food/HTML.php');
 // Add base route (startpage)
 Route::add('/',function()
 {
-    echo HTML::test();
-    // echo HTML::main();
+    echo HTML::main();
 }, 'get');
 
 Route::add('/impressum',function()

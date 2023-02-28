@@ -386,8 +386,7 @@
 
             $sql = "DELETE FROM preferences
                     WHERE   cross_person_categories_id=$cpc AND
-                            preference='$preference'";
-
+                            preference='$preference';";
             mysqli_query(DB::connection(), $sql);
 
             $sql = "INSERT INTO preferences (cross_person_categories_id, 
@@ -397,11 +396,11 @@
                             $cpc . ", '" . 
                             $preference . "', " . 
                             $rating . 
-                           ")";
-
-            if(mysqli_query(DB::connection(), $sql))
-                return true;
-            return false;
+                           ");";
+            
+            if(!mysqli_query(DB::connection(), $sql))
+                return false;
+            return true;
         }
 
         static function deletePreference ($user, $password, $category, $preference)

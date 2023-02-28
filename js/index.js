@@ -49,6 +49,7 @@ var navigation1;
 var navigation2;
 var navigation3;
 var table;
+var tableid = "table";
 
 function replaceByID(url, ID) {
     // Assign handlers immediately after making the request,
@@ -81,13 +82,20 @@ function tableEvent()
     table.onclick = () => {
         if(event.target.tagName == "TD")
         {
+            replaceByID("https://preferix.000webhostapp.com/get/" + $(event.target).attr('class'), tableid);
+            tableid = "table";
+            
             if      (navigation3.innerHTML != '')
                 return;
             if      (navigation2.innerHTML == '')
+            {
                 navigation2.innerHTML = capitalizeFirstLetter($(event.target).attr('class'));
+            }
             else if (navigation3.innerHTML == '')
+            {
+                tableid = "twoTable";
                 navigation3.innerHTML = capitalizeFirstLetter($(event.target).attr('id'));
-            replaceByID("http://localhost/get/" + $(event.target).attr('class'), 'table');
+            }
         }
     }
 }
@@ -100,14 +108,16 @@ function navigationEvents()
     navigation3 = document.getElementById('navigation3');
     
     navigation1.onclick = () => {
-        replaceByID("http://localhost/get", 'table');
+        replaceByID("https://preferix.000webhostapp.com/get", tableid);
         navigation2.innerHTML = "";
         navigation3.innerHTML = "";
+        tableid = "table";
     }
     
     navigation2.onclick = () => {
-        replaceByID("http://localhost/get/" + event.target.outerText, 'table');
+        replaceByID("https://preferix.000webhostapp.com/get/" + event.target.outerText, tableid);
         navigation3.innerHTML = "";
+        tableid = "table";
     }
 }
 
