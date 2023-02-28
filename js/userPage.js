@@ -6,10 +6,11 @@
 //////////////////////////////
 //        Searchbars        //
 //////////////////////////////
-var filter, table, tr, td, i, txtValue;
+
 
 function searchByName() {
     filter = document.getElementById("sortValue").value.toUpperCase();
+    console.log(filter)
     table = document.getElementById("tableContent");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
@@ -29,6 +30,43 @@ function searchByName() {
 function searchByRating() {
     filter = document.getElementById("sortRating").value.toUpperCase();
     table = document.getElementById("tableContent");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase() == filter || filter == '') {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+function searchByName2() {
+    filter = document.getElementById("searchPreference").value.toUpperCase();
+    console.log(filter)
+    table = document.getElementById("userItemsTable");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+function searchByRating2() {
+    filter = document.getElementById("searchPreferenceRating").value.toUpperCase();
+    table = document.getElementById("userItemsTable");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
@@ -165,17 +203,30 @@ function deleteCategory() //no visual effect, reload required
             alert( 'request failed' );
         });
     }
+    table = document.getElementById('userCategories');
+    table.onclick = () => {
+        if(!event.target.tagName == "button")
+            return;    
+
+        event.target.parentNode.remove()
+        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id});
+        var jqxhr = $.post("https://localhost/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
+        .done(function() {
+            alert ("Something deleted successfully")
+        })
+        .then(function() {
+            createEvents();
+        })
+        .fail(function() {
+            alert( 'request failed' );
+        });
+    }
 }
 
 function acPreference()
 {
     acPreferenceBtn = document.getElementById('addChangePreference');
     acPreferenceBtn.onclick = () => {
-        console.log({ inputName: name, 
-            inputPassword: password, 
-            inputCategory: document.getElementById("selectCategories").value,
-            inputPreference: document.getElementById("inputPreference").value,
-            inputRating: document.getElementById("inputRating").value});
         var jqxhr = $.post("https://localhost/addchangepref", { 
             inputName: name, 
             inputPassword: password, 
@@ -227,18 +278,17 @@ function deletePreference()
         .fail(function() {
             alert( 'request failed' );
         });
-
     }
 }
-
-
 
 function createEvents()
 {
     tableEvent();
     
     searchByName();
+    searchByName2();
     searchByRating();
+    searchByRating2();
 
     addCategory();
     deleteCategory();
@@ -246,9 +296,12 @@ function createEvents()
     acPreference();
     deletePreference();
 }
+
 $( document ).ready(function() {
     console.log("ready");
     createEvents();
+    console.log("somehow manage that not the entire child gets klicked, so that the button 'is unclicked'")
+    console.log("maybe let the list generate on frontend to have it more customizable")
     document.getElementById("tableContent").rows[0].firstChild.click();
 });
 

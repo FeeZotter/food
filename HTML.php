@@ -15,7 +15,7 @@ class HTML
                 $headcontent.
                "</head>
                 <body>
-                    <div id='content' style='width:80vw;margin:auto;'>".
+                    <div id='content' style='width:100vw;margin:auto;'>".
                         $bodycontent.
                '    </div>' . 
                self::Impressum() .
@@ -189,7 +189,6 @@ class HTML
                                         <input id='inputPreference' class='form-control' type='text' placeholder='your preference'>
                                         <input id='inputRating' class='form-control' type='number' value='0' min='0' max='10' placeholder='rating'>
                                         <button id='addChangePreference' class='btn btn-primary'onclick='acPreference()'>Add/Change Preference</button>
-                                        <button id='deletePreference' class='btn btn-dark onclick='deletePreference()'>Delete Preference</button>
                                     </div>
                                 </div>
                             </div>", 
@@ -218,20 +217,30 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Modules                                                                                                          //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static function searchbarName()
+    private static function searchbarName($id, $function)
     {
-        return '<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>';
+        if ($id == "")
+        {
+            $id = "sortValue";
+            $function = "searchByName()";
+        }
+        return '<input class="input marginLeft" type="text" id="' . $id . '" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="' . $function . '"/>';
+    }
+
+    private static function searchbarRating($id, $function)
+    {
+        if ($id == "")
+        {
+            $id = "sortRating";
+            $function = "searchByRating()";
+        }
+        return '<input class="input" type="text" id="' . $id . '" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="' . $function . '"/>';
     }
 
     private static function searchbarNameRating()
     {
         return ('<input class="input marginLeft" type="text" id="sortValue" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByName()"/>
                  <input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>');
-    }
-
-    private static function searchbarRating()
-    {
-        return '<input class="input" type="text" id="sortRating" name="searchbar" tabindex="1" rows="1" minlength="2" autofocus onkeyup="searchByRating()"/>';
     }
 
     private static function helloUser($name, $password)
@@ -271,7 +280,7 @@ class HTML
             <table class='table' id='oneTableHead'>
                 <thead id='tabletop'>
                     <tr>
-                        <th scope='col'><a>" . ucfirst($header) . '</a><a>' . self::searchbarName() . '</a>' . "</th>
+                        <th scope='col'><a>" . ucfirst($header) . '</a><a>' . self::searchbarName("", "") . '</a>' . "</th>
                     </tr>   
                 </thead>
             </table>
@@ -306,8 +315,8 @@ class HTML
             <table class='table' id='twoTableHead'>
                 <thead id='tabletop'>
                     <tr>
-                        <th scope='col'><a>" . ucfirst($header1) . "</a><a>" . self::searchbarName() .   "</a></th>
-                        <th scope='col'>" .    ucfirst($header2) . '</a><a>' . self::searchbarRating() . "</a></th>
+                        <th scope='col'><a>" . ucfirst($header1) . "</a><a>" . self::searchbarName("", "") .   "</a></th>
+                        <th scope='col'>" .    ucfirst($header2) . '</a><a>' . self::searchbarRating("", "") . "</a></th>
                     </tr>   
                 </thead>
             </table>
@@ -396,6 +405,8 @@ class HTML
             "<tr>" //need to look for values
             .   "<td class='" . $value2[$c] . "' id='" . $value[$a] . "'>" . ucfirst($value[$a]) . "</td>"
             .   "<td class='" . $value2[$c] . "' id='" . $value[$b] . "'>" . ucfirst($value[$b]) . "</td>"
+            .   "<td>"
+            .   "<button id='" . $value2[$c] . "' class='input-group-append btn btn-outline-danger'>🗙</button>" . "</td>"
             ."</tr>";
         }
         return self::tableTwo('Search Category', 'Search Amount', $returnTable);
@@ -556,16 +567,20 @@ class HTML
     private static function userItemsTable()
     {
         return "
-        <table class='tableFixHead table table-hover ' id='table'>
+        <table class='table table-hover ' id='table'>
             <thead id='tabletop'>
                 <tr>
-                    <th scope='col'>" . 'Search Preference (not working)' . '<a>'. self::searchbarName()   . "</a></th>
-                    <th scope='col'>" . 'Search Rating (not Working)' .     '<a>'. self::searchbarRating() . "</a></th>
+                    <th scope='col'>" . 'Search Preference (not working)' . '<a>'. self::searchbarName("searchPreference", "searchByName2()")   . "</a></th>
+                    <th scope='col'>" . 'Search Rating (not Working)' .     '<a>'. self::searchbarRating("searchPreferenceRating", "searchByRating2()") . "</a></th>
                 </tr>
             </thead>
-            <tbody id='userItemsTable' class=''>
-            </tbody>
-        </table>";
+        </table>
+        <div class='tableFixHead'>
+            <table class='table table-hover ' id='table'>
+                <tbody id='userItemsTable' class=''>
+                </tbody>
+            </table>
+        </div>";
 
     }
 

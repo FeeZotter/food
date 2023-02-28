@@ -40,6 +40,7 @@ body {
 
 .tableFixHead          { overflow: auto; height: 60vh; }
 .tableFixHead tbody th { position: sticky; top: 0; z-index: 1; }
+.tableFixHead tbody tr { position: sticky; top: 0; z-index: 1; }
 
 /* Just common table stuff. Really. */
 table  { border-collapse: collapse; width: 100%; }
