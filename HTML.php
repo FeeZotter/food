@@ -183,7 +183,6 @@ class HTML
                                             $table .                                            
                                         "</select>
                                         <button id='addCategory' class='btn btn-primary' onclick='addCategory()'>Add Category</button>
-                                        <button id='deleteCategory'class='btn btn-dark' onclick='deleteCategory()'>Delete Category</button>
                                     </div>
                                     <div class='col-6'>
                                         <input id='inputPreference' class='form-control' type='text' placeholder='your preference'>

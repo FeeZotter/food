@@ -10,7 +10,6 @@
 
 function searchByName() {
     filter = document.getElementById("sortValue").value.toUpperCase();
-    console.log(filter)
     table = document.getElementById("tableContent");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
@@ -47,7 +46,6 @@ function searchByRating() {
 
 function searchByName2() {
     filter = document.getElementById("searchPreference").value.toUpperCase();
-    console.log(filter)
     table = document.getElementById("userItemsTable");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
@@ -94,11 +92,15 @@ console.log("    ")
 
 function preferenceTable(element) //get request, dont touch it, works
 {
+    //if delete btn then no
+    if(element.tagName == "BUTTON")
+        return;
     var jqxhr = $.get("https://localhost/g/" + element.className, function(){
         
     })
     .done(function(data) {
         document.getElementById("selectCategories").value = element.id;
+        console.log(data)
         data = JSON.parse(data)
         temporaryObjectDelete();
 
@@ -134,8 +136,6 @@ function preferenceTable(element) //get request, dont touch it, works
         });
     })
     .then(function(data) {
-        console.log(data)
-
         createEvents();
     })
     .fail(function() {
@@ -156,7 +156,6 @@ function addCategory() //works
 {
     addCategoryBtn = document.getElementById('addCategory');
     addCategoryBtn.onclick = () => {
-        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
         var jqxhr = $.post("https://localhost/addcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
         
 
@@ -183,33 +182,17 @@ function addCategory() //works
         .fail(function() {
             alert( 'request failed' );
         });
-        console.log(jqxhr);
     }
 }
 
 function deleteCategory() //no visual effect, reload required
 {
-    deleteCategoryBtn = document.getElementById('deleteCategory');
-    deleteCategoryBtn.onclick = () => {
-        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value});
-        var jqxhr = $.post("https://localhost/delcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
-        .done(function(data) {
-            alert (document.getElementById("selectCategories").value + " deleted successfully, reload to see result (sorry)");
-        })
-        .then(function() {
-            createEvents();
-        })
-        .fail(function() {
-            alert( 'request failed' );
-        });
-    }
     table = document.getElementById('userCategories');
     table.onclick = () => {
-        if(!event.target.tagName == "button")
+        if(event.target.tagName != "button")
             return;    
-
+        
         event.target.parentNode.remove()
-        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id});
         var jqxhr = $.post("https://localhost/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
         .done(function() {
             alert ("Something deleted successfully")
@@ -235,7 +218,6 @@ function acPreference()
             inputRating: document.getElementById("inputRating").value
         })
         .done(function(data) {
-            console.log(data)
             preference = document.createElement("td");
             preference.innerHTML = capitalizeFirstLetter(document.getElementById("inputPreference").value);
             preference.className = "color" + document.getElementById("inputRating").value;
@@ -267,7 +249,6 @@ function deletePreference()
             return;    
 
         event.target.parentNode.remove()
-        console.log({ inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id});
         var jqxhr = $.post("https://localhost/delpref", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value, inputPreference: event.target.id })
         .done(function() {
             alert ("Something deleted successfully")
@@ -302,7 +283,7 @@ $( document ).ready(function() {
     createEvents();
     console.log("somehow manage that not the entire child gets klicked, so that the button 'is unclicked'")
     console.log("maybe let the list generate on frontend to have it more customizable")
-    document.getElementById("tableContent").rows[0].firstChild.click();
+    var temp = document.getElementById("tableContent").rows[0].firstChild.click();
 });
 
 //////////////////////////////
