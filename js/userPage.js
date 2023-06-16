@@ -157,8 +157,6 @@ function addCategory() //works
     addCategoryBtn = document.getElementById('addCategory');
     addCategoryBtn.onclick = () => {
         var jqxhr = $.post("https://localhost/addcate", { inputName: name, inputPassword: password, inputCategory: document.getElementById("selectCategories").value })
-        
-
         .done(function(data) {
             category = document.createElement("td");
             category.innerHTML = capitalizeFirstLetter(document.getElementById("selectCategories").value);
