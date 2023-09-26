@@ -1,5 +1,5 @@
 <?php
-include('DMLModules.php');
+include_once('DMLModules.php');
 class HTML
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ class HTML
                     <div id='content' style='width:100vw;margin:auto;'>".
                         $bodycontent.
                '    </div>' . 
-               self::Impressum() .
+               (include_once("impressumText.php")) .
                '
                 </body>
                 </html>'.
@@ -45,58 +45,6 @@ class HTML
         $bodycontent = self::navigationBar('Start', $alias, null);
         $bodycontent .= self::categoriesTableReturn($name);
         echo self::getHTML("", "", $bodycontent, self::script("index"));
-    }
-
-    public static function Impressum()
-    {
-        return '
-        <footer class="bg-light text-center text-lg-start" style="width: 100%;">
-        <div class="container p-6 pb-0 row row-cols-2 py-2 my-2 border-top">
-            <div class="col">
-                <div class="col-auto mb-4 mb-md-0">
-                    <h1>Impressum</h1>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th scope="col"><b>Name: </b></th>
-                                <th scope="col">Fee-Zara Julianna Zotter</th>
-                            </tr>  
-                            <tr>
-                                <th scope="col"><b>E-Mail: </b></th>
-                                <th scope="col"> julianazotter@proton.me</th>
-                            </tr>   
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col">
-                <div class="col-auto mb-4 mb-md-0">
-                    <h1>Links</h1>
-                    <table>
-                        <tbody>
-                            <tr>    
-                                <th scope="col"><a href="/">main page</a></th>
-                            </tr> 
-                            <tr>
-                                <th scope="col"><a href="/login">login</a></th>
-                            </tr>  
-                            <tr>
-                                <th scope="col"><a href="/reg">regristration (key neened)</a></th>
-                            </tr>   
-                            <tr>
-                                <th scope="col"><a href="/impressum">impressum</a></th>
-                            </tr>  
-                            <tr>
-                                <th scope="col"><a href="/hints">API and shortlink manual (not implemented -> blank page)</a></th>
-                            </tr> 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <br>
-        </footer>
-        ';
     }
 
     public static function Preference(string $alias, string $category)
@@ -336,7 +284,7 @@ class HTML
         return self::tableOne($select, $returnTable);
     }
 
-    function dataTableWhere($select, $from, $where)
+    static function dataTableWhere($select, $from, $where)
     {
         //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
         return DMLModules::getTableWhere($select, $from, $where); 
@@ -459,9 +407,9 @@ class HTML
     private static function navigationBar($navigationPoint1, $navigationPoint2, $navigationPoint3)
     {
         return ("   <h2 class='navigation' id='navigation'>
-                        <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1) . "</a>
-                        <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2) . "</a>                
-                        <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3) . "</a>
+                        <a class='Start text-decoration-none' id='navigation1'>" . ucfirst($navigationPoint1 . "") . "</a>
+                        <a class='text-decoration-none'      id='navigation2'>"  . ucfirst($navigationPoint2 . "") . "</a>                
+                        <a class='text-decoration-none'      id='navigation3'>"  . ucfirst($navigationPoint3 . "") . "</a>
                     </h2>");
     }
 

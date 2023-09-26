@@ -3,8 +3,10 @@ ini_set("allow_url_include", true);
 ini_set('error_reporting', E_ALL);
 error_reporting(E_ALL);
 // Include router class
-include('./food/Route.php');
-include('./food/HTML.php');
+include_once('./Route.php');
+include_once('./HTML.php');
+include_once('./DMLModules.php');
+
 
 // Add base route (startpage)
 Route::add('/',function()
@@ -14,7 +16,7 @@ Route::add('/',function()
 
 Route::add('/impressum',function()
 {
-    echo HTML::Impressum();
+    include_once("./impressum.html");
 }, 'get');
 
 //only main table
@@ -32,26 +34,26 @@ Route::add('/get/([0-9]*)',function($preferenceID)
 //get person table
 Route::add('/get/([a-z,0-9]*)',function($alias)
 {
-    return HTML::returnCategoriesTable(HTML::getName($alias));
+    return HTML::returnCategoriesTable(DMLModules::getName($alias));
 }, 'get');
 
 //only main table data
 Route::add('/g',function()
 {
-    echo HTML::getFrontPageData();
+    echo json_encode(DMLModules::getTable('alias', 'persons'));
     
 }, 'get');
 
 //get preference table data
 Route::add('/g/([0-9]*)',function($preferenceID)
 {
-    echo HTML::getPreferenceTableData($preferenceID);
+    echo json_encode(DMLModules::getPreferenceTableData($preferenceID));
 }, 'get');
 
 //get person table data
 Route::add('/g/([a-z,0-9]*)',function($alias)
 {
-    echo HTML::getCategoriesTableData(HTML::getName($alias));
+    echo json_encode(DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$alias'"));
 }, 'get');
 
 
@@ -157,6 +159,16 @@ Route::add('/s/([a-z,0-9]*)',function($name)
 Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
 {
     echo HTML::Preference($alias, $category);
+}, 'get');
+
+
+
+
+
+// redirect every failed thing to the start page
+Route::add('/(*)',function()
+{
+    echo HTML::main();
 }, 'get');
 
 ////////////////
