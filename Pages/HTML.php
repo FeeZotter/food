@@ -1,5 +1,6 @@
 <?php
-include_once('DMLModules.php');
+//include_once('/xampp/htdocs/food/DBSrc/DMLModules.php');
+include_once('/../DBSrc/DMLModules.php');
 class HTML
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,11 +90,6 @@ class HTML
     public static function regristration()
     {
         echo self::getHTML("", "", self::accountCreateModule(), self::script("regrister"));
-    }
-
-    public static function login($name, $password)
-    {
-        echo self::getHTML("", "", self::loginModule($name, $password), self::script("login"));
     }
 
     public static function error404()

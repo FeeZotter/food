@@ -450,7 +450,6 @@
                 return false;
 
             $sql = "DELETE FROM cross_person_categories WHERE persons_id='" . $name . "' AND categories_id='" . $category . "';";
-            echo $sql;
 
             if(mysqli_query(DB::connection(), $sql))
                 return true;

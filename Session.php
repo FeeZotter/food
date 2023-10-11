@@ -15,6 +15,7 @@ class Session
         session_start();
         return session_destroy();
     }
+    
     static public function loginSession(): bool
     {
         if (!isset($_POST["loginPass"])) { return false; }
@@ -34,3 +35,4 @@ class Session
         return false;
     }
 }
+ 
