@@ -7,7 +7,7 @@
         ////////////////punlic tables//////////////
         public static function getTable($select, $from)
         {
-            //anti SQL injection
+            //pro SQL injection replace with prepared statement 
             mysqli_real_escape_string(DB::connection(), $select);
             mysqli_real_escape_string(DB::connection(), $from);
             
@@ -29,7 +29,7 @@
 
         public static function getTableWhere($select, $from, $where)
         {
-            //anti SQL injection
+            //anti SQL injection replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $select);
             mysqli_real_escape_string(DB::connection(), $from);
             mysqli_real_escape_string(DB::connection(), $where);
@@ -51,7 +51,7 @@
 
         public static function getPreferenceTable($crossPersonCategoryID)
         {
-            //anti SQL injection
+            //anti SQL injection replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
             
             //try sql selection
@@ -89,7 +89,7 @@
         }
         public static function getPreferenceTableData($crossPersonCategoryID)
         {
-            //anti SQL injection
+            //anti SQL injection replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
             
             //try sql selection
@@ -143,7 +143,7 @@
         /////////single value////////////////
         private static function getFirstMatchValue($select, $from, $where)
         {
-            //anti SQL injection
+            //anti SQL injection replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $select);
             mysqli_real_escape_string(DB::connection(), $from);
             mysqli_real_escape_string(DB::connection(), $where);
@@ -319,6 +319,7 @@
 
         public static function deleteAccount($accountname, $password)
         {
+            //replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $accountname);
             mysqli_real_escape_string(DB::connection(), $password);
 
@@ -373,6 +374,7 @@
 
         static function addChangePreference ($user, $password, $category, $preference, $rating)
         {
+            //replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $user);
             mysqli_real_escape_string(DB::connection(), $password);
             mysqli_real_escape_string(DB::connection(), $category);
@@ -405,6 +407,7 @@
 
         static function deletePreference ($user, $password, $category, $preference)
         {
+            // replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $user);
             mysqli_real_escape_string(DB::connection(), $password);
             mysqli_real_escape_string(DB::connection(), $category);
@@ -425,6 +428,7 @@
 
         static function addCategory ($name, $password, $category)
         {
+            // replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $name);
             mysqli_real_escape_string(DB::connection(), $password);
             mysqli_real_escape_string(DB::connection(), $category);
@@ -442,6 +446,7 @@
 
         static function removeCategory ($name, $password, $category)
         {
+            // replace with prepared statement
             mysqli_real_escape_string(DB::connection(), $name);
             mysqli_real_escape_string(DB::connection(), $password);
             mysqli_real_escape_string(DB::connection(), $category);
