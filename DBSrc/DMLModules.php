@@ -1,5 +1,6 @@
 <?php
-    include('DB.php');
+    include_once('DB.php');
+    include_once("../UniversalLibrary.php");
     class DMLModules
     {
         ///////////////////////////////////////////
@@ -221,7 +222,6 @@
             if(strlen($accountname) < 5)
                 $echo .= "You need at least 5 Letters for the Account name. ";
 
-
             //check alias
             if(!preg_match("/[a-z]/i", $alias))
                 $echo .= "You need at least 1 alphabet letter in your public alias. ";
@@ -231,7 +231,6 @@
 
             if(strlen($alias) < 5)
                 $echo .= "You need at least 5 Letters for the public alias. ";     
-            
                 
             //check password
             if(!preg_match("/[a-z]/i", $password))
@@ -304,13 +303,14 @@
                 return false;
         }
     
-        public static function loginSuccess($accountname, $password)
+        public static function loginSuccess(string $accountname, string $password) : bool
         {
-            mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
+            if(!UniversalLibrary::validName($accountname))
+            	return false;
+            if(!UniversalLibrary::validPassword($password))
+                return false;
 
-
-            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='" . hash('sha256', "'" . $password . "'") . "'";
+            $sql = "SELECT 1 FROM persons WHERE name='" . $accountname . "' AND pasword='" . UniversalLibrary::hashPass($password) . "'";
             $result = mysqli_query(DB::connection() ,$sql);#
             if(mysqli_fetch_row($result) == null)
                 return false;
