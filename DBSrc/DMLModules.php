@@ -5,15 +5,15 @@
     {
         ///////////////////////////////////////////
         ////////////////punlic tables//////////////
-        public static function getTable($select, $from)
+        public static function getTable(string $select, string $from)
         {
-            //pro SQL injection replace with prepared statement 
-            mysqli_real_escape_string(DB::connection(), $select);
-            mysqli_real_escape_string(DB::connection(), $from);
-            
-            //try sql selection
-            $sql = "SELECT $select FROM $from ORDER BY $select ASC";
-            $result = mysqli_query(DB::connection() ,$sql);
+            $stmt = DB::connection()->prepare(
+                "SELECT (?) FROM (?) ORDER BY (?) ASC"
+            );
+            $stmt->bind_param("sss", $select, $from, $select);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
 
             //compose array from data
             $data = null;
@@ -27,42 +27,68 @@
             return $data;
         }
 
-        public static function getTableWhere($select, $from, $where)
+        public static function getTableWhere(string $select, string $from, string $where)
         {
-            //anti SQL injection replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $select);
-            mysqli_real_escape_string(DB::connection(), $from);
-            mysqli_real_escape_string(DB::connection(), $where);
-            //try sql selection
-            $sql = "SELECT $select FROM $from WHERE $where ORDER BY $select ASC";
-            $result = mysqli_query(DB::connection() ,$sql);
-            
+            $stmt = DB::connection()->prepare(
+                "SELECT (?) FROM (?) WHERE (?) ORDER BY (?) ASC"
+            );
+            $stmt->bind_param("ssss", $select, $from, $where, $select);
+            $stmt->execute();
+            $result = $stmt->get_result();
             //compose array from data
-            $data = array();
+            $data = null;
             if ($result)
             {
                 while($row = $result->fetch_assoc())
                 {
-                    $data[] = $row;
+                    $data[] = $row[$select];
                 }
             }
             return $data;
         }  
 
-        public static function getPreferenceTable($crossPersonCategoryID)
+
+        
+        
+        static public function getPeopleRights(): array
         {
-            //anti SQL injection replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
-            
+            $mysqli = DB::connection();
+            $result = array();
+            $return = array();
+            $result = $mysqli->query(
+                "SELECT person.p_id AS ID, person.aktiveraccount AS Aktiv, person.vorname AS Vorname, person.nachname AS Name, person.benutzername AS Benutzername, GROUP_CONCAT(mitglied.m_id ORDER BY mitglied.m_id) AS Rechte 
+                FROM person 
+                LEFT JOIN personenmitglied ON personenmitglied.p_id = person.p_id
+                LEFT JOIN mitglied ON personenmitglied.m_id = mitglied.m_id
+                GROUP BY person.vorname"
+            );
+            for ($i = 0; $return[$i] = mysqli_fetch_assoc($result); $i++);
+            array_pop($return);
+            return $return;
+        }
+
+        public static function getPreferenceTable(int $crossPersonCategoryID)
+        {
+            $stmt = DB::connection()->prepare(
+               "SELECT persons_id 
+                FROM cross_person_categories
+                WHERE cross_person_categories_id=(?) 
+                ORDER BY persons_id ASC"
+            );
+            $stmt->bind_param("i", $crossPersonCategoryID);
+            $stmt->execute();
+            $stmt = $stmt->get_result();
+            $person_id = ;
             //try sql selection
-            $limit = "";
             $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID' ORDER BY persons_id ASC";
             $result = mysqli_query(DB::connection() ,$sql);
             $person_id = mysqli_fetch_row($result)[0];
-
+            
             $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
             $result = mysqli_query(DB::connection() ,$sql);
             $key = mysqli_fetch_row($result)[0];
+
+            $limit = "";
             if(!$key)
             {
                 $limit = "LIMIT 20";
