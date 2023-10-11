@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 // Include router class
 include_once('./Route.php');
 include_once('./HTML.php');
-include_once('./DMLModules.php');
+include_once('./DBSrc/DMLModules.php');
 
 
 // Add base route (startpage)
@@ -19,24 +19,28 @@ Route::add('/impressum',function()
     include_once("./impressum.html");
 }, 'get');
 
-//only main table
+//////////////////////////////////////////////////
+//////////////////TO REPLACE//////////////////////
+//only main table (all persons)
 Route::add('/get',function()
 {
     echo HTML::returnTable('alias', 'persons');
 }, 'get');
 
-//get preference table
+//get content table by preference ID
 Route::add('/get/([0-9]*)',function($preferenceID)
 {
     echo HTML::returnPreferenceTable($preferenceID);
 }, 'get');
 
-//get person table
+//get preference table by person name 
 Route::add('/get/([a-z,0-9]*)',function($alias)
 {
     return HTML::returnCategoriesTable(DMLModules::getName($alias));
 }, 'get');
 
+//////////////////////////////////////////////////
+//////////////////not to replace//////////////////
 //only main table data
 Route::add('/g',function()
 {
