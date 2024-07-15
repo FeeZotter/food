@@ -1,6 +1,6 @@
 <?php
 //include_once('/xampp/htdocs/food/DBSrc/DMLModules.php');
-include_once('/../DBSrc/DMLModules.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/food/DBSrc/DMLModules.php');
 class HTML
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
