@@ -264,9 +264,9 @@
         
         /**
         * TODO: implement SQL prepare statemnt and document properly
-        * echoes 
+        * returns true when account got created. Else a string with all problems 
         */ 
-        public static function addAccount($accountname, $alias, $password, $key) : string | true
+        public static function addAccount(string $accountname, string $alias, string $password, string $key) : string | true
         {
             /**
             * trys to add an account to the database
@@ -327,7 +327,7 @@
             if(!UniversalLibrary::validKey($key))
                 $errorString -= "Key invalid! ";
             if (strlen($key) != 32)
-                $errorString .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
+                $errorString .= "The key needs a lenght of 32. Current length is " . strlen($key) . ". ";
             if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
                 $errorString .= 'The key has illegal Letters. ';
             if(!self::keyUsable($key))
@@ -361,23 +361,23 @@
 
             //////////////////Error handeling ends
             //////////////////Add new user
-
-
             //todo prepare
             //try adding a new user || not really for testing purposes
-            $sql = "INSERT INTO persons (
-                        name, 
-                        pasword, 
-                        alias, 
-                        product_key) 
-                    VALUES (
-                        '$accountname', 
-                        '" . hash('sha256', "'" . $password . "'") . "', 
-                        '$alias', 
-                        (select product_key from product_keys where product_key = '$key')
-                    )";
-            //if i want users without key if($key == "") { $sql = "INSERT INTO persons (name, pasword, alias) VALUES ('$accountname', '$password', '$alias')"; }
-            if(mysqli_query(DB::connection() ,$sql))
+            $password = hash('sha256', "'" . $password . "'");
+            $stmt->prepare(
+                "INSERT INTO persons (
+                    name, 
+                    pasword, 
+                    alias, 
+                    product_key)
+                VALUES (
+                    (?),
+                    (?),
+                    (?),
+                    (SELECT product_key FROM product_keys WHERE product_key = (?)))
+                ");
+            $stmt->bind_param("ssss", $accountname, $password, $alias, $key);
+            if($stmt->execute()) //todo: Does this work? 
                 return true;
             else 
                 return $errorString . "Error with adding account -> please contact support!";
@@ -385,7 +385,7 @@
     
 
         /**
-         * TODO: implement SQL prepare statemnt and document properly
+         * true if the login credentials are correct 
          */
         public static function loginSuccess(string $accountname, string $password) : bool
         {
@@ -394,31 +394,40 @@
             if(!UniversalLibrary::validPassword($password))
                 return false;
 
-            $sql = "SELECT 1 FROM persons WHERE name='" . $accountname . "' AND pasword='" . UniversalLibrary::hashPass($password) . "'";
-            $result = mysqli_query(DB::connection() ,$sql);#
+            $stmt = DB::connection()->prepare(
+                "SELECT 1 FROM persons WHERE name=(?) AND pasword=(?)"
+            );
+            $stmt->bind_param("ss", $accountname, UniversalLibrary::hashPass($password));
+            $stmt->execute();
+            $result = $stmt->get_result();
+
             if(mysqli_fetch_row($result) == null)
                 return false;
             return true;
         }
 
         /**
-         * TODO: implement SQL prepare statemnt and document properly
+         * returns true if 1 account got deleted. Sends a notification to the user in case if not 0 or 1 accounts got deleted
          */
-        public static function deleteAccount($accountname, $password)
+        public static function deleteAccount(string $accountname, string $password) : bool
         {
-            //replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), $password);
-
-            $sql = "SELECT 1 FROM persons WHERE name='$accountname' AND pasword='$password'";
-            $result = mysqli_query(DB::connection() ,$sql);
-            if(!mysqli_fetch_row($result)[0])
-            {
-                echo "Account does not exist or password is wrong.";
-                return;
+            $stmt = DB::connection()->prepare("DELETE FROM persons WHERE name=(?) AND pasword=(?)");
+            $stmt->bind_param("ss", $accountname, $password);
+            $stmt->execute(); 
+            $stmt->affected_rows;
+            
+            switch ($stmt->affected_rows) {
+                case 0:
+                    return false;
+                    break;
+                case 1:
+                    return true;
+                    break;
+                default:
+                    echo "<script>alert('DELETED " . $stmt->affected_rows . " ACCOUNTS. PLEASE CONTACT THE ADMINISTRATOR')</script>";
+                    return false;
+                    break;
             }
-            $sql = "DELETE FROM persons WHERE name='$accountname' AND pasword='$password'";
-            echo mysqli_query(DB::connection() ,$sql);
         }
 
         ///////////////////////////////////////////
