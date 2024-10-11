@@ -10,7 +10,8 @@
         ///////////////////////////////////////////
         ////////////////punlic tables//////////////
         /**
-         * returns a table where every preference is listed with the corresponding value. Needs the ID of the cross table of persons & category
+         * returns a html table where every preference is listed with the corresponding value. Needs the ID of the cross table of persons & category
+         * TODO: delete this
          */
         public static function getPreferenceTable(int $crossPersonCategoryID)
         {
@@ -64,7 +65,7 @@
         /**
          * returns a table of preferences. Limited by preferenceLimitForFreeAccounts in config.php
          */
-        public static function getPreferenceTableData($crossPersonCategoryID)
+        public static function getPreferenceTableData(int $crossPersonCategoryID) : array
         {
             //try sql selection
             $limit = "";
@@ -109,7 +110,7 @@
         /**
         * TODO: implement SQL prepare statemnt and document properly
         */
-        public static function userCategoryTable($person)
+        public static function userCategoryTable(string $person)
         {
             $table = array();
 
@@ -130,7 +131,6 @@
             }
             $result = $data;
 
-
             foreach ($result as $key => $id) {
                 $stmt = DB::connection()->prepare(
                     "SELECT categories_id, (SELECT COUNT(*) 
@@ -139,7 +139,8 @@
                     FROM cross_person_categories 
                     WHERE cross_person_categories_id=$id[cross_person_categories_id];"
                 );
-
+                $stmt->bind_param("", $id['cross_person_categories_id']);
+//todo finish $stmt
                 $sql = "SELECT categories_id, (SELECT COUNT(*) 
                                                FROM preferences 
                                                WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
@@ -214,6 +215,9 @@
             return mysqli_fetch_row($result)[0];
         } 
 
+        /**
+        * get cross_person_categories_id by preferenceId
+        */
         public static function getPersonCategoryIdByPreference(int $preferenceId) : int
         {
             $stmt = DB::connection()->prepare(
@@ -228,7 +232,7 @@
 
 
         /**
-         * TODO: implement SQL prepare statemnt and document properly
+         * checks if a product key has available uses
          */
         private static function keyUsable(string $key) : bool
         {
@@ -247,15 +251,11 @@
 
             if(!$result) return false;
 
+            $stmt->bind_result($max_users, $count);
+            $stmt->fetch();
 
-            $keyUses = intval($result);
-            $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
-            $result = mysqli_query(DB::connection() ,$sql);
-            $alreadyUsed = mysqli_fetch_row($result)[0];
-
-            if($keyUses <= $alreadyUsed)
+            if($max_users <= $count)
                 return false;
-
             return true;
         } 
 
@@ -264,8 +264,9 @@
         
         /**
         * TODO: implement SQL prepare statemnt and document properly
+        * echoes 
         */ 
-        public static function addAccount($accountname, $alias, $password, $key)
+        public static function addAccount($accountname, $alias, $password, $key) : string | true
         {
             /**
             * trys to add an account to the database
@@ -277,82 +278,92 @@
             * 
             *  Some_Exception_Class If something interesting cannot happen
             *  Status
-            */ 
-            //////////////////Error handeling
-            $echo = "";
+            */
+        //////////////////Error handeling
+        $errorString = "";
+            include_once("../config.php");
             //check accountname
             //if the accountname contains no letters throw an error
-            if(!preg_match("/[a-z]/i", $accountname))
-                $echo .= "You need at least 1 alphabet letter in your Account name. ";
+            if(!UniversalLibrary::validName($accountname))
+                $errorString .= "Name invalid! ";
 
-            if(strlen($accountname) > 32)
-                $echo .= "A maximum of 32 Letters are allowed for the Account name. ";
+            if(!preg_match($nameRegex, $accountname))
+                $errorString .= "Your account name has to pass the '" . $nameRegex . "' regex. ";
 
-            if(strlen($accountname) < 5)
-                $echo .= "You need at least 5 Letters for the Account name. ";
+            if(strlen($accountname) > $nameMaxLength)
+                $errorString .= "A maximum of ". $nameMaxLength . " Letters are allowed for the Account name. ";
+
+            if(strlen($accountname) < $nameMinLength)
+                $errorString .= "You need at least " . $nameMinLength . " Letters for the Account name. ";
 
             //check alias
-            if(!preg_match("/[a-z]/i", $alias))
-                $echo .= "You need at least 1 alphabet letter in your public alias. ";
+            if(!UniversalLibrary::validName($alias))
+                $errorString .= "Alias invalid! ";
 
-            if(strlen($alias) > 32)
-                $echo .= "A maximum of 32 Letters are allowed for the public alias. ";
+            if(!preg_match($nameRegex, $alias))
+                $errorString .= "Your account alias has to pass the '" . $nameRegex . "' regex. ";
 
-            if(strlen($alias) < 5)
-                $echo .= "You need at least 5 Letters for the public alias. ";     
+            if(strlen($alias) > $nameMaxLength)
+                $errorString .= "A maximum of " . $nameMaxLength . " Letters are allowed for the public alias. ";
+
+            if(strlen($alias) < $nameMinLength)
+                $errorString .= "You need at least " . $nameMinLength . " Letters for the public alias. ";     
                 
             //check password
-            if(!preg_match("/[a-z]/i", $password))
-                $echo .= "You need at least 1 alphabet letter in your password. ";
+            if(!UniversalLibrary::validPassword($password))
+                $errorString .= "Password invalid! ";
 
-            if(strlen($password) > 50)
-                $echo .= "A maximum of 50 Letters are allowed for the password. ";
+            if(!preg_match($passRegex, $password))
+                $errorString .= "Your account password has to pass the '" . $passRegex . "' regex. ";
 
-            if(strlen($password) < 5)
-                $echo .= "You need at least 5 Letters for the password. ";   
+            if(strlen($password) > $passMaxLength)
+                $errorString .= "A maximum of " . $passMaxLength . " Letters are allowed for the password. ";
+
+            if(strlen($password) < $passMinLength)
+                $errorString .= "You need at least " . $passMinLength . " Letters for the password. ";   
 
 
             //check Key
+            if(!UniversalLibrary::validKey($key))
+                $errorString -= "Key invalid! ";
             if (strlen($key) != 32)
-                $echo .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
+                $errorString .= "The key needs a lenght of 32. " . strlen($key) . " " . $key;
             if (!preg_match("#^[a-zA-Z0-9]+$#", $key)) 
-                $echo .= 'The key has illegal Letters. ';
+                $errorString .= 'The key has illegal Letters. ';
             if(!self::keyUsable($key))
-                $echo .= "You cant use this key. Please insert another. ";
-            
+                $errorString .= "You cant use this key. Please insert another. ";
 
-            //anti sql injection
-            mysqli_real_escape_string(DB::connection(), $accountname);
-            mysqli_real_escape_string(DB::connection(), hash('sha256', "'" . $password . "'"));
-            mysqli_real_escape_string(DB::connection(), $alias);
-            mysqli_real_escape_string(DB::connection(), $key);
-
-            //to save ressources only check something with the database if there is no error
-            if($echo == "")
+            if($errorString == "")
             {
+                $stmt = DB::connection()->prepare(
+                    "SELECT p1.alias, p2.name
+                    FROM persons 
+                    LEFT JOIN persons as p2 ON p2.name=(?) OR p2.name=null
+                    LEFT JOIN persons as p1 ON p1.alias(?) OR p1.alias=null
+                    GROUP BY p1.alias, p2.name;"
+                );
+                $stmt->bind_param("ss", $accountname, $alias);
+                $stmt->execute();
+                $stmt->bind_param($alias, $name);
+
                 //check if account name exists
-                $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE name='$accountname')";
-                $result = mysqli_query(DB::connection() ,$sql);
-                if(mysqli_fetch_row($result)[0])
-                    $echo .= "There is already a person with this name, please choose another or you fail again.";
+                if($name != null)
+                    $errorString .= "There is already a person with this name, please choose another or fail again.";
 
                 //check if alias exists
-                $sql = "SELECT EXISTS(SELECT 1 FROM persons WHERE alias='$alias')";
-                $result = mysqli_query(DB::connection() ,$sql);
-                if(mysqli_fetch_row($result)[0])
-                    $echo .= "There is already a person with this alias, you are not the first.";
+                if($alias != null)
+                    $errorString .= "There is already a person with this alias, you are not the first.";
             } 
 
             //if there is at least one error send error and return
-            if($echo != "")
-            {
-                echo $echo;
-                return false;
-            }
+            if($errorString != "")
+                return $errorString;
 
             //////////////////Error handeling ends
             //////////////////Add new user
 
+
+            //todo prepare
             //try adding a new user || not really for testing purposes
             $sql = "INSERT INTO persons (
                         name, 
@@ -369,7 +380,7 @@
             if(mysqli_query(DB::connection() ,$sql))
                 return true;
             else 
-                return false;
+                return $errorString . "Error with adding account -> please contact support!";
         }
     
 
