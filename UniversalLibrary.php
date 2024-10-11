@@ -8,26 +8,36 @@ class UniversalLibrary
         return hash("sha256", "'" . $password . "'");
     }
 
-    static function validName($accountname): bool
+    public static function validName($accountname): bool
     {
-        if(!preg_match("/[a-z]/i", $accountname))
+        include_once("./config.php");
+        if(!preg_match($nameRegex, $accountname))
             return false;
-        return self::validWordLength($accountname, 5, 32);
+        return self::validWordLength($accountname, $nameMinLength, $nameMaxLength);
     }
 
-    static function validPassword($password): bool
+    public static function validPassword($password): bool
     {
-        if(!preg_match("/[a-z]/i", $password))
+        include_once("./config.php");
+        if(!preg_match($passRegex, $password))
             return false;
-        return self::validWordLength($password, 5, 50);
+        return self::validWordLength($password, $passMinLength, $passMaxLength);
     }
 
-    static function validWordLength(string $string, int $min, int $max): bool
+    public static function validWordLength(string $string, int $min, int $max): bool
     {
         if (strlen($string) > $max)
             return false;
         if (strlen($string) < $min)
             return false;
         return true;
+    }
+
+    public static function validKey($key) : bool {
+        if (!preg_match("#^[a-zA-Z0-9]+$#", $key))
+            return false;
+        if (strlen($key) != 32)
+            return false;
+        return true
     }
 }
