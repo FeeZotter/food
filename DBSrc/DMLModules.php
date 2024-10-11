@@ -1,72 +1,17 @@
 <?php
     include_once('DB.php');
     include_once("../UniversalLibrary.php");
+    /**
+     * TODO: implement SQL prepare statemnts everywhere
+     * 
+     */
     class DMLModules
     {
         ///////////////////////////////////////////
         ////////////////punlic tables//////////////
-        public static function getTable(string $select, string $from)
-        {
-            $stmt = DB::connection()->prepare(
-                "SELECT (?) FROM (?) ORDER BY (?) ASC"
-            );
-            $stmt->bind_param("sss", $select, $from, $select);
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            //compose array from data
-            $data = null;
-            if ($result)
-            {
-                while($row = $result->fetch_assoc())
-                {
-                    $data[] = $row[$select];
-                }
-            }
-            return $data;
-        }
-
-        public static function getTableWhere(string $select, string $from, string $where)
-        {
-            $stmt = DB::connection()->prepare(
-                "SELECT (?) FROM (?) WHERE (?) ORDER BY (?) ASC"
-            );
-            $stmt->bind_param("ssss", $select, $from, $where, $select);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            //compose array from data
-            $data = null;
-            if ($result)
-            {
-                while($row = $result->fetch_assoc())
-                {
-                    $data[] = $row[$select];
-                }
-            }
-            return $data;
-        }  
-
-
-        
-        
-        static public function getPeopleRights(): array
-        {
-            $mysqli = DB::connection();
-            $result = array();
-            $return = array();
-            $result = $mysqli->query(
-                "SELECT person.p_id AS ID, person.aktiveraccount AS Aktiv, person.vorname AS Vorname, person.nachname AS Name, person.benutzername AS Benutzername, GROUP_CONCAT(mitglied.m_id ORDER BY mitglied.m_id) AS Rechte 
-                FROM person 
-                LEFT JOIN personenmitglied ON personenmitglied.p_id = person.p_id
-                LEFT JOIN mitglied ON personenmitglied.m_id = mitglied.m_id
-                GROUP BY person.vorname"
-            );
-            for ($i = 0; $return[$i] = mysqli_fetch_assoc($result); $i++);
-            array_pop($return);
-            return $return;
-        }
-
+        /**
+         * returns a table where every preference is listed with the corresponding value. Needs the ID of the cross table of persons & category
+         */
         public static function getPreferenceTable(int $crossPersonCategoryID)
         {
             $stmt = DB::connection()->prepare(
@@ -77,15 +22,17 @@
             );
             $stmt->bind_param("i", $crossPersonCategoryID);
             $stmt->execute();
-            $stmt = $stmt->get_result();
-            $person_id = ;
-            //try sql selection
-            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID' ORDER BY persons_id ASC";
-            $result = mysqli_query(DB::connection() ,$sql);
+            $result = $stmt->get_result();
             $person_id = mysqli_fetch_row($result)[0];
             
-            $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
-            $result = mysqli_query(DB::connection() ,$sql);
+            
+            $stmt = DB::connection()->prepare(
+                "SELECT product_key 
+                FROM persons 
+                WHERE name=(?)"
+            );
+            $stmt->bind_param("s", $person_id);
+            $result = $stmt->get_result();
             $key = mysqli_fetch_row($result)[0];
 
             $limit = "";
@@ -113,29 +60,39 @@
             }
             return $data;
         }
+
+        /**
+         * returns a table of preferences. Limited by preferenceLimitForFreeAccounts in config.php
+         */
         public static function getPreferenceTableData($crossPersonCategoryID)
         {
-            //anti SQL injection replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $crossPersonCategoryID);
-            
             //try sql selection
             $limit = "";
-            $sql = "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id='$crossPersonCategoryID'";
-            $result = mysqli_query(DB::connection() ,$sql);
-            $person_id = mysqli_fetch_row($result)[0];
+            $person_id = self::getPersonID($crossPersonCategoryID);
 
-            $sql = "SELECT product_key FROM persons WHERE name='$person_id'";
-            $result = mysqli_query(DB::connection() ,$sql);
+            $stmt = DB::connection()->prepare(
+                "SELECT product_key FROM persons WHERE name=(?)"
+            );
+            $stmt->bind_param("s", $person_id);
+            $result = $stmt->get_result();
             $key = mysqli_fetch_row($result)[0];
+            $limit = "";
+            include_once("../config.php");
+            if($preferenceLimitForFreeAccounts != null)
+            {   
+                if(!$key) { $limit = "LIMIT $preferenceLimitForFreeAccounts"; }
+            }
 
-            $sql = "SELECT preference, rating 
-                    FROM preferences 
-                    WHERE cross_person_categories_id='$crossPersonCategoryID'
-                    ORDER BY rating DESC, preference ASC 
-                    $limit";
-                    
-                #    ORDER BY preference ASC, rating DESC";
-            $result = mysqli_query(DB::connection() ,$sql);
+
+            $stmt = DB::connection()->prepare(
+                "SELECT preference, rating 
+                FROM preferences 
+                WHERE cross_person_categories_id=(?)
+                ORDER BY rating DESC, preference ASC 
+                (?)"
+            );
+            $stmt->bind_param("is", $crossPersonCategoryID, $limit);
+            $result = $stmt->get_result();
             
             //compose array from data
             $data = array();
@@ -149,11 +106,40 @@
             return $data;
         }
 
+        /**
+        * TODO: implement SQL prepare statemnt and document properly
+        */
         public static function userCategoryTable($person)
         {
             $table = array();
-            $result = self::getTableWhere("cross_person_categories_id", "cross_person_categories", "persons_id='$person'");
+
+            $stmt = DB::connection()->prepare(
+                "SELECT cross_person_categories_id FROM cross_person_categories WHERE persons_id=(?) ORDER BY cross_person_categories_id ASC"
+            );
+            $stmt->bind_param("s", $person);
+            $stmt->execute();
+            $resultPersonIDs = $stmt->get_result();
+            //compose array from data
+            $data = null;
+            if ($resultPersonIDs)
+            {
+                while($row = $resultPersonIDs->fetch_assoc())
+                {
+                    $data[] = $row["cross_person_categories_id"];
+                }
+            }
+            $result = $data;
+
+
             foreach ($result as $key => $id) {
+                $stmt = DB::connection()->prepare(
+                    "SELECT categories_id, (SELECT COUNT(*) 
+                    FROM preferences 
+                    WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
+                    FROM cross_person_categories 
+                    WHERE cross_person_categories_id=$id[cross_person_categories_id];"
+                );
+
                 $sql = "SELECT categories_id, (SELECT COUNT(*) 
                                                FROM preferences 
                                                WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
@@ -167,48 +153,102 @@
 
         /////////////////////////////////////
         /////////single value////////////////
-        private static function getFirstMatchValue($select, $from, $where)
+
+        /**
+        * get alias by user name
+        */
+        public static function getAlias(string $name) : string
         {
-            //anti SQL injection replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $select);
-            mysqli_real_escape_string(DB::connection(), $from);
-            mysqli_real_escape_string(DB::connection(), $where);
-            //try sql selection
-            $sql = "SELECT $select FROM $from WHERE $where";
-            
-            //echo $sql; //when debug in next row is needed this helps
-            $result = mysqli_query(DB::connection() ,$sql);
-            
+            $stmt = DB::connection()->prepare(
+                "SELECT alias FROM persons WHERE name=(?)"
+            );
+            $stmt->bind_param("s", $name);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
             return mysqli_fetch_row($result)[0];
         }
 
-        public static function getAlias($name)
+        /**
+        * get name by user alias
+        */
+        public static function getName(string $alias) : string
         {
-            return self::getFirstMatchValue('alias', 'persons', "name='$name'");
+            $stmt = DB::connection()->prepare(
+                "SELECT name FROM persons WHERE alias=(?)"
+            );
+            $stmt->bind_param("s", $alias);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return mysqli_fetch_row($result)[0];
         }
 
-        public static function getName($alias)
+        /**
+        * get person_id/persons.name by crossPersonCategoryID
+        */
+        public static function getPersonID(int $crossPersonCategoryID) : string
         {
-            return self::getFirstMatchValue('name', 'persons', "alias='$alias'");
+            $stmt = DB::connection()->prepare(
+                "SELECT persons_id FROM cross_person_categories WHERE cross_person_categories_id=(?)"
+            );
+            $stmt->bind_param("i", $crossPersonCategoryID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return mysqli_fetch_row($result)[0];
         }
 
-        public static function getPersonCategoryIdByPersCate($persons_id, $category)
+        /**
+        * get cross_person_categories by persons_id and categories_id
+        */
+        public static function getPersonCategoryIdByPersCate(string $persons_id, string $category) : int
         {
-            return self::getFirstMatchValue('cross_person_categories_id', 'cross_person_categories', "persons_id='$persons_id'&&categories_id='$category'");
+            $stmt = DB::connection()->prepare(
+                "SELECT persons_id FROM cross_person_categories WHERE persons_id=(?) && categories_id=(?)"
+            );
+            $stmt->bind_param("ss", $persons_id, $category);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return mysqli_fetch_row($result)[0];
         } 
-                
-        public static function getPersonCategoryIdByPreference($preferenceId)
+
+        public static function getPersonCategoryIdByPreference(int $preferenceId) : int
         {
-            return self::getFirstMatchValue('cross_person_categories_id', 'preferences', "preferences_id='$preferenceId'");
+            $stmt = DB::connection()->prepare(
+                "SELECT cross_person_categories_id FROM preferences WHERE preferences_id=(?)"
+            );
+            $stmt->bind_param("i", $preferenceId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return mysqli_fetch_row($result)[0];
         } 
-        
-        private static function keyUsable(string $key)
+
+
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
+        private static function keyUsable(string $key) : bool
         {
-            $sql = "SELECT EXISTS(SELECT product_key from product_keys WHERE product_key='$key')";
-            $result = mysqli_query(DB::connection() ,$sql);
-            if(!mysqli_fetch_row($result)[0])
-                return false;
-            $keyUses = intval(self::getFirstMatchValue('max_users', 'product_keys', "product_key='$key'"));
+            $stmt = DB::connection()->prepare(
+                "SELECT 
+                product_keys.max_users as max_users, COUNT(product_keys.product_key) as count
+                FROM
+                product_keys
+                JOIN persons ON persons.product_key=(?) AND product_keys.product_key=(?)
+                GROUP BY product_keys.product_key, product_keys.max_users;"
+            );
+            $stmt->bind_param("ss", $key, $key);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $result = mysqli_fetch_row($result)[0];
+
+            if(!$result) return false;
+
+
+            $keyUses = intval($result);
             $sql = "SELECT COUNT(product_key) FROM persons WHERE product_key='$key'";
             $result = mysqli_query(DB::connection() ,$sql);
             $alreadyUsed = mysqli_fetch_row($result)[0];
@@ -221,20 +261,23 @@
 
         //////////////////////////////////
         /////////////Accounts/////////////
+        
+        /**
+        * TODO: implement SQL prepare statemnt and document properly
+        */ 
         public static function addAccount($accountname, $alias, $password, $key)
         {
             /**
-             * trys to add an account to the database
-             *
-             *  accountname min 5, max 32 letters
-             *  alias min 5, max 32 letters
-             *  password 
-             *  key 32 letters, a-z, A-Z, 0-9 
-             * 
-             *  Some_Exception_Class If something interesting cannot happen
-             *  Status
-             */ 
-
+            * trys to add an account to the database
+            *
+            *  accountname min 5, max 32 letters
+            *  alias min 5, max 32 letters
+            *  password 
+            *  key 32 letters, a-z, A-Z, 0-9 
+            * 
+            *  Some_Exception_Class If something interesting cannot happen
+            *  Status
+            */ 
             //////////////////Error handeling
             $echo = "";
             //check accountname
@@ -329,6 +372,10 @@
                 return false;
         }
     
+
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         public static function loginSuccess(string $accountname, string $password) : bool
         {
             if(!UniversalLibrary::validName($accountname))
@@ -343,6 +390,9 @@
             return true;
         }
 
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         public static function deleteAccount($accountname, $password)
         {
             //replace with prepared statement
@@ -362,6 +412,10 @@
 
         ///////////////////////////////////////////
         ////////////administration/////////////////
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         * TODO: check if Key exists
+         */
         public static function addNewKey(int $max_users, string $adminname, string $adminpassword)
         {
             include('admin.php');
@@ -397,7 +451,9 @@
 
         //////////////////////////////////////
         ///////testarea userinteraction///////
-
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         static function addChangePreference ($user, $password, $category, $preference, $rating)
         {
             //replace with prepared statement
@@ -431,6 +487,9 @@
             return true;
         }
 
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         static function deletePreference ($user, $password, $category, $preference)
         {
             // replace with prepared statement
@@ -452,6 +511,9 @@
             return false;
         }
 
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         static function addCategory ($name, $password, $category)
         {
             // replace with prepared statement
@@ -470,6 +532,9 @@
             return json_encode(self::getPersonCategoryIdByPersCate($name, $category));     
         }
 
+        /**
+         * TODO: implement SQL prepare statemnt and document properly
+         */
         static function removeCategory ($name, $password, $category)
         {
             // replace with prepared statement
