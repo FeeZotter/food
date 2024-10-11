@@ -108,7 +108,7 @@
         }
 
         /**
-        * TODO: implement SQL prepare statemnt and document properly
+        * TODO: implement SQL prepare statemnt and document properly NOT FINISHED
         */
         public static function userCategoryTable(string $person)
         {
@@ -133,14 +133,16 @@
 
             foreach ($result as $key => $id) {
                 $stmt = DB::connection()->prepare(
-                    "SELECT categories_id, (SELECT COUNT(*) 
-                    FROM preferences 
-                    WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
+                    "SELECT categories_id, 
+                        (SELECT COUNT(*) 
+                            FROM preferences 
+                            WHERE cross_person_categories_id=$id[cross_person_categories_id]
+                        ) 
                     FROM cross_person_categories 
                     WHERE cross_person_categories_id=$id[cross_person_categories_id];"
                 );
                 $stmt->bind_param("", $id['cross_person_categories_id']);
-//todo finish $stmt
+                //todo finish $stmt
                 $sql = "SELECT categories_id, (SELECT COUNT(*) 
                                                FROM preferences 
                                                WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
@@ -234,7 +236,7 @@
         /**
          * checks if a product key has available uses
          */
-        private static function keyUsable(string $key) : bool
+        public static function keyUsable(string $key) : bool
         {
             $stmt = DB::connection()->prepare(
                 "SELECT 
@@ -259,11 +261,24 @@
             return true;
         } 
 
+        public static function keyExists(string $key) : bool
+        {
+            $stmt = DB::connection()->prepare(
+                "SELECT * FROM product_keys WHERE product_key=(?)"
+            );
+            $stmt->bind_param("s", $key);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if(mysqli_fetch_row($result)[0]) 
+                return true;
+            return false;
+        } 
+
         //////////////////////////////////
         /////////////Accounts/////////////
         
         /**
-        * TODO: implement SQL prepare statemnt and document properly
         * returns true when account got created. Else a string with all problems 
         */ 
         public static function addAccount(string $accountname, string $alias, string $password, string $key) : string | true
@@ -279,8 +294,8 @@
             *  Some_Exception_Class If something interesting cannot happen
             *  Status
             */
-        //////////////////Error handeling
-        $errorString = "";
+            //////////////////Error handeling
+            $errorString = "";
             include_once("../config.php");
             //check accountname
             //if the accountname contains no letters throw an error
@@ -377,7 +392,7 @@
                     (SELECT product_key FROM product_keys WHERE product_key = (?)))
                 ");
             $stmt->bind_param("ssss", $accountname, $password, $alias, $key);
-            if($stmt->execute()) //todo: Does this work? 
+            if($stmt->execute())
                 return true;
             else 
                 return $errorString . "Error with adding account -> please contact support!";
@@ -414,7 +429,6 @@
             $stmt = DB::connection()->prepare("DELETE FROM persons WHERE name=(?) AND pasword=(?)");
             $stmt->bind_param("ss", $accountname, $password);
             $stmt->execute(); 
-            $stmt->affected_rows;
             
             switch ($stmt->affected_rows) {
                 case 0:
@@ -433,143 +447,127 @@
         ///////////////////////////////////////////
         ////////////administration/////////////////
         /**
-         * TODO: implement SQL prepare statemnt and document properly
-         * TODO: check if Key exists
+         * adds a key with between 1 and $keyMaxUsers uses. returns "{key}|{uses}" string
          */
-        public static function addNewKey(int $max_users, string $adminname, string $adminpassword)
+        public static function addNewKey(int $max_users, string $adminname, string $adminpassword) : string
         {
-            include('admin.php');
-            if (!admin($adminname, $adminpassword))
-                return 'nokey|foryou';
+            include_once('./admin.php');
+            include_once('./config.php');
+            if (!UniversalLibrary::admin($adminname, $adminpassword))
+                return 'nokey|foryou';           
 
-            function RandomLetter()
-            {
-                $letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                $randomletter = substr($letters, (rand(0, strlen($letters)-1)), 1);
-                return $randomletter;
-            }
-            
-            $newKey = '';
-            while (strlen($newKey) != 32) 
-            { 
-                $newKey .= RandomLetter();
-            }
-
-            if($max_users <= 1)
-            {
-                $sql = "INSERT INTO product_keys (product_key) VALUE ('$newKey')";
-                $max_users = 1;
-            } 
+            if($max_users <= 1) { $max_users = 1; } 
             else
             {
-                $max_users = $max_users < 100 ? $max_users : 100; //100 maximal per key
-                $sql = "INSERT INTO product_keys (product_key, max_users) VALUES ('$newKey', '$max_users')";
+                //set max_users to keyMaxUsers if max_users is above keyMaxUsers
+                $max_users = $max_users < $keyMaxUsers ? $max_users : $keyMaxUsers; 
             }
-            mysqli_query(DB::connection() ,$sql);
-            echo $newKey . "|" . $max_users;
+
+            $newKey = UniversalLibrary::generateNewKey();
+            $stmt = DB::connection()->prepare(
+                "INSERT INTO product_keys (product_key, max_users) VALUE ((?), (?));"
+            );
+            $stmt->bind_param("si", $newKey, $max_users);
+
+            if($stmt->execute())
+                echo $newKey . "|" . $max_users;
+            echo "something|wrong";
         }
 
         //////////////////////////////////////
         ///////testarea userinteraction///////
         /**
-         * TODO: implement SQL prepare statemnt and document properly
+         * returns true if preference got added or changed
          */
-        static function addChangePreference ($user, $password, $category, $preference, $rating)
+        static function addChangePreference (string $user, string $password, string $category, string $preference, int $rating)
         {
-            //replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $user);
-            mysqli_real_escape_string(DB::connection(), $password);
-            mysqli_real_escape_string(DB::connection(), $category);
-            mysqli_real_escape_string(DB::connection(), $preference);
-            mysqli_real_escape_string(DB::connection(), $rating);
-
             if (!self::loginSuccess($user, $password))
                 return false;
 
-            $cpc = self::getPersonCategoryIdByPersCate($user, $category);
+            $pcID = self::getPersonCategoryIdByPersCate($user, $category);
+            $stmt = DB::connection()->prepare(
+                "INSERT INTO preferences (
+                    preferences.cross_person_categories_id, 
+                    preferences.preference, 
+                    preferences.rating)
+                VALUES ((?), (?), (?))
+                ON DUPLICATE KEY UPDATE
+                    preferences.rating=(?);
+            ");
+            $stmt->bind_param("isii", $pcID, $preference, $rating, $rating);
+            return $stmt->execute();
+        }
 
-            $sql = "DELETE FROM preferences
-                    WHERE   cross_person_categories_id=$cpc AND
-                            preference='$preference';";
-            mysqli_query(DB::connection(), $sql);
+        /**
+         * if more than 0 rows got deleted returns true
+         */
+        static function deletePreference ($user, $password, $category, $preference) : bool
+        {
+            if (!self::loginSuccess($user, $password))
+                return false;
 
-            $sql = "INSERT INTO preferences (cross_person_categories_id, 
-                                             preference, 
-                                             rating) 
-                    VALUES (" . 
-                            $cpc . ", '" . 
-                            $preference . "', " . 
-                            $rating . 
-                           ");";
+            $pcID = self::getPersonCategoryIdByPersCate($user, $category);
+
+            $stmt = DB::connection()->prepare(
+                "DELETE FROM preferences WHERE cross_person_categories_id=(?) AND preference=(?)"
+            );
+            $stmt->bind_param("", $pcID, $preference);
+            $stmt->execute();
+
+            if($stmt->affected_rows > 0)
+                return true;
+            return false;
+        }
+
+        /**
+         * true on success
+         */
+        static function addCategory ($name, $password, $category) : bool
+        {
+            if(!self::loginSuccess($name, $password))
+                return false;
+
+            $stmt = DB::connection()->prepare(
+                "INSERT INTO cross_person_categories (persons_id, categories_id) VALUES ((?),(?))"
+            );
+            $stmt->bind_param("ss", $name, $category);
+            $stmt->execute();
             
-            if(!mysqli_query(DB::connection(), $sql))
-                return false;
-            return true;
+            switch ($stmt->affected_rows) {
+                case 1:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            } 
         }
 
         /**
-         * TODO: implement SQL prepare statemnt and document properly
+         * true on 1 delete, false on 0 delete and false + alert for the user in case of any case else
          */
-        static function deletePreference ($user, $password, $category, $preference)
+        static function removeCategory (string $name, string $password, string $category) : bool
         {
-            // replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $user);
-            mysqli_real_escape_string(DB::connection(), $password);
-            mysqli_real_escape_string(DB::connection(), $category);
-            mysqli_real_escape_string(DB::connection(), $preference);
-
-            if (!self::loginSuccess($user, $password))
-                return false;
-
-            $cpc = self::getPersonCategoryIdByPersCate($user, $category);
-
-            $sql = "DELETE FROM preferences
-                    WHERE   cross_person_categories_id=$cpc AND
-                            preference='$preference'";
-            if(mysqli_query(DB::connection(), $sql))
-                return true;
-            return false;
-        }
-
-        /**
-         * TODO: implement SQL prepare statemnt and document properly
-         */
-        static function addCategory ($name, $password, $category)
-        {
-            // replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $name);
-            mysqli_real_escape_string(DB::connection(), $password);
-            mysqli_real_escape_string(DB::connection(), $category);
-
             if(!self::loginSuccess($name, $password))
                 return false;
 
-            $sql = "INSERT INTO cross_person_categories (persons_id, categories_id) 
-                    VALUES ('" . $name . "','" . $category . "'     )";
-
-            if(!mysqli_query(DB::connection(), $sql))
-                return false;
-            return json_encode(self::getPersonCategoryIdByPersCate($name, $category));     
-        }
-
-        /**
-         * TODO: implement SQL prepare statemnt and document properly
-         */
-        static function removeCategory ($name, $password, $category)
-        {
-            // replace with prepared statement
-            mysqli_real_escape_string(DB::connection(), $name);
-            mysqli_real_escape_string(DB::connection(), $password);
-            mysqli_real_escape_string(DB::connection(), $category);
-
-            if(!self::loginSuccess($name, $password))
-                return false;
-
-            $sql = "DELETE FROM cross_person_categories WHERE persons_id='" . $name . "' AND categories_id='" . $category . "';";
-
-            if(mysqli_query(DB::connection(), $sql))
-                return true;
-            return false;
+            $stmt = DB::connection()->prepare("DELETE FROM cross_person_categories WHERE persons_id=(?) AND categories_id=(?)");
+            $stmt->bind_param("ss", $name, $category);
+            $stmt->execute(); 
+            $stmt->affected_rows;
+            
+            switch ($stmt->affected_rows) {
+                case 0:
+                    return false;
+                    break;
+                case 1:
+                    return true;
+                    break;
+                default:
+                    echo "<script>alert('DELETED " . $stmt->affected_rows . " CATEGORIES. Oops')</script>";
+                    return false;
+                    break;
+            }
         }
     }
 ?>
