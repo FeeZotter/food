@@ -108,9 +108,9 @@
         }
 
         /**
-        * returns pc_id, categories and entry_amounts as an array
+        * person_id == name. returns pc_id, categories and entry_amounts as an array
         */
-        public static function userCategoryTable(string $person) : array
+        public static function getPersonCategoryTable(string $nane) : array
         {
             $table = array();
 
@@ -121,7 +121,7 @@
                 WHERE cross_person_categories.persons_id=(?)
                 GROUP BY preferences.cross_person_categories_id"
             );
-            $stmt->bind_param("s", $person);
+            $stmt->bind_param("s", $name);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -129,13 +129,25 @@
         }
 
         /**
-         * TODO
          * get every category
          */
         public static function getCategories() : array
         {
             $stmt = DB::connection()->prepare(
                 "SELECT * FROM categories"
+            );
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        /**
+         * get every alias
+         */
+        public static function getAliasTable() : array
+        {
+            $stmt = DB::connection()->prepare(
+                "SELECT alias FROM persons"
             );
             $stmt->execute();
             $result = $stmt->get_result();
