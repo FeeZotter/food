@@ -1,6 +1,5 @@
 <?php
-include_once("./Cookie.php");
-include_once("./SQL.php");
+include_once("./DBSrc/DMLModules.php");
 class Session
 {
     static public function innit(): void
@@ -20,10 +19,9 @@ class Session
     {
         if (!isset($_POST["loginPass"])) { return false; }
         if (!isset($_POST["loginName"])) { return false; }
-        if (SQL::checkLoginRights($_POST["loginName"], $_POST["loginPass"]) == null) { return false; }// need update
-
+        if (!DMLModules::loginSuccess($_POST["loginName"], $_POST["loginPass"])) { return false; }// need update
+        
         $_SESSION["login"] = true;
-        self::checkRights($_POST["loginName"], $_POST["loginPass"]);
         return true;
     }
 

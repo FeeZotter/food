@@ -19,9 +19,9 @@ Route::add('/',function()
     echo HTML::main();
 }, 'get');
 
-Route::add('/impressum',function()
+Route::add('/food/impressum',function()
 {
-    include_once("./Pages/impressum.html");
+    include_once("./Pages/impressum.php");
 }, 'get');
 
 //////////////////////////////////////////////////
@@ -29,8 +29,8 @@ Route::add('/impressum',function()
 //only main table (all persons)
 Route::add('/get',function()
 {
-    include_once('./Pages/HTML.php');
-    echo HTML::returnTable('alias', 'persons');
+    include_once('./DBSrc/DMLModules.php');
+    echo DMLModules::getAliasTable();
 }, 'get');
 
 //get content table by preference ID
@@ -53,8 +53,9 @@ Route::add('/get/([a-z,0-9]*)',function($alias)
 //only main table data
 Route::add('/g',function()
 {
+    //SELECT alias FROM persons -> prepare for jsonEncoding
     include_once('./DBSrc/DMLModules.php');
-    echo json_encode(DMLModules::getTable('alias', 'persons'));
+    echo json_encode(DMLModules::getAliasTable());
 }, 'get');
 
 //get preference table data
@@ -68,7 +69,7 @@ Route::add('/g/([0-9]*)',function($preferenceID)
 Route::add('/g/([a-z,0-9]*)',function($alias)
 {
     include_once('./DBSrc/DMLModules.php');
-    echo json_encode(DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$alias'"));
+    echo json_encode(DMLModules::getPersonCategoryTable(DMLModules::getName($alias)));
 }, 'get');
 
 
