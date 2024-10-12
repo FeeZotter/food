@@ -1,8 +1,8 @@
 <?php
     include_once('DB.php');
-    include_once("../UniversalLibrary.php");
+    include_once(dirname(__FILE__) . "/../UniversalLibrary.php");
     /**
-     * TODO: implement SQL prepare statemnts everywhere
+     * TODO: solve to do's (4 left)
      * 
      */
     class DMLModules
@@ -108,50 +108,38 @@
         }
 
         /**
-        * TODO: implement SQL prepare statemnt and document properly NOT FINISHED
+        * returns pc_id, categories and entry_amounts as an array
         */
-        public static function userCategoryTable(string $person)
+        public static function userCategoryTable(string $person) : array
         {
             $table = array();
 
             $stmt = DB::connection()->prepare(
-                "SELECT cross_person_categories_id FROM cross_person_categories WHERE persons_id=(?) ORDER BY cross_person_categories_id ASC"
+                "SELECT cross_person_categories.cross_person_categories_id as pc_id, cross_person_categories.categories_id as categories, COUNT(preferences.cross_person_categories_id) as entry_amounts
+                FROM cross_person_categories 
+                LEFT JOIN preferences ON cross_person_categories.cross_person_categories_id = preferences.cross_person_categories_id
+                WHERE cross_person_categories.persons_id=(?)
+                GROUP BY preferences.cross_person_categories_id"
             );
             $stmt->bind_param("s", $person);
             $stmt->execute();
-            $resultPersonIDs = $stmt->get_result();
-            //compose array from data
-            $data = null;
-            if ($resultPersonIDs)
-            {
-                while($row = $resultPersonIDs->fetch_assoc())
-                {
-                    $data[] = $row["cross_person_categories_id"];
-                }
-            }
-            $result = $data;
+            $result = $stmt->get_result();
 
-            foreach ($result as $key => $id) {
-                $stmt = DB::connection()->prepare(
-                    "SELECT categories_id, 
-                        (SELECT COUNT(*) 
-                            FROM preferences 
-                            WHERE cross_person_categories_id=$id[cross_person_categories_id]
-                        ) 
-                    FROM cross_person_categories 
-                    WHERE cross_person_categories_id=$id[cross_person_categories_id];"
-                );
-                $stmt->bind_param("", $id['cross_person_categories_id']);
-                //todo finish $stmt
-                $sql = "SELECT categories_id, (SELECT COUNT(*) 
-                                               FROM preferences 
-                                               WHERE cross_person_categories_id=$id[cross_person_categories_id]) 
-                        FROM cross_person_categories 
-                        WHERE cross_person_categories_id=$id[cross_person_categories_id];";
-                $secondResult = mysqli_query(DB::connection(), $sql);
-                $table[] = mysqli_fetch_row($secondResult);
-            }  
-            return [$table, $result];
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        /**
+         * TODO
+         * get every category
+         */
+        public static function getCategories() : array
+        {
+            $stmt = DB::connection()->prepare(
+                "SELECT * FROM categories"
+            );
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
         }
 
         /////////////////////////////////////
@@ -376,7 +364,7 @@
 
             //////////////////Error handeling ends
             //////////////////Add new user
-            //todo prepare
+
             //try adding a new user || not really for testing purposes
             $password = hash('sha256', "'" . $password . "'");
             $stmt->prepare(
