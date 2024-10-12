@@ -105,7 +105,7 @@ class HTML
         if(!DMLModules::loginSuccess($userName, $password))
             return self::error404();
 
-        $array = DMLModules::getTable("category", "categories");
+        $array = DMLModules::getCategories();
         $table = "";
         foreach ($array as $value) { $table .= "<option value='$value'>$value</option>"; }
 
@@ -191,23 +191,16 @@ class HTML
         return ("<h1>Hello <b id='myUsername' class='$password'>$name</b> and i know your public name is <b id='myAlias'>" . DMLModules::getAlias($name) . "</b></h1>");
     }
 
-    private static function table($select, $from)
+    private static function tableOne($header, $array)
     {
-        $array = DMLModules::getTable($select, $from);
-        $returnTable = "";
+        $table = "";
         foreach ($array as $value)
         {
-            $returnTable .=
+            $table .=
             "<tr>"
             .   "<td class='$value'>{$value}</td>"
             ."</tr>";
         }
-
-        return self::tableOne($select, $returnTable);
-    }
-
-    private static function tableOne($header, $table)
-    {
         return (
         '<div id="table">' .
             self::theadOne($header) . 
