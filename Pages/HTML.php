@@ -19,7 +19,7 @@ class HTML
                     <div id='content' style='width:100vw;margin:auto;'>".
                         $bodycontent.
                '    </div>' . 
-               (include_once("impressumText.php")) .
+               (include_once(dirname(__FILE__) . "/modules/impressumText.php")) .
                '
                 </body>
                 </html>'.
@@ -63,14 +63,12 @@ class HTML
     {
             //start navigation bar
         $cross_person_categories_id = DMLModules::getPersonCategoryIdByPreference($preferenceId);
-        $result = self::dataTableWhere('categories_id, persons_id', 
-                                        'cross_person_categories', 
-                                        "cross_person_categories_id=$cross_person_categories_id");
+        $persons_id = DMLModules::getPersonID($cross_person_categories_id);
+        $result = DMLModules::getPersonCategoryTable($persons_id);
         $result = $result[0];
-        $categories_id = $result['categories_id'];
-        $persons_id    = $result['persons_id'];
-        $name = DMLModules::getAlias($persons_id);
-        $bodycontent = self::navigationBar('Start', $name, $categories_id);
+        $categories_id = $result['categories'];
+        $alias = DMLModules::getAlias($persons_id);
+        $bodycontent = self::navigationBar('Start', $alias, $categories_id);
             //end navigation bar
         $bodycontent .= self::preferenceTable($preferenceId);
 
@@ -79,7 +77,7 @@ class HTML
 
     public static function main()
     {
-        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::table('alias', 'persons'), self::script("index"));
+        echo self::getHTML("", "", self::navigationBar('Start', null, null) . self::tableOne("users", DMLModules::getAliasTable()), self::script("index"));
     }
 
     public static function adminPage()
@@ -115,7 +113,7 @@ class HTML
                             <div class='container text-center'>
                                 <div class='row'>
                                     <div class='col-6' id='userCategories'>" .
-                                        self::userCategoyTable($userName) .
+                                        self::userCategoryTable($userName) .
                                    "</div>
                                     <div class='col-6' id='userItems'>" .
                                         self::userItemsTable() .
@@ -259,26 +257,6 @@ class HTML
         </div>";
     }
 
-    public static function returnTable($select, $from)
-    {
-        $array = DMLModules::getTable($select, $from);
-        $returnTable = "";
-        foreach ($array as $value)
-        {
-            $returnTable .=
-            "<tr>"
-            .   "<td class='$value'>{$value}</td>"
-            ."</tr>";
-        }
-        return self::tableOne($select, $returnTable);
-    }
-
-    static function dataTableWhere($select, $from, $where)
-    {
-        //returns nested array Structure == array(array['value1', 'value2', ...], array['value1', 'value2', ...], array['value1', 'value2', ...], ...)
-        return DMLModules::getTableWhere($select, $from, $where); 
-    }
-
     private static function preferenceTable($categoryID)
     {
        # $array = $dml->getTableWhere("preference, rating", 'preferences', "cross_person_categories_id='$categoryID'");
@@ -319,14 +297,15 @@ class HTML
     {
         if(!DMLModules::loginSuccess($userName, $password))
             return self::error404();
-        return self::userCategoyTable($userName);
+        return self::userCategoryTable($userName);
     }
 
-    private static function userCategoyTable($userId)
+    private static function userCategoryTable($name)
     {
-        $arrays = DMLModules::userCategoryTable($userId);
-        $array1 = $arrays[0];
-        $array2 = $arrays[1];
+        //[pc_id, categories, entry_count]
+        $arrays = DMLModules::getPersonCategoryTable($name);
+        $array1 = $arrays[1];
+        $array2 = $arrays[2];
         $returnTable = "";
 
         $a = 0;
@@ -348,46 +327,31 @@ class HTML
         return self::tableTwo('Search Category', 'Search Amount', $returnTable);
     }
 
-    private function categoriesTable($personID)
+    private static function categoriesTableReturn($alias)
     {
-        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getPersonCategoryTable($alias);
         $returnTable = "";
         
         foreach ($array as $value)
         {
             $returnTable .=
             "<tr>"
-            .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
+            .   "<td class='" . $value["pc_id"] . "' id='" . $value['categories'] . "'>" . ucfirst($value['categories']) . "</td>"
             ."</tr>";
         }
         return self::tableOne('Preference', $returnTable);
     }
 
-    private static function categoriesTableReturn($personID)
+    public static function returnCategoriesTable($name)
     {
-        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
+        $array = DMLModules::getPersonCategoryTable($name);
         $returnTable = "";
         
         foreach ($array as $value)
         {
             $returnTable .=
             "<tr>"
-            .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
-            ."</tr>";
-        }
-        return self::tableOne('Preference', $returnTable);
-    }
-
-    public static function returnCategoriesTable($personID)
-    {
-        $array = DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'");
-        $returnTable = "";
-        
-        foreach ($array as $value)
-        {
-            $returnTable .=
-            "<tr>"
-            .   "<td class='" . $value["cross_person_categories_id"] . "' id='" . $value['categories_id'] . "'>" . ucfirst($value['categories_id']) . "</td>"
+            .   "<td class='" . $value["pc_id"] . "' id='" . $value['categories'] . "'>" . ucfirst($value['categories']) . "</td>"
             ."</tr>";
         }
         return self::tableOne('Preference', $returnTable);
@@ -524,22 +488,14 @@ class HTML
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Forwarings                                                                                                       //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static function personTable($select, $from, $where, $person)
-    {
-        $result = DMLModules::getTableWhere($select, 
-                                            $from, 
-                                            "$where='$person'");
-        return $result[0][$select];
-    }
-
     public static function getFrontPageData()
     {
-        return json_encode(DMLModules::getTable('alias', 'persons'));
+        return json_encode(DMLModules::getAliasTable());
     }
 
     public static function getCategoriesTableData($personID)
     {
-        return json_encode(DMLModules::getTableWhere("categories_id, cross_person_categories_id", "cross_person_categories", "persons_id='$personID'"));
+        return json_encode(DMLModules::getPersonCategoryTable($personID));
     }
 
     public static function getPreferenceTableData($categoryID)
@@ -576,7 +532,8 @@ class HTML
     {
         if(DMLModules::addAccount($accountname, $alias, $password, $key))
         {
-            echo self::login($accountname, $password);
+            include_once("./Session.php");
+
         }
         else 
         {
