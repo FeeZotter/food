@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id='content' style='width:100vw;margin:auto;'>
-        <?php echo(include_once("./Pages/modules/impressumText.php"));?>
+        <?php echo(include_once("./Pages/modules/impressumFooter.php"));?>
     </div>
 </body>
 </html>
