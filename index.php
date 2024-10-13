@@ -19,71 +19,28 @@ Route::add('/',function()
     echo HTML::main();
 }, 'get');
 
-Route::add('/food/impressum',function()
+//======================================================================
+// General Pages
+//======================================================================
+
+Route::add('/impressum',function()
 {
     include_once("./Pages/impressum.php");
 }, 'get');
 
-//////////////////////////////////////////////////
-//////////////////TO REPLACE//////////////////////
-//only main table (all persons)
-Route::add('/get',function()
-{
-    include_once('./DBSrc/DMLModules.php');
-    echo DMLModules::getAliasTable();
-}, 'get');
-
-//get content table by preference ID
-Route::add('/get/([0-9]*)',function($preferenceID)
+Route::add('/hints',function()
 {
     include_once('./Pages/HTML.php');
-    echo HTML::returnPreferenceTable($preferenceID);
-}, 'get');
-
-//get preference table by person name 
-Route::add('/get/([a-z,0-9]*)',function($alias)
-{
-    include_once('./DBSrc/DMLModules.php');
-    include_once('./Pages/HTML.php');
-    return HTML::returnCategoriesTable(DMLModules::getName($alias));
-}, 'get');
-
-//////////////////////////////////////////////////
-//////////////////not to replace//////////////////
-//only main table data
-Route::add('/g',function()
-{
-    //SELECT alias FROM persons -> prepare for jsonEncoding
-    include_once('./DBSrc/DMLModules.php');
-    echo json_encode(DMLModules::getAliasTable());
-}, 'get');
-
-//get preference table data
-Route::add('/g/([0-9]*)',function($preferenceID)
-{
-    include_once('./DBSrc/DMLModules.php');
-    echo json_encode(DMLModules::getPreferenceTableData($preferenceID));
-}, 'get');
-
-//get person table data
-Route::add('/g/([a-z,0-9]*)',function($alias)
-{
-    include_once('./DBSrc/DMLModules.php');
-    echo json_encode(DMLModules::getPersonCategoryTable(DMLModules::getName($alias)));
+    echo HTML::hints();
 }, 'get');
 
 
-//////////////////////////////////////////////////
-//////////////////Generate Keys///////////////////
-Route::add('/newKey',function()
-{
-    include_once('./Pages/HTML.php');
-    echo HTML::newKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
-},'post');
 
 
-//////////////////////////////////////////////////
-/////////////////user functions///////////////////
+
+//======================================================================
+// User
+//======================================================================
 Route::add('/login',function()
 {
     include_once("./Pages/login.php");
@@ -125,10 +82,71 @@ Route::add('/reg',function()
     HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
 }, 'post');
 
+
+//======================================================================
+// SHORTCUTS
+//======================================================================
+//shortcut to preference ID by id
+Route::add('/s/([0-9]*)',function($id)
+{
+    include_once('./Pages/HTML.php');
+    echo HTML::PreferenceByID($id);
+}, 'get');
+
+//shortcut to person
+Route::add('/s/([a-z,0-9]*)',function($name)
+{
+    include_once('./Pages/HTML.php');
+    echo HTML::Person($name);
+}, 'get');
+
+//shortcut to preference ID by alias and category
+Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
+{
+    include_once('./Pages/HTML.php');
+    echo HTML::Preference($alias, $category);
+}, 'get');
+
+
+//======================================================================
+// Admin
+//======================================================================
 Route::add('/admin',function()
 {
     include_once('./Pages/HTML.php');
     echo HTML::adminPage();
+}, 'get');
+
+Route::add('/newKey',function()
+{
+    include_once('./DBSrc/DMLModules.php');
+    echo DMLModules::addNewKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+},'post');
+
+
+//======================================================================
+// API
+//======================================================================
+//only main table data
+Route::add('/g',function()
+{
+    //SELECT alias FROM persons -> prepare for jsonEncoding
+    include_once('./DBSrc/DMLModules.php');
+    echo json_encode(DMLModules::getAliasTable());
+}, 'get');
+
+//get preference table data
+Route::add('/g/([0-9]*)',function($preferenceID)
+{
+    include_once('./DBSrc/DMLModules.php');
+    echo json_encode(DMLModules::getPreferenceTableData($preferenceID));
+}, 'get');
+
+//get person table data
+Route::add('/g/([a-z,0-9]*)',function($alias)
+{
+    include_once('./DBSrc/DMLModules.php');
+    echo json_encode(DMLModules::getPersonCategoryTable(DMLModules::getName($alias)));
 }, 'get');
 
 Route::add('/delcate',function()
@@ -164,38 +182,10 @@ Route::add('/delpref',function()
                                         $_REQUEST['inputPreference']);
 }, 'post');
 
-Route::add('/hints',function()
-{
-    include_once('./Pages/HTML.php');
-    echo HTML::hints();
-}, 'get');
 
-//////////////////////////////////////
-//////////////Shortcuts///////////////
-//shortcut to preference ID by id
-Route::add('/s/([0-9]*)',function($id)
-{
-    include_once('./Pages/HTML.php');
-    echo HTML::PreferenceByID($id);
-}, 'get');
-
-//shortcut to person
-Route::add('/s/([a-z,0-9]*)',function($name)
-{
-    include_once('./Pages/HTML.php');
-    echo HTML::Person($name);
-}, 'get');
-
-//shortcut to preference ID by alias and category
-Route::add('/s/([a-z,0-9]*)/([a-z,0-9]*)',function($alias, $category)
-{
-    include_once('./Pages/HTML.php');
-    echo HTML::Preference($alias, $category);
-}, 'get');
-
-
-
-
+//======================================================================
+// FALLBACK & START ROUTER
+//======================================================================
 
 // redirect every failed thing to the start page
 Route::add('/(.*)',function()
@@ -204,7 +194,5 @@ Route::add('/(.*)',function()
     echo HTML::main();
 }, 'get');
 
-////////////////
-//start router//
 Route::run('/');
 ?>
