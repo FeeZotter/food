@@ -1,6 +1,6 @@
 <?php
 //include_once('/xampp/htdocs/food/DBSrc/DMLModules.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/food/DBSrc/DMLModules.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/DBSrc/DMLModules.php');
 class HTML
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -10,8 +10,8 @@ class HTML
     {
         return "<!DOCTYPE html><html>
                 <head><title>Preferix</title>
-                <link rel='stylesheet' href='/food/style/style.css'>
-                <link rel='stylesheet' href='/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css'>".
+                <link rel='stylesheet' href='/style/style.css'>
+                <link rel='stylesheet' href='/style/bootstrap-5.2.2-dist/css/bootstrap.min.css'>".
                 $style.
                 $headcontent.
                "</head>
@@ -19,7 +19,7 @@ class HTML
                     <div id='content' style='width:100vw;margin:auto;'>".
                         $bodycontent.
                '    </div>' . 
-               (include_once(dirname(__FILE__) . "/modules/impressumText.php")) .
+               (include_once("./modules/impressumFooter.php")) .
                '
                 </body>
                 </html>'.
@@ -28,7 +28,7 @@ class HTML
 
     private static function script($src)
     {
-        return "<script src='food/js/".$src.".js'></script>";
+        return "<script src='js/".$src.".js'></script>";
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -521,11 +521,6 @@ class HTML
     public static function getPersonCategoryIdByPreference($preferenceId)
     {
         return DMLModules::getPersonCategoryIdByPreference($preferenceId);
-    }
-
-    public static function newKey($max_users, $adminname, $adminpass)
-    {
-        return DMLModules::addNewKey($max_users, $adminname, $adminpass);
     }
 
     public static function addAccount($accountname, $alias, $password, $key)
