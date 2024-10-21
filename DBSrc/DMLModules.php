@@ -110,7 +110,7 @@
         /**
         * person_id == name. returns pc_id, categories and entry_amounts as an array
         */
-        public static function getPersonCategoryTable(string $nane) : array
+        public static function getPersonCategoryTable(string $name) : array
         {
             $table = array();
 
@@ -252,7 +252,9 @@
             $result = mysqli_fetch_row($result)[0];
 
             if(!$result) return false;
-
+            
+            $max_users = "";
+            $count = 0;
             $stmt->bind_result($max_users, $count);
             $stmt->fetch();
 
