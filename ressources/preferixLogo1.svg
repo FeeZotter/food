@@ -24,7 +24,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.73139029"
-     inkscape:cx="397.18876"
+     inkscape:cx="396.50513"
      inkscape:cy="561.25984"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -150,7 +150,10 @@
        xml:space="preserve"
        transform="matrix(10.489212,0,0,10.489212,-1833.9464,-2964.3268)"
        id="text1"
-       style="white-space:pre;shape-inside:url(#rect1);fill:#000000"><tspan
+       style="white-space:pre;shape-inside:url(#rect1);display:inline;fill:#000000"
+       inkscape:export-filename="text1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          x="181.8457"
          y="298.0435"
          id="tspan3"><tspan
