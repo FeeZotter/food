@@ -196,7 +196,7 @@ class HTML
         {
             $table .=
             "<tr>"
-            .   "<td class='$value'>{$value}</td>"
+            .   "<td class='$value[alias]'>{$value['alias']}</td>"
             ."</tr>";
         }
         return (

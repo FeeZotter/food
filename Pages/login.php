@@ -1,25 +1,8 @@
 <?php
 include_once("./Session.php");
-Session::innit();
 if (Session::isLogin()) {
     //reroute
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+   
     exit;
 }
 ?>
@@ -32,24 +15,31 @@ if (Session::isLogin()) {
     <link rel='stylesheet' href='/food/style/bootstrap-5.2.2-dist/css/bootstrap.min.css'>
 </head>
 <body>
-    <div id='content' style='width:100vw;margin:auto;'>
-        <form id='loginForm' method='post'>
-            <div class='form-row'>
-                <div class='form-group col-md-5'>
-                    <label for='inputName'>Name</label>
-                    <input type='text' class='form-control' value='' id='inputName' name='inputName' placeholder='Private name for login'>
-                </div>
-            </div>
-            <div class='form-row'>
-                <div class='form-group col-md-5'>
-                    <label for='inputPassword'>Password</label>
-                    <input type='password' class='form-control' value='' id='inputPassword' name='inputPassword' placeholder='Password'>
-                </div>
-            </div>
-            <button type='submit' class='btn btn-primary'>Login</button>
+    <nav  aria-label="Path Navigation">
+        <a href="/">Main</a>
+        <?php 
+        if(!Session::isLogin())
+        {
+            echo '
+                <a href="/regrister">Regrister</a>';
+        } 
+        ?>
+        <a href="/impressum">Impressum</a>
+        <a href="/api">API</a>
+    </nav>
+    <main>
+        <form action="/login" method="post">
+            <fieldset>
+                <legend>Login<?php if(Session::isLogin()) echo(" to another account"); ?></legend>
+                <label for="userName">Name:</label>
+                <input type="text" id="userName" name="userName" required>
+                <label for="userPassword">Password:</label>
+                <input type="password" id="userPassword" name="userPassword" required>
+                <input type="submit" value="Login">
+            </fieldset>
         </form>
-    </div>
-    <?php (include_once("impressumText.php")) ?>
+    </main>
+    <?php include_once("./Pages/modules/impressumFooter.php") ?>
 </body>
 </html>
 <script src='food/js/login.js'></script>

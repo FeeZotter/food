@@ -1,22 +1,17 @@
 <?php
 ini_set("allow_url_include", true);
-ini_set('error_reporting', E_ALL);
+//ini_set('error_reporting', E_ALL);
 error_reporting(E_ALL);
 // Include router class
 include_once('./Route.php');
+include_once("./Session.php");
+Session::innit();
 
 
 // Add base route (startpage)
 Route::add('/',function()
 {
-    $test = $_SERVER["REQUEST_URI"];
-    echo($test);
-    $test = explode("/", $test);
-    array_shift($test);
-    array_shift($test);
-    print_r($test);
-    include_once('./Pages/HTML.php');
-    echo HTML::main();
+    include_once("./Pages/main.php");
 }, 'get');
 
 //======================================================================
@@ -28,14 +23,11 @@ Route::add('/impressum',function()
     include_once("./Pages/impressum.php");
 }, 'get');
 
-Route::add('/hints',function()
+Route::add('/api',function()
 {
     include_once('./Pages/HTML.php');
     echo HTML::hints();
 }, 'get');
-
-
-
 
 
 //======================================================================
@@ -48,8 +40,13 @@ Route::add('/login',function()
 
 Route::add('/login',function()
 {
-    include_once('./Pages/HTML.php');
-    echo HTML::userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
+    if(isset($_REQUEST["userName"]))
+        echo "userName";
+    if(isset($_REQUEST['userPassword']))
+        echo "password";
+   
+    echo Session::loginSession($_POST["userName"], $_POST['userPassword']);
+   // echo HTML::userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
 }, 'post');
 
 Route::add('/login/table',function()
