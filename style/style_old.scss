@@ -1,0 +1,69 @@
+.wideInput {
+    width: 90%;
+}
+
+.marginLeft {
+    margin-left: 1%;
+}
+
+.tightInput {
+    width: 10%;
+}
+
+.input {
+    width: 90%;
+}
+
+.rating0,
+.rating1,
+.rating2 {
+    color: #d2222d;
+}
+
+.rating3,
+.rating4,
+.rating5 {
+    color: #ffbf00;
+}
+
+.rating6,
+.rating7,
+.rating8 {
+    color: #299c29;
+}
+
+.rating9,
+.rating10 {
+    color: #007000;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
+.tableFixHead {
+    overflow: auto;
+    height: 60vh;
+}
+
+.tableFixHead tbody th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tableFixHead tbody tr {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Just common table stuff. Really. */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
