@@ -41,7 +41,7 @@
     </div>
 
     <div id="impressum" class="tabcontent">
-        <h3>impressum</h3>
+        <?php include_once("Pages/tabs/impressum.php") ?>
     </div> 
 
     <div id="api" class="tabcontent">
