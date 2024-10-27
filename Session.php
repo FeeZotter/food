@@ -4,11 +4,12 @@ class Session
 {
     static public function innit(): void
     {
-        session_start();
-        $_SESSION["login"] = false;
-        $_SESSION["userName"] = "";
-        if (!isset($_SESSION["login"]))
-            {}
+        if(!session_id())
+        {
+            session_start();
+            $_SESSION["login"] = false;
+            $_SESSION["name"] = "";
+        }
     }
 
     static public function killSession(): bool
@@ -20,10 +21,10 @@ class Session
     
     static public function loginSession(): bool
     {
-        if (!isset($_POST["userName"])) { return false; }
-        if (!isset($_POST["userPassword"])) { return false; }
-        if (!DMLModules::loginSuccess($_POST["userName"], $_POST["userPassword"])) { return false; }
-        $_SESSION["userName"] = $_POST["userName"];
+        if (!isset($_POST["name"])) { return false; }
+        if (!isset($_POST["password"])) { return false; }
+        if (!DMLModules::loginSuccess($_POST["name"], $_POST["password"])) { return false; }
+        $_SESSION["name"] = $_POST["name"];
         $_SESSION["login"] = true;
         return $_SESSION["login"];
     }
