@@ -4,14 +4,21 @@ ini_set("allow_url_include", true);
 error_reporting(E_ALL);
 // Include router class
 include_once('./Route.php');
+include_once("./config.php");
 include_once("./Session.php");
 Session::innit();
+
 
 
 // Add base route (startpage)
 Route::add('/',function()
 {
     include_once("./Pages/main.php");
+}, 'get');
+
+Route::add('/test',function()
+{
+    include_once("./Pages/onePage.php");
 }, 'get');
 
 //======================================================================
@@ -40,12 +47,28 @@ Route::add('/login',function()
 
 Route::add('/login',function()
 {
-    if(isset($_REQUEST["userName"]))
-        echo "userName";
-    if(isset($_REQUEST['userPassword']))
-        echo "password";
+    $filters = [
+        'name' => [
+            'filter' => FILTER_DEFAULT,
+            'flags' => FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK,
+        ],
+        'password' => [
+            'filter' => FILTER_DEFAULT,
+            'flags' => FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK,
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    $username = $input['name'] ?? null;
+    $password = $input['password'] ?? null;
+
+    if($username != null && $password != null)
+        //echo Session::loginSession($username, $password);
+        echo "true"; 
+    else
+        echo "false";
    
-    echo Session::loginSession($_POST["userName"], $_POST['userPassword']);
    // echo HTML::userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
 }, 'post');
 
