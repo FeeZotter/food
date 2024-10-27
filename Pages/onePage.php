@@ -18,14 +18,17 @@
 
     <!-- Tab content -->
     <div id="Home" class="tabcontent">
+        <h1>TODO</h1>
         <?php include_once("Pages/tabs/home.php") ?>
     </div>
 
     <div id="preferenceList" class="tabcontent">
+        <h1>TODO</h1>
         <h3>PreferenceList</h3>
     </div>
 
     <div id="preferences" class="tabcontent">
+        <h1>TODO</h1>
         <h3>preferences</h3>
     </div>
 
@@ -36,8 +39,8 @@
     </div>
 
     <div id="userSpace" class="tabcontent">
-        <h1>NOT LOGGED IN</h1>
-        <button onclick="document.getElementById('loginTabBtn').click();">Login or Regrister</button>
+        <h1>TODO</h1>
+        <?php include_once("Pages/tabs/userSpace.php"); ?>
     </div>
 
     <div id="impressum" class="tabcontent">
@@ -45,6 +48,7 @@
     </div> 
 
     <div id="api" class="tabcontent">
+        <h1>TODO</h1>
         <h3>API STUFF</h3>
     </div> 
 
@@ -52,5 +56,8 @@
 
 </body>
 <script src='/js/tabs.js'></script>
+<script>
+    document.getElementById('homeTabBtn').click();
+</script>
 
 <?php ?>
