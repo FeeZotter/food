@@ -1,9 +1,5 @@
-<?php 
-include_once("../../UniversalLibrary.php");
-?>
-
 <main>
-    <form action="/login" method="post">
+    <form id="loginForm" action="/login" method="post">
         <fieldset>
             <legend>Login<?php if(Session::isLogin()) echo(" to another account"); ?></legend>
             <label for="name">Name:</label>
