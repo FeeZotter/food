@@ -40,5 +40,11 @@ class Session
             return $_SESSION["login"];
         return false;
     }
+    static public function user() : string
+    {
+        if (isset($_SESSION["name"]))
+            return $_SESSION["name"];
+        return "";
+    }
 }
  
