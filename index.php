@@ -4,8 +4,8 @@ ini_set("allow_url_include", true);
 error_reporting(E_ALL);
 // Include router class
 include_once('./Route.php');
-include_once("./config.php");
 include_once("./Session.php");
+include_once("./UniversalLibrary.php");
 Session::innit();
 
 
@@ -47,25 +47,26 @@ Route::add('/login',function()
 
 Route::add('/login',function()
 {
+
     $filters = [
         'name' => [
-            'filter' => FILTER_DEFAULT,
-            'flags' => FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK,
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getNameRegex(),
+            ],
         ],
         'password' => [
-            'filter' => FILTER_DEFAULT,
-            'flags' => FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK,
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
         ],
     ];
 
     $input = filter_input_array(INPUT_POST, $filters, true);
 
-    $username = $input['name'] ?? null;
-    $password = $input['password'] ?? null;
-
-    if($username != null && $password != null)
-        //echo Session::loginSession($username, $password);
-        echo "true"; 
+    if($input['name'] != null && $input['password'] != null)
+        echo Session::loginSession($input['name'], $input['password']);
     else
         echo "false";
    
@@ -75,7 +76,7 @@ Route::add('/login',function()
 Route::add('/login/table',function()
 {
     include_once('./Pages/HTML.php');
-    echo HTML::onlyUserCategoryTable($_REQUEST['inputName'], $_REQUEST['inputPassword']);    
+    echo HTML::onlyUserCategoryTable($_POST['inputName'], $_POST['inputPassword']);    
 }, 'post' );
 
 Route::add('/regrister',function()
@@ -87,7 +88,7 @@ Route::add('/regrister',function()
 Route::add('/regrister',function()
 {
     include_once('./Pages/HTML.php');
-    HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
+    HTML::addAccount($_POST['inputName'], $_POST['inputAlias'], $_POST['inputPassword'], $_POST['inputKey']);
 }, 'post');
 
 Route::add('/reg',function()
@@ -99,7 +100,7 @@ Route::add('/reg',function()
 Route::add('/reg',function()
 {
     include_once('./Pages/HTML.php');
-    HTML::addAccount($_REQUEST['inputName'], $_REQUEST['inputAlias'], $_REQUEST['inputPassword'], $_REQUEST['inputKey']);
+    HTML::addAccount($_POST['inputName'], $_POST['inputAlias'], $_POST['inputPassword'], $_POST['inputKey']);
 }, 'post');
 
 

@@ -298,47 +298,19 @@
             */
             //////////////////Error handeling
             $errorString = "";
-            include_once("../config.php");
+            include_once("../UniversalLibrary.php");
             //check accountname
             //if the accountname contains no letters throw an error
             if(!UniversalLibrary::validName($accountname))
                 $errorString .= "Name invalid! ";
 
-            if(!preg_match($nameRegex, $accountname))
-                $errorString .= "Your account name has to pass the '" . $nameRegex . "' regex. ";
-
-            if(strlen($accountname) > $nameMaxLength)
-                $errorString .= "A maximum of ". $nameMaxLength . " Letters are allowed for the Account name. ";
-
-            if(strlen($accountname) < $nameMinLength)
-                $errorString .= "You need at least " . $nameMinLength . " Letters for the Account name. ";
-
             //check alias
             if(!UniversalLibrary::validName($alias))
                 $errorString .= "Alias invalid! ";
 
-            if(!preg_match($nameRegex, $alias))
-                $errorString .= "Your account alias has to pass the '" . $nameRegex . "' regex. ";
-
-            if(strlen($alias) > $nameMaxLength)
-                $errorString .= "A maximum of " . $nameMaxLength . " Letters are allowed for the public alias. ";
-
-            if(strlen($alias) < $nameMinLength)
-                $errorString .= "You need at least " . $nameMinLength . " Letters for the public alias. ";     
-                
             //check password
             if(!UniversalLibrary::validPassword($password))
                 $errorString .= "Password invalid! ";
-
-            if(!preg_match($passRegex, $password))
-                $errorString .= "Your account password has to pass the '" . $passRegex . "' regex. ";
-
-            if(strlen($password) > $passMaxLength)
-                $errorString .= "A maximum of " . $passMaxLength . " Letters are allowed for the password. ";
-
-            if(strlen($password) < $passMinLength)
-                $errorString .= "You need at least " . $passMinLength . " Letters for the password. ";   
-
 
             //check Key
             if(!UniversalLibrary::validKey($key))
