@@ -4,18 +4,27 @@ class UniversalLibrary
 {
     private static $preferenceLimitForFreeAccounts = 20; // int or null
     private static $keyMaxUsers = 100; // only limits during creation via admin interface
-    private static $nameRegex = "/^[a-zA-Z0-9]{5,32}$/";
-    private static $passRegex = "/^[a-zA-Z0-9]{12,50}$/";
+    private static $passRegex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,50}$/";
+    private static $aliaRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
+    private static $nameRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
+    private static $cateRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
+    private static $prefRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
+    private static $ratiRegex = "/^([0-9]{1,1}$)|10/"   ;
     private static $keyRegex  = "/^[a-zA-Z0-9]{32,32}$/";
 
     public static function getPreferenceLimitForFreeAccounts()  : int { return self::$preferenceLimitForFreeAccounts; }
-    public static function getKeyMaxUsers() : int    { return self::$keyMaxUsers; }
-    public static function getNameRegex()   : string { return self::$nameRegex;   }
-    public static function getPassRegex()   : string { return self::$passRegex;   }
-    public static function getKeyRegex()    : string { return self::$keyRegex;    }
+    public static function getKeyMaxUsers() : int { return self::$keyMaxUsers; }
+
+    public static function getPreferenceRegex() : string { return self::$prefRegex; }
+    public static function getCategoryRegex()   : string { return self::$cateRegex; }
+    public static function getRatingRegex()     : string { return self::$ratiRegex; }
+    public static function getAliasRegex()      : string { return self::$aliaRegex; }
+    public static function getNameRegex()       : string { return self::$nameRegex; }
+    public static function getPassRegex()       : string { return self::$passRegex; }
+    public static function getKeyRegex()        : string { return self::$keyRegex;  }
 
 
-    public static function hashPass($password): string
+    public static function hashPass(string $password): string
     {
         return hash("sha256", "'" . $password . "'");
     }
