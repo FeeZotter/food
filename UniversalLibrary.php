@@ -7,8 +7,8 @@ class UniversalLibrary
     private static $passRegex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,50}$/";
     private static $aliaRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
     private static $nameRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
-    private static $cateRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
-    private static $prefRegex = "/^[a-zA-Z0-9]{5,32}$/" ;
+    private static $cateRegex = "/^[a-zA-Z0-9]{5,20}$/" ;
+    private static $prefRegex = "/^[a-zA-Z0-9]{5,20}$/" ;
     private static $ratiRegex = "/^([0-9]{1,1}$)|10/"   ;
     private static $keyRegex  = "/^[a-zA-Z0-9]{32,32}$/";
 
