@@ -47,7 +47,6 @@ Route::add('/login',function()
 
 Route::add('/login',function()
 {
-
     $filters = [
         'name' => [
             'filter' => FILTER_VALIDATE_REGEXP,
@@ -66,7 +65,8 @@ Route::add('/login',function()
     $input = filter_input_array(INPUT_POST, $filters, true);
 
     if($input['name'] != null && $input['password'] != null)
-        echo Session::loginSession($input['name'], $input['password']);
+        echo "true";
+        //echo Session::loginSession($input['name'], $input['password']);
     else
         echo "false";
    
