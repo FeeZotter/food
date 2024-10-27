@@ -31,10 +31,10 @@ if (Session::isLogin()) {
         <form action="/login" method="post">
             <fieldset>
                 <legend>Login<?php if(Session::isLogin()) echo(" to another account"); ?></legend>
-                <label for="userName">Name:</label>
-                <input type="text" id="userName" name="userName" required>
-                <label for="userPassword">Password:</label>
-                <input type="password" id="userPassword" name="userPassword" required>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
                 <input type="submit" value="Login">
             </fieldset>
         </form>
