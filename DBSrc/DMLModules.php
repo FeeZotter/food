@@ -490,21 +490,29 @@
         /**
          * if more than 0 rows got deleted returns true
          */
-        static function deletePreference ($user, $password, $category, $preference) : bool
+        static function deletePreference ($category, $preference) : bool
         {
-            if (!self::loginSuccess($user, $password))
+            if (!Session::isLogin())
+            {
+                http_response_code(401);
                 return false;
-
-            $pcID = self::getPersonCategoryIdByPersCate($user, $category);
-
+            }
+            
             $stmt = DB::connection()->prepare(
-                "DELETE FROM preferences WHERE cross_person_categories_id=(?) AND preference=(?)"
+                "DELETE preferences 
+                FROM preferences
+                LEFT JOIN cross_person_categories 
+                    ON cross_person_categories.cross_person_categories_id = preferences.cross_person_categories_id
+                WHERE cross_person_categories.persons_id=(?) 
+                    AND cross_person_categories.categories_id=(?)
+                    AND preference=(?))"
             );
-            $stmt->bind_param("", $pcID, $preference);
+            $stmt->bind_param("sss", $_SESSION["name"], $category, $preference);
             $stmt->execute();
 
-            if($stmt->affected_rows > 0)
+            if($stmt->affected_rows == 1)
                 return true;
+            http_response_code(500);
             return false;
         }
 
