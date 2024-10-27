@@ -4,9 +4,9 @@ class UniversalLibrary
 {
     private static $preferenceLimitForFreeAccounts = 20; // int or null
     private static $keyMaxUsers = 100; // only limits during creation via admin interface
-    private static $nameRegex = "/^[a-z]{0,10}$/g";
-    private static $passRegex = "/^[a-z]{0,10}$/g";
-    private static $keyRegex  = "/^[a-zA-Z0-9]{32,32}$/g";
+    private static $nameRegex = "/^[a-zA-Z0-9]{5,32}$/";
+    private static $passRegex = "/^[a-zA-Z0-9]{12,50}$/";
+    private static $keyRegex  = "/^[a-zA-Z0-9]{32,32}$/";
 
     public static function getPreferenceLimitForFreeAccounts()  : int { return self::$preferenceLimitForFreeAccounts; }
     public static function getKeyMaxUsers() : int    { return self::$keyMaxUsers; }
