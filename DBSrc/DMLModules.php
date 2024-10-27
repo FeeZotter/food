@@ -426,15 +426,17 @@
         public static function addNewKey(int $max_users, string $adminname, string $adminpassword) : string
         {
             include_once('./admin.php');
-            include_once('./config.php');
             if (!UniversalLibrary::admin($adminname, $adminpassword))
-                return 'nokey|foryou';           
+            {
+                return "wrong credentials";
+                http_response_code(401);
+            }
 
             if($max_users <= 1) { $max_users = 1; } 
             else
             {
                 //set max_users to keyMaxUsers if max_users is above keyMaxUsers
-                $max_users = $max_users < $keyMaxUsers ? $max_users : $keyMaxUsers; 
+                $max_users = $max_users < UniversalLibrary::getKeyMaxUsers() ? $max_users : UniversalLibrary::getKeyMaxUsers(); 
             }
 
             $newKey = UniversalLibrary::generateNewKey();
@@ -444,8 +446,12 @@
             $stmt->bind_param("si", $newKey, $max_users);
 
             if($stmt->execute())
-                echo $newKey . "|" . $max_users;
-            echo "something|wrong";
+            {
+                http_response_code(201);
+                return $newKey . "|" . $max_users;
+            }
+            return "DB fail";
+            http_response_code(500);
         }
 
         //////////////////////////////////////

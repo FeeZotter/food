@@ -140,8 +140,36 @@ Route::add('/admin',function()
 
 Route::add('/newKey',function()
 {
-    include_once('./DBSrc/DMLModules.php');
-    echo DMLModules::addNewKey($_REQUEST['inputKeyUses'], $_REQUEST['inputName'], $_REQUEST['inputPassword']);
+
+    $filters = [
+        'name' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getNameRegex(),
+            ],
+        ],
+        'password' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
+        ],
+        'keyuses' => [
+            'filter' => FILTER_VALIDATE_INT,
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    if($input['name'] != null && $input['password'] != null && $input['keyuses'] != null)
+    {
+        include_once('./DBSrc/DMLModules.php');
+        echo DMLModules::addNewKey($input['keyuses'] ,$input['name'], $input['password']);
+    } 
+    else
+    {
+        http_response_code(400);
+    }
 },'post');
 
 
@@ -202,7 +230,6 @@ Route::add('/delpref',function()
                                         $_REQUEST['inputCategory'], 
                                         $_REQUEST['inputPreference']);
 }, 'post');
-
 
 //======================================================================
 // FALLBACK & START ROUTER
