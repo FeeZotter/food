@@ -8,8 +8,6 @@ include_once("./Session.php");
 include_once("./UniversalLibrary.php");
 Session::innit();
 
-
-
 // Add base route (startpage)
 Route::add('/',function()
 {
@@ -63,14 +61,13 @@ Route::add('/login',function()
     ];
 
     $input = filter_input_array(INPUT_POST, $filters, true);
-
     if($input['name'] != null && $input['password'] != null)
-        echo "true";
-        //echo Session::loginSession($input['name'], $input['password']);
-    else
-        echo "false";
-   
-   // echo HTML::userMainPage($_REQUEST['inputName'], $_REQUEST['inputPassword']);
+    {
+        if(Session::loginSession($input['name'], $input['password']))
+            http_response_code(200);
+        else http_response_code(401);
+    }
+    else http_response_code(400);
 }, 'post');
 
 Route::add('/login/table',function()
@@ -138,9 +135,8 @@ Route::add('/admin',function()
     echo HTML::adminPage();
 }, 'get');
 
-Route::add('/newKey',function()
+Route::add('/newkey',function()
 {
-
     $filters = [
         'name' => [
             'filter' => FILTER_VALIDATE_REGEXP,
@@ -166,10 +162,7 @@ Route::add('/newKey',function()
         include_once('./DBSrc/DMLModules.php');
         echo DMLModules::addNewKey($input['keyuses'] ,$input['name'], $input['password']);
     } 
-    else
-    {
-        http_response_code(400);
-    }
+    else http_response_code(400);
 },'post');
 
 
@@ -212,13 +205,47 @@ Route::add('/addcate',function()
 
 Route::add('/addchangepref',function()
 {
-    include_once('./DBSrc/DMLModules.php');
-    //$user, $password, $category, $preference, $rating
-    echo DMLModules::addChangePreference(   $_REQUEST['inputName'], 
-                                            $_REQUEST['inputPassword'], 
-                                            $_REQUEST['inputCategory'], 
-                                            $_REQUEST['inputPreference'], 
-                                            $_REQUEST['inputRating']);
+    $filters = [
+        'name' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getNameRegex(),
+            ],
+        ],
+        'password' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
+        ],
+        'category' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
+        ],
+        'preference' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
+        ],
+        'rating' => [
+            'filter' => FILTER_VALIDATE_INT,
+            'options' => [
+                'min_range' => 0, 'max_range' => 10
+            ],
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    if($input['name'] != null && $input['password'] != null && $input['category'] != null && $input['preference'] != null && $input['rating'] != null)
+    {
+        include_once('./DBSrc/DMLModules.php');
+        DMLModules::addChangePreference($input['name'], $input['password'], $input['category'], $input['preference'], $input['rating']);
+    } 
+    else http_response_code(400);
 }, 'post');
 
 Route::add('/delpref',function()

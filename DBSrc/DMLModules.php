@@ -383,10 +383,10 @@
             if(!UniversalLibrary::validPassword($password))
                 return false;
 
-            $stmt = DB::connection()->prepare(
-                "SELECT 1 FROM persons WHERE name=(?) AND pasword=(?)"
-            );
-            $stmt->bind_param("ss", $accountname, UniversalLibrary::hashPass($password));
+            $hashPass = UniversalLibrary::hashPass($password);
+
+            $stmt = DB::connection()->prepare("SELECT 1 FROM persons WHERE name=(?) AND pasword=(?)");
+            $stmt->bind_param("ss", $accountname, $hashPass);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -459,10 +459,13 @@
         /**
          * returns true if preference got added or changed
          */
-        static function addChangePreference (string $user, string $password, string $category, string $preference, int $rating)
+        static function addChangePreference (string $user, string $password, string $category, string $preference, int $rating) : bool
         {
             if (!self::loginSuccess($user, $password))
+            {
+                http_response_code(401);
                 return false;
+            }
 
             $pcID = self::getPersonCategoryIdByPersCate($user, $category);
             $stmt = DB::connection()->prepare(
@@ -475,7 +478,13 @@
                     preferences.rating=(?);
             ");
             $stmt->bind_param("isii", $pcID, $preference, $rating, $rating);
-            return $stmt->execute();
+            $responseSuccess = $stmt->execute();
+            if($responseSuccess)
+            {
+                return true;
+            }
+            http_response_code(500);
+            return false;
         }
 
         /**

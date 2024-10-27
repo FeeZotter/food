@@ -9,5 +9,6 @@
             <input type="submit" value="Login">
         </fieldset>
     </form>
+    <p>Password: Minimum 12 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
 </main>
 <script src='food/js/login.js'></script>
