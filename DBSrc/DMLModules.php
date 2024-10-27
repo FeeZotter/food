@@ -459,15 +459,15 @@
         /**
          * returns true if preference got added or changed
          */
-        static function addChangePreference (string $user, string $password, string $category, string $preference, int $rating) : bool
+        static function addChangePreference (string $category, string $preference, int $rating) : bool
         {
-            if (!self::loginSuccess($user, $password))
+            if (!Session::isLogin())
             {
                 http_response_code(401);
                 return false;
             }
 
-            $pcID = self::getPersonCategoryIdByPersCate($user, $category);
+            $pcID = self::getPersonCategoryIdByPersCate(Session::user(), $category);
             $stmt = DB::connection()->prepare(
                 "INSERT INTO preferences (
                     preferences.cross_person_categories_id, 
@@ -507,7 +507,7 @@
                     AND cross_person_categories.categories_id=(?)
                     AND preference=(?))"
             );
-            $stmt->bind_param("sss", $_SESSION["name"], $category, $preference);
+            $stmt->bind_param("sss", Session::user(), $category, $preference);
             $stmt->execute();
 
             if($stmt->affected_rows == 1)
@@ -519,22 +519,29 @@
         /**
          * true on success
          */
-        static function addCategory ($name, $password, $category) : bool
+        static function addCategory ($category) : bool
         {
-            if(!self::loginSuccess($name, $password))
+            if(!Session::isLogin())
+            {
+                http_response_code(401);
                 return false;
+            }
 
             $stmt = DB::connection()->prepare(
                 "INSERT INTO cross_person_categories (persons_id, categories_id) VALUES ((?),(?))"
             );
-            $stmt->bind_param("ss", $name, $category);
+            $stmt->bind_param("ss", Session::user(), $category);
             $stmt->execute();
             
             switch ($stmt->affected_rows) {
+                case 0:
+                    return false;
+                    break;
                 case 1:
                     return true;
                     break;
                 default:
+                    http_response_code(500);
                     return false;
                     break;
             } 

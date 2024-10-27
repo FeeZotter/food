@@ -199,25 +199,28 @@ Route::add('/delcate',function()
 
 Route::add('/addcate',function()
 {
-    include_once('./DBSrc/DMLModules.php');
-    echo DMLModules::addCategory($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory']);
+    $filters = [
+        'category' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getCategoryRegex(),
+            ],
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    if($input['category'] != null)
+    {
+        include_once('./DBSrc/DMLModules.php');
+        DMLModules::addCategory($input['category']);
+    } 
+    else http_response_code(400);
 }, 'post');
 
 Route::add('/addchangepref',function()
 {
     $filters = [
-        'name' => [
-            'filter' => FILTER_VALIDATE_REGEXP,
-            'options' => [
-                'regexp' => UniversalLibrary::getNameRegex(),
-            ],
-        ],
-        'password' => [
-            'filter' => FILTER_VALIDATE_REGEXP,
-            'options' => [
-                'regexp' => UniversalLibrary::getPassRegex(),
-            ],
-        ],
         'category' => [
             'filter' => FILTER_VALIDATE_REGEXP,
             'options' => [
@@ -243,7 +246,7 @@ Route::add('/addchangepref',function()
     if($input['name'] != null && $input['password'] != null && $input['category'] != null && $input['preference'] != null && $input['rating'] != null)
     {
         include_once('./DBSrc/DMLModules.php');
-        DMLModules::addChangePreference($input['name'], $input['password'], $input['category'], $input['preference'], $input['rating']);
+        DMLModules::addChangePreference($input['category'], $input['preference'], $input['rating']);
     } 
     else http_response_code(400);
 }, 'post');
@@ -252,18 +255,6 @@ Route::add('/delpref',function()
 {
     include_once('./DBSrc/DMLModules.php');
     $filters = [
-        'name' => [
-            'filter' => FILTER_VALIDATE_REGEXP,
-            'options' => [
-                'regexp' => UniversalLibrary::getNameRegex(),
-            ],
-        ],
-        'password' => [
-            'filter' => FILTER_VALIDATE_REGEXP,
-            'options' => [
-                'regexp' => UniversalLibrary::getPassRegex(),
-            ],
-        ],
         'category' => [
             'filter' => FILTER_VALIDATE_REGEXP,
             'options' => [
@@ -280,10 +271,10 @@ Route::add('/delpref',function()
 
     $input = filter_input_array(INPUT_POST, $filters, true);
 
-    if($input['name'] != null && $input['password'] != null && $input['category'] != null && $input['preference'] != null)
+    if($input['category'] != null && $input['preference'] != null)
     {
         include_once('./DBSrc/DMLModules.php');
-        DMLModules::deletePreference($input['name'], $input['password'], $input['category'], $input['preference']);
+        DMLModules::deletePreference($input['category'], $input['preference']);
     } 
     else http_response_code(400);
 }, 'post');
