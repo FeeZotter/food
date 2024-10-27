@@ -221,13 +221,13 @@ Route::add('/addchangepref',function()
         'category' => [
             'filter' => FILTER_VALIDATE_REGEXP,
             'options' => [
-                'regexp' => UniversalLibrary::getPassRegex(),
+                'regexp' => UniversalLibrary::getCategoryRegex(),
             ],
         ],
         'preference' => [
             'filter' => FILTER_VALIDATE_REGEXP,
             'options' => [
-                'regexp' => UniversalLibrary::getPassRegex(),
+                'regexp' => UniversalLibrary::getPreferenceRegex(),
             ],
         ],
         'rating' => [
