@@ -528,23 +528,23 @@ class HTML
         if(DMLModules::addAccount($accountname, $alias, $password, $key))
         {
             include_once("./Session.php");
-
+            Session::loginSession($accountname, $password);
         }
         else 
         {
-            return self::error404();
+            ;
         }
     } 
 
-    public static function test()
+    public static function test() 
     {
         
-return self::getHTML("","","<div class='input-group mb-3'>
-<input type='text' class='form-control' placeholder='Recipient's username' aria-label='Recipient's username' aria-describedby='basic-addon2'>
-<div class='input-group-append'>
-  <button class='btn btn-outline-secondary' type='button'>Button</button>
-</div>
-</div>'","");
+        return self::getHTML("","","<div class='input-group mb-3'>
+        <input type='text' class='form-control' placeholder='Recipient's username' aria-label='Recipient's username' aria-describedby='basic-addon2'>
+        <div class='input-group-append'>
+        <button class='btn btn-outline-secondary' type='button'>Button</button>
+        </div>
+        </div>'","");
     }
 }
 ?>

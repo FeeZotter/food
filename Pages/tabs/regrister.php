@@ -1,5 +1,5 @@
 <main>
-    <form action="/regrister" method="post">
+    <form action="/reg" method="post">
         <fieldset>
             <legend>Regrister new Account</legend>
             <label for="name">Name:</label> <br>

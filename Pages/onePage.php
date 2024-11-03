@@ -15,6 +15,7 @@
         <button class="tablinks todo" id="userSpaceTabBtn"       onclick="openTab(event, 'userSpace')"       >User Space</button>
         <button class="tablinks" id="impressumTabBtn"       onclick="openTab(event, 'impressum')"       >Impressum</button>
         <button class="tablinks todo" id="apiTabBtn"             onclick="openTab(event, 'api')"             >API documentation</button>
+        <button class="tablinks todo" id="accessKeysTabBtn"      onclick="openTab(event, 'accessKeys')"      >HTML Access Keys</button>
     </div>
 
     <!-- Tab content -->
@@ -48,6 +49,10 @@
 
     <div id="api" class="tabcontent">
         <?php include_once("Pages/tabs/api.php") ?>
+    </div> 
+
+    <div id="accessKeys" class="tabcontent">
+        <?php include_once("Pages/tabs/accessKeys.php") ?>
     </div> 
 
     

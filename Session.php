@@ -19,12 +19,14 @@ class Session
         return session_destroy();
     }
     
-    static public function loginSession(): bool
+    static public function loginSession(string $name, string $password): bool
     {
-        if (!isset($_POST["name"])) { return false; }
-        if (!isset($_POST["password"])) { return false; }
-        if (!DMLModules::loginSuccess($_POST["name"], $_POST["password"])) { return false; }
-        $_SESSION["name"] = $_POST["name"];
+        if (!DMLModules::loginSuccess($name, $password)) 
+        {
+            http_response_code(401); 
+            return false; 
+        }
+        $_SESSION["name"] = $name;
         $_SESSION["login"] = true;
         return $_SESSION["login"];
     }

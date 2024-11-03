@@ -303,7 +303,7 @@
             //if the accountname contains no letters throw an error
             if(!UniversalLibrary::validName($accountname))
                 $errorString .= "Name invalid! ";
-
+            
             //check alias
             if(!UniversalLibrary::validName($alias))
                 $errorString .= "Alias invalid! ";
@@ -387,10 +387,14 @@
 
             $stmt = DB::connection()->prepare("SELECT 1 FROM persons WHERE name=(?) AND pasword=(?)");
             $stmt->bind_param("ss", $accountname, $hashPass);
-            $stmt->execute();
+            if(!$stmt->execute())
+            {
+                http_response_code(500);
+                return false;
+            }
             $result = $stmt->get_result();
 
-            if(mysqli_fetch_row($result) == null)
+            if(mysqli_fetch_row($result) != null)
                 return false;
             return true;
         }
@@ -550,10 +554,13 @@
         /**
          * true on 1 delete, false on 0 delete and false + alert for the user in case of any case else
          */
-        static function removeCategory (string $name, string $password, string $category) : bool
+        static function removeCategory (string $category) : bool
         {
-            if(!self::loginSuccess($name, $password))
+            if(!Session::isLogin())
+            {
+                http_response_code(401);
                 return false;
+            }
 
             $stmt = DB::connection()->prepare("DELETE FROM cross_person_categories WHERE persons_id=(?) AND categories_id=(?)");
             $stmt->bind_param("ss", $name, $category);
@@ -568,7 +575,7 @@
                     return true;
                     break;
                 default:
-                    echo "<script>alert('DELETED " . $stmt->affected_rows . " CATEGORIES. Oops')</script>";
+                    http_response_code(500);
                     return false;
                     break;
             }

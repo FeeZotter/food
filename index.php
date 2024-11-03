@@ -61,11 +61,10 @@ Route::add('/login',function()
     ];
 
     $input = filter_input_array(INPUT_POST, $filters, true);
+
     if($input['name'] != null && $input['password'] != null)
     {
-        if(Session::loginSession($input['name'], $input['password']))
-            http_response_code(200);
-        else http_response_code(401);
+        Session::loginSession($input['name'], $input['password']);
     }
     else http_response_code(400);
 }, 'post');
@@ -98,6 +97,34 @@ Route::add('/reg',function()
 {
     include_once('./Pages/HTML.php');
     HTML::addAccount($_POST['inputName'], $_POST['inputAlias'], $_POST['inputPassword'], $_POST['inputKey']);
+
+    $filters = [
+        'name' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getNameRegex(),
+            ],
+        ],
+        'password' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getPassRegex(),
+            ],
+        ],
+        'keyuses' => [
+            'filter' => FILTER_VALIDATE_INT,
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    if($input['name'] != null && $input['password'] != null && $input['keyuses'] != null)
+    {
+        include_once('./DBSrc/DMLModules.php');
+        echo DMLModules::addNewKey($input['keyuses'] ,$input['name'], $input['password']);
+    } 
+    else http_response_code(400);
+
 }, 'post');
 
 
@@ -193,8 +220,23 @@ Route::add('/g/([a-z,0-9]*)',function($alias)
 
 Route::add('/delcate',function()
 {
-    include_once('./DBSrc/DMLModules.php');
-    echo DMLModules::removeCategory($_REQUEST['inputName'], $_REQUEST['inputPassword'], $_REQUEST['inputCategory']);
+    $filters = [
+        'category' => [
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => [
+                'regexp' => UniversalLibrary::getCategoryRegex(),
+            ],
+        ],
+    ];
+
+    $input = filter_input_array(INPUT_POST, $filters, true);
+
+    if($input['category'] != null)
+    {
+        include_once('./DBSrc/DMLModules.php');
+        DMLModules::removeCategory($input['category']);
+    } 
+    else http_response_code(400);
 }, 'post');
 
 Route::add('/addcate',function()
